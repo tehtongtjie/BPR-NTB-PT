@@ -59,6 +59,10 @@ Route::prefix('deposito')->group(function () {
     Route::get('/', [DepositoController::class, 'index'])
         ->name('deposito.index');
 
+        // Add this line
+    Route::get('/simulasi', [DepositoController::class, 'simulasi'])
+        ->name('simulasi.deposito');
+
     Route::get('/{slug}', [DepositoController::class, 'show'])
         ->name('deposito.show');
 
@@ -83,6 +87,10 @@ Route::get(
     '/pinjaman',
     [PinjamanController::class, 'index']
 )->name('pinjaman.index');
+
+        // Add this line
+    Route::get('/simulasi', [DepositoController::class, 'simulasi'])
+        ->name('simulasi.kredit');
 
 Route::get(
     '/pinjaman/{slug}',

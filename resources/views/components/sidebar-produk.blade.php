@@ -14,7 +14,6 @@
                     ['slug' => 'tabungan-sukses', 'label' => 'Tabungan Sukses', 'icon' => 'bi-graph-up-arrow'],
                     ['slug' => 'simbada', 'label' => 'SIMBADA', 'icon' => 'bi-trophy'],
                     ['slug' => 'tabungan-simpel', 'label' => 'Tabungan Simpel', 'icon' => 'bi-lightning-charge'],
-                    ['slug' => 'tabungan-siswa', 'label' => 'Tabungan Siswa', 'icon' => 'bi-mortarboard'],
                 ];
             @endphp
 
