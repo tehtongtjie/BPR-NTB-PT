@@ -42,7 +42,7 @@ class JaringanKantorController extends Controller
             ]
         );
 
-        return view('pages.jaringan-kantor.index', [
+        return view('users.jaringan-kantor.index', [
             'kantor' => $kantor,           // untuk tabel (pagination)
             'semuaKantor' => $semuaKantor, // untuk map
             'stats' => $stats,             // ✅ INI YANG TADI HILANG
