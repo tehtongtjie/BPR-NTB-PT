@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans:
+        "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    /* Warna Brand BPR */
+    --color-bpr-blue-dark: #1e3a8a;
+    --color-bpr-blue: #00326B;
+    --color-bpr-gold: #fbbf24;
+
+    /* Variabel Dimensi untuk Maintenance */
+    --spacing-topbar: 40px; /* h-10 */
+    --spacing-navbar: 80px; /* h-20 */
+}
+
+/* --- 1. LOGIKA DASAR HEADER --- */
+@layer base {
+    header {
+        will-change: transform;
+        /* Menggunakan cubic-bezier agar transisi smooth (tidak kaku) */
+        transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Mencegah elemen Alpine.js muncul sebelum script ter-load */
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+/* --- 2. ANIMASI MARQUEE --- */
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@utility animate-marquee {
+    display: inline-block;
+    animation: marquee-scroll 35s linear infinite;
+    /* Tanpa animation-play-state: paused agar terus berjalan */
+}
+
+/* --- 3. SPACING KONTEN UTAMA --- */
+/* Gunakan pada tag <main> atau section pertama setelah navbar */
+@utility main-content-spacing {
+    padding-top: var(--spacing-navbar);
+
+    @variant md {
+        padding-top: calc(var(--spacing-topbar) + var(--spacing-navbar));
+    }
+}
+
+/* --- 4. CUSTOM SCROLLBAR --- */
+@utility mobile-menu-scrollbar {
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: color-mix(in srgb, var(--color-bpr-blue) 30%, white);
+        border-radius: 10px;
+    }
+}
