@@ -34,7 +34,7 @@
                 <ul class="space-y-4">
                     <li><a href="#"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
-                            <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Tabungan Syariah
+                            <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Tabungan Simbada
                         </a></li>
                     <li><a href="#"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
@@ -43,10 +43,6 @@
                     <li><a href="#"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
                             <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Kredit Usaha
-                        </a></li>
-                    <li><a href="#"
-                            class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
-                            <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>E-Banking
                         </a></li>
                 </ul>
             </div>
