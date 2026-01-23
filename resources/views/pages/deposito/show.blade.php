@@ -241,7 +241,7 @@
                                 Investasikan masa depan Anda dengan bunga kompetitif dan keamanan terjamin LPS.</p>
 
                             <div class="space-y-4 relative z-10">
-                                <a href="{{ route('simulasi.deposito') }}"
+                                <a href="{{ route('pages.simulasi.deposito') }}"
                                     class="flex items-center justify-center gap-3 w-full bg-white text-blue-950 py-5 rounded-[1.5rem] font-extrabold hover:bg-blue-50 transition-all active:scale-95 shadow-xl shadow-black/10">
                                     <i class="bi bi-calculator text-xl text-blue-600"></i> Simulasikan Deposito
                                 </a>

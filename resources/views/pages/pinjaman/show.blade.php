@@ -92,7 +92,7 @@
                                 kalkulator kredit kami untuk menghitung estimasi angsuran bulanan Anda.</p>
 
                             <div class="space-y-4 relative z-10">
-                                <a href="{{ route('simulasi.kredit') }}"
+                                <a href="{{ route('pages.simulasi.kredit') }}"
                                     class="flex items-center justify-center gap-3 w-full bg-blue-600 text-white py-5 rounded-[1.5rem] font-bold hover:bg-blue-700 transition-all active:scale-95 shadow-xl shadow-blue-600/20">
                                     <i class="bi bi-calculator text-xl"></i> Mulai Simulasi
                                 </a>

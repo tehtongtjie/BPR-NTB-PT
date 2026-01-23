@@ -12,6 +12,6 @@ class UmkmController extends Controller
 
         abort_if(!$umkms, 404);
 
-        return view('users.umkm.mitra', compact('umkms'));
+        return view('pages.umkm.mitra', compact('umkms'));
     }
 }

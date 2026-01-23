@@ -75,373 +75,645 @@
         </div>
     </section>
 
-    {{-- 2. PRODUK UNGGULAN --}}
-    <section class="pt-24 pb-12 bg-[#F8FAFC] overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Header Section --}}
+    {{-- ================= PRODUK UNGGULAN (PREMIUM BENTO STYLE) ================= --}}
+    <section class="relative py-12 bg-[#F8FAFC] overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            {{-- Header --}}
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div class="max-w-2xl">
-                    <span
-                        class="inline-block px-4 py-1.5 mb-4 text-xs font-bold tracking-[0.2em] uppercase text-blue-600 bg-blue-50 rounded-lg">
-                        Pilihan Cerdas
-                    </span>
-                    <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight">
-                        Solusi Simpanan <br class="hidden md:block"> <span
-                            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Masa Depan
-                            Anda</span>
-                    </h2>
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-3">
+                        <span class="h-[1px] w-12 bg-blue-600"></span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Smart Financial
+                            Solutions</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Produk <span
+                            class="text-blue-600 italic font-light">Unggulan</span></h2>
                 </div>
                 <div class="hidden md:block">
-                    <p class="text-slate-500 max-w-xs text-right italic">Pilih produk yang sesuai dengan kebutuhan finansial
-                        keluarga Anda.</p>
+                    <p class="text-slate-500 max-w-xs text-right italic font-medium">Pilih solusi perbankan yang dirancang
+                        khusus untuk mewujudkan rencana masa depan Anda.</p>
                 </div>
             </div>
 
-            {{-- Container Swipe --}}
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                {{-- FEATURED PRODUCT: SIMBADA (Besar di Kiri) --}}
+                <div class="lg:col-span-7 group relative">
+                    <div
+                        class="relative z-10 h-full min-h-[500px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700 border border-white">
+                        <img src="{{ asset('images/simbada-card.png') }}"
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            alt="SIMBADA">
+
+                        {{-- Deep Blue Gradient Overlay --}}
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent"></div>
+
+                        <div class="absolute bottom-0 left-0 p-10 lg:p-12 text-white z-10">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span
+                                    class="px-4 py-1.5 rounded-full bg-[#fbbf24] text-[#00326B] text-[10px] font-black uppercase tracking-widest shadow-xl">Most
+                                    Popular</span>
+                                <i class="bi bi-trophy-fill text-[#fbbf24]"></i>
+                            </div>
+                            <h3 class="text-3xl lg:text-4xl font-black leading-tight mb-4">SIMBADA</h3>
+                            <p class="text-white/80 text-sm lg:text-base font-medium italic max-w-md mb-8 leading-relaxed">
+                                "Simpanan Berhadiah Anda dengan peluang memenangkan undian menarik dan beragam hadiah
+                                spektakuler setiap periode."
+                            </p>
+                            <a href="{{ route('tabungan.show', 'simbada') }}"
+                                class="group/btn inline-flex items-center gap-4 text-xs font-black uppercase tracking-widest">
+                                <span>Buka Tabungan</span>
+                                <div
+                                    class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover/btn:bg-[#fbbf24] group-hover/btn:text-[#00326B] transition-all">
+                                    <i class="bi bi-arrow-up-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- OTHER PRODUCTS LIST (Di Kanan) --}}
+                <div class="lg:col-span-5 flex flex-col gap-6">
+
+                    {{-- TabunganKU --}}
+                    <div
+                        class="group relative bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div
+                                class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner">
+                                <img src="{{ asset('images/tabunganku.png') }}"
+                                    class="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="space-y-2">
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600">Pilihan
+                                    Hemat</span>
+                                <h4
+                                    class="text-xl font-black text-[#00326B] group-hover:text-blue-600 transition-colors leading-tight">
+                                    TabunganKU</h4>
+                                <p class="text-slate-500 text-xs leading-relaxed italic line-clamp-2">Tanpa biaya
+                                    administrasi bulanan, setoran awal sangat ringan.</p>
+                            </div>
+                        </div>
+                        <a href="{{ route('tabungan.show', 'tabunganku') }}" class="absolute inset-0"></a>
+                    </div>
+
+                    {{-- Tabungan Sukses --}}
+                    <div
+                        class="group relative bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div
+                                class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner">
+                                <img src="{{ asset('images/tabungan-sukses.png') }}"
+                                    class="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="space-y-2">
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500">Investasi</span>
+                                <h4
+                                    class="text-xl font-black text-[#00326B] group-hover:text-blue-600 transition-colors leading-tight">
+                                    Tabungan Sukses</h4>
+                                <p class="text-slate-500 text-xs leading-relaxed italic line-clamp-2">Investasi aman dengan
+                                    suku bunga kompetitif untuk rencana Anda.</p>
+                            </div>
+                        </div>
+                        <a href="{{ route('tabungan.show', 'tabungan-sukses') }}" class="absolute inset-0"></a>
+                    </div>
+
+                    {{-- CTA More Products --}}
+                    <div
+                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/30 hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div
+                                class="w-28 h-28 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-[#fbbf24]">
+                                <i class="bi bi-grid-fill text-3xl"></i>
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
+                                <p class="text-white/60 text-xs italic">Lihat beragam solusi finansial lengkap kami.</p>
+                            </div>
+                        </div>
+                        <a href="#" class="absolute inset-0"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ================= SUKU BUNGA SECTION (PREMIUM BENTO STYLE) ================= --}}
+    <section class="relative py-12 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            {{-- Header --}}
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-3">
+                        <span class="h-[1px] w-12 bg-blue-600"></span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Interest Rates
+                            Update</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Informasi <span
+                            class="text-blue-600 italic font-light">Suku Bunga</span></h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+                {{-- LEFT PANEL: LPS RATE (FEATURED) --}}
+                <div class="lg:col-span-5 group relative">
+                    <div
+                        class="relative z-10 h-full min-h-[400px] p-10 flex flex-col justify-between overflow-hidden rounded-[3rem] bg-gradient-to-br from-blue-700 via-blue-800 to-[#00326B] shadow-2xl transition-all duration-500 hover:shadow-blue-900/20">
+
+                        {{-- Decorative Light Effect --}}
+                        <div
+                            class="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150">
+                        </div>
+
+                        <div class="relative z-20">
+                            <div
+                                class="inline-flex items-center space-x-2 bg-white/10 px-4 py-1.5 rounded-full border border-white/10 mb-8">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span class="text-[10px] font-black tracking-widest uppercase text-white">Update Jan
+                                    2026</span>
+                            </div>
+
+                            <p class="text-blue-100 text-[11px] font-black uppercase tracking-widest mb-2 opacity-80">
+                                Tingkat Bunga Penjaminan LPS</p>
+                            <h2 class="text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6">6.00<span
+                                    class="text-3xl text-blue-300">%</span></h2>
+
+                            <div
+                                class="inline-flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 transition-all group-hover:bg-white/10">
+                                <i class="bi bi-shield-check text-[#fbbf24] text-xl"></i>
+                                <p class="text-xs text-blue-50 font-medium leading-tight">
+                                    Dijamin LPS hingga <span
+                                        class="font-black text-white underline decoration-[#fbbf24] decoration-2 underline-offset-4">Rp
+                                        2 Miliar</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                            <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank"
+                                class="flex items-center justify-center gap-3 bg-white text-[#00326B] py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:bg-[#fbbf24] hover:shadow-xl active:scale-95">
+                                <span>Verifikasi LPS Rate</span>
+                                <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- RIGHT PANEL: RINCIAN TABEL (BENTO CARDS) --}}
+                <div class="lg:col-span-7 flex flex-col gap-6" x-data="{ selected: 1 }">
+
+                    {{-- Card 1: Tabungan --}}
+                    <div
+                        class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black">
+                                    01</div>
+                                <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">Suku Bunga Tabungan</h3>
+                            </div>
+                            <i class="bi bi-piggy-bank text-3xl text-blue-200"></i>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div
+                                class="bg-white p-5 rounded-3xl border border-slate-100 flex justify-between items-center group/item hover:border-blue-200 transition-colors">
+                                <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">Simbada</span>
+                                <span
+                                    class="text-xl font-black text-blue-600 group-hover/item:scale-110 transition-transform">5.00%</span>
+                            </div>
+                            <div
+                                class="bg-white p-5 rounded-3xl border border-slate-100 flex justify-between items-center group/item hover:border-blue-200 transition-colors">
+                                <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">TabunganKU</span>
+                                <span
+                                    class="text-xl font-black text-blue-600 group-hover/item:scale-110 transition-transform">3.00%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Card 2: Deposito --}}
+                    <div
+                        class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 rounded-2xl bg-[#fbbf24] text-[#00326B] flex items-center justify-center font-black">
+                                    02</div>
+                                <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">Suku Bunga Deposito</h3>
+                            </div>
+                            <i class="bi bi-safe2 text-3xl text-amber-200"></i>
+                        </div>
+
+                        <div
+                            class="bg-white p-6 rounded-3xl border border-[#fbbf24]/20 flex justify-between items-center group/item relative overflow-hidden">
+                            <div class="absolute left-0 top-0 h-full w-1 bg-[#fbbf24]"></div>
+                            <div class="space-y-1">
+                                <span class="text-xs font-black text-[#fbbf24] uppercase tracking-widest">Penempatan
+                                    Terbaik</span>
+                                <h4 class="text-lg font-bold text-slate-800">Deposito Tenor 12 Bulan</h4>
+                            </div>
+                            <span class="text-3xl font-black text-[#00326B]">6.00%</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {{-- ================= BERITA TERKINI (PREMIUM BENTO STYLE) ================= --}}
+    <section class="relative py-12 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            {{-- Header --}}
+            <div class="flex items-end justify-between mb-12">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-3">
+                        <span class="h-[1px] w-12 bg-blue-600"></span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Latest
+                            Updates</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Berita <span
+                            class="text-blue-600 italic font-light">Terkini</span></h2>
+                </div>
+                <a href="#"
+                    class="hidden md:inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-600 hover:text-[#00326B] transition-colors">
+                    Semua Berita <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                {{-- FEATURED NEWS (Besar di Kiri) --}}
+                <div class="lg:col-span-7 group relative">
+                    <div
+                        class="relative z-10 h-full min-h-[450px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700">
+                        <img src="{{ asset('images/berita.png') }}"
+                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            alt="Berita Utama">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent">
+                        </div>
+
+                        <div class="absolute bottom-0 left-0 p-10 lg:p-12 text-white z-10">
+                            <span
+                                class="inline-block px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest mb-4 shadow-xl">Utama</span>
+                            <h3 class="text-2xl lg:text-4xl font-black leading-tight mb-4">Rapat Koordinasi Tahunan PT. BPR
+                                NTB (Perseroda)</h3>
+                            <p class="text-white/80 text-sm lg:text-base font-medium italic max-w-md mb-6 leading-relaxed">
+                                "Membangun sinergi untuk memperkuat ekonomi daerah NTB melalui inovasi perbankan
+                                berkelanjutan."
+                            </p>
+                            <a href="#"
+                                class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest hover:text-blue-300 transition-colors">
+                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- SIDE NEWS LIST (Kecil di Kanan) --}}
+                <div class="lg:col-span-5 flex flex-col gap-6">
+
+                    {{-- Berita 2 --}}
+                    <div
+                        class="group relative bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
+                                <img src="{{ asset('images/berita.png') }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="space-y-2">
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">UMKM
+                                    & Ekonomi</span>
+                                <h4
+                                    class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
+                                    Penyaluran Kredit Usaha Rakyat untuk UMKM Mataram</h4>
+                                <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Dukungan nyata
+                                    bagi pelaku usaha kecil di kota Mataram.</p>
+                            </div>
+                        </div>
+                        <a href="#" class="absolute inset-0"></a>
+                    </div>
+
+                    {{-- Berita 3 --}}
+                    <div
+                        class="group relative bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
+                                <img src="{{ asset('images/berita.png') }}"
+                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            </div>
+                            <div class="space-y-2">
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">Literasi
+                                    Keuangan</span>
+                                <h4
+                                    class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
+                                    Edukasi Literasi Keuangan Siswa Sekolah Dasar</h4>
+                                <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Mengenalkan
+                                    pentingnya menabung sejak dini kepada generasi muda.</p>
+                            </div>
+                        </div>
+                        <a href="#" class="absolute inset-0"></a>
+                    </div>
+
+                    {{-- Berita 4 (Opsional - Jika ada data lebih) --}}
+                    <div
+                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1">
+                        <div class="flex items-center gap-6">
+                            <div
+                                class="w-24 h-24 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-white italic font-black text-xs">
+                                More
+                            </div>
+                            <div class="space-y-1">
+                                <h4 class="text-base font-black text-white">Lihat Berita Lainnya</h4>
+                                <p class="text-white/60 text-[11px] italic">Temukan informasi kegiatan BPR NTB
+                                    selengkapnya.</p>
+                            </div>
+                        </div>
+                        <a href="#" class="absolute inset-0"></a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ================= PRESTASI SECTION (GRID TO SWIPE) ================= --}}
+    {{-- py-20/py-28 dikurangi menjadi py-12 agar jarak dengan section Berita lebih rapat --}}
+    <section class="relative py-12 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            {{-- Header --}}
+            {{-- mb-12 dikurangi menjadi mb-8 --}}
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div class="space-y-3">
+                    <div class="inline-flex items-center gap-3">
+                        <span class="h-[1px] w-12 bg-[#fbbf24]"></span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">National
+                            Recognition</span>
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Prestasi <span
+                            class="text-[#fbbf24] italic font-light">Kami</span></h2>
+                </div>
+                <div
+                    class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest">
+                    <span>Swipe</span> <i class="bi bi-arrow-right"></i>
+                </div>
+            </div>
+
+            {{-- Container: Swipe di Mobile, Grid di Desktop --}}
             <div
-                class="flex overflow-x-auto pb-10 -mx-4 px-4 hide-scrollbar snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-8 md:overflow-visible">
+                class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0">
                 @php
-                    $products = [
+                    $prestasi = [
                         [
-                            'name' => 'TabunganKU',
-                            'img' => 'tabunganku.png',
-                            'desc' => 'Setoran awal sangat ringan, tanpa biaya administrasi bulanan yang membebani.',
-                            'route' => 'tabunganku',
-                            'featured' => false,
-                            'tag' => 'Pilihan Hemat',
-                            'icon' => 'bi-wallet2',
+                            'tag' => 'Infobank 2025',
+                            'title' => 'Predikat "Sangat Bagus"',
+                            'img' => 'penghargaan-infobank.png',
+                        ],
+                        ['tag' => 'Top Business', 'title' => 'TOP BPR Bintang 5', 'img' => 'penghargaan-top-bpr.png'],
+                        [
+                            'tag' => 'Innovation',
+                            'title' => 'Digital Banking Excellence',
+                            'img' => 'digital-innovation.png',
+                        ],
+                        ['tag' => 'Social Impact', 'title' => 'Bakti NTB Terpuji', 'img' => 'csr-awards.png'],
+                    ];
+                @endphp
+
+                @foreach ($prestasi as $p)
+                    <div class="min-w-[85%] sm:min-w-[45%] lg:min-w-0 snap-center group">
+                        <div
+                            class="relative h-[400px] lg:h-[420px] overflow-hidden rounded-[2.5rem] shadow-xl transition-all duration-500 group-hover:shadow-blue-900/10">
+                            <img src="{{ asset('images/' . $p['img']) }}"
+                                class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                alt="{{ $p['title'] }}">
+                            <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent">
+                            </div>
+                            <div class="absolute bottom-0 left-0 p-8 text-white">
+                                <span
+                                    class="text-[9px] font-black uppercase tracking-widest text-[#fbbf24] mb-2 block">{{ $p['tag'] }}</span>
+                                <h3 class="text-xl font-black leading-tight">{{ $p['title'] }}</h3>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ================= LELANG SECTION (OPTIMIZED GRID TO SWIPE) ================= --}}
+    <section class="relative py-12 bg-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+
+            {{-- Header Section --}}
+            <div class="flex items-end justify-between mb-10">
+                <div class="max-w-2xl">
+                    <div class="inline-flex items-center gap-3 mb-3">
+                        <span class="h-[1px] w-10 bg-[#fbbf24]"></span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">Public
+                            Procurement</span>
+                    </div>
+                    <h2 class="text-3xl lg:text-5xl font-black text-[#00326B] leading-tight">
+                        Kesempatan Lelang <br><span class="italic font-light text-[#fbbf24]">Bersama BPR NTB</span>
+                    </h2>
+                </div>
+
+                {{-- Hint Swipe Mobile (Hanya muncul di HP) --}}
+                <div
+                    class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+                    <span>Swipe</span> <i class="bi bi-arrow-right"></i>
+                </div>
+            </div>
+
+            {{-- Container: Mobile Flex-Scroll | Desktop Grid --}}
+            <div
+                class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 pb-4">
+
+                {{-- Template Card (Ulangi untuk Item 1-4) --}}
+                @php
+                    $lelangItems = [
+                        [
+                            'tag' => 'Jasa & Konsultan',
+                            'color' => 'blue-600',
+                            'title' => 'Pengadaan Jasa Audit Tahun Buku 2025',
+                            'desc' => 'Mengundang KAP profesional untuk audit laporan keuangan.',
+                            'img' => asset('images/lelang-pengadaan.png'),
                         ],
                         [
-                            'name' => 'SIMBADA',
-                            'img' => 'simbada-card.png',
-                            'desc' =>
-                                'Simpanan Berhadiah Anda dengan peluang memenangkan undian menarik setiap periode.',
-                            'route' => 'simbada',
-                            'featured' => true,
-                            'tag' => 'Paling Populer',
-                            'icon' => 'bi-trophy',
+                            'tag' => 'Konstruksi',
+                            'color' => 'emerald-600',
+                            'title' => 'Renovasi Kantor Cabang Utama Mataram',
+                            'desc' => 'Peluang bagi kontraktor untuk peningkatan fasilitas.',
+                            'img' => 'https://img.daisyui.com/images/stock/photo-1606761506140-59756b6c167b.webp',
                         ],
                         [
-                            'name' => 'Tabungan Sukses',
-                            'img' => 'tabungan-sukses.png',
-                            'desc' => 'Investasi masa depan yang aman dengan suku bunga kompetitif dan terpercaya.',
-                            'route' => 'tabungan-sukses',
-                            'featured' => false,
-                            'tag' => 'Investasi',
-                            'icon' => 'bi-graph-up-arrow',
+                            'tag' => 'Teknologi',
+                            'color' => 'purple-600',
+                            'title' => 'Pengadaan Sistem Keamanan Jaringan',
+                            'desc' => 'Mencari vendor terkemuka untuk upgrade infrastruktur IT.',
+                            'img' => 'https://img.daisyui.com/images/stock/photo-1579547621113-e4d0263f90e5.webp',
+                        ],
+                        [
+                            'tag' => 'Logistik',
+                            'color' => 'orange-600',
+                            'title' => 'Pengadaan Armada Kendaraan Operasional',
+                            'desc' => 'Tender untuk penyedia kendaraan dinas baru BPR NTB.',
+                            'img' => 'https://img.daisyui.com/images/stock/photo-1560761005-59b48c77174e.webp',
                         ],
                     ];
                 @endphp
 
-                @foreach ($products as $product)
-                    <div class="flex-none w-[88%] mr-5 snap-center md:w-auto md:mr-0 group">
+                @foreach ($lelangItems as $item)
+                    <div class="flex-none w-[82%] sm:w-[48%] lg:w-auto snap-center group">
                         <div
-                            class="relative h-full flex flex-col bg-white rounded-[2rem] overflow-hidden transition-all duration-500 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.15)] border border-slate-100 {{ $product['featured'] ? 'ring-2 ring-blue-500/20' : '' }}">
+                            class="relative flex flex-col h-full bg-white rounded-[2.5rem] shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 lg:hover:shadow-2xl lg:hover:shadow-blue-900/10 lg:hover:-translate-y-2">
 
-                            {{-- Image Area --}}
-                            <div class="relative h-56 md:h-64 overflow-hidden">
-                                {{-- Overlay Gradien agar teks tag lebih terbaca --}}
-                                <div
-                                    class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                </div>
-
-                                <img src="{{ asset('images/' . $product['img']) }}" alt="{{ $product['name'] }}"
-                                    class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110">
-
-                                {{-- Tag Badge - Glassmorphism style --}}
-                                <div class="absolute top-5 left-5 z-20">
-                                    <span
-                                        class="backdrop-blur-md bg-white/80 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest text-slate-800 shadow-sm border border-white/20">
-                                        {{ $product['tag'] }}
-                                    </span>
-                                </div>
-
-                                @if ($product['featured'])
-                                    <div class="absolute top-5 right-5 z-20">
-                                        <div class="bg-blue-600 text-white p-2 rounded-lg shadow-lg">
-                                            <i class="bi {{ $product['icon'] }} text-lg"></i>
-                                        </div>
-                                    </div>
-                                @endif
+                            {{-- Image Wrapper dengan Aspect Ratio Tetap --}}
+                            <div class="aspect-[4/3] overflow-hidden">
+                                <img src="{{ $item['img'] }}"
+                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    alt="{{ $item['title'] }}">
                             </div>
 
-                            {{-- Content Area --}}
-                            <div class="p-8 flex flex-col flex-grow">
-                                <h3
-                                    class="text-2xl font-bold text-slate-900 mb-3 group-hover:text-blue-600 transition-colors">
-                                    {{ $product['name'] }}
+                            {{-- Content --}}
+                            <div class="p-7 lg:p-8 flex flex-col flex-grow space-y-3">
+                                <span class="text-[9px] font-black uppercase tracking-widest text-{{ $item['color'] }}">
+                                    {{ $item['tag'] }}
+                                </span>
+                                <h3 class="text-lg lg:text-xl font-black text-[#00326B] leading-tight min-h-[3rem]">
+                                    {{ $item['title'] }}
                                 </h3>
-                                <p class="text-slate-500 text-sm md:text-base leading-relaxed flex-grow">
-                                    {{ $product['desc'] }}
+                                <p class="text-slate-500 text-xs lg:text-sm italic line-clamp-2 leading-relaxed">
+                                    "{{ $item['desc'] }}"
                                 </p>
 
-                                <div class="mt-8">
-                                    <a href="{{ route('tabungan.show', $product['route']) }}"
-                                        class="group/btn relative inline-flex items-center justify-center w-full px-6 py-4 overflow-hidden font-bold transition-all duration-300 rounded-2xl {{ $product['featured'] ? 'bg-blue-600 text-white' : 'bg-slate-50 text-blue-600 hover:bg-blue-600 hover:text-white' }}">
-                                        <span class="relative flex items-center">
-                                            Lihat Detail
-                                            <svg class="w-5 h-5 ml-2 transition-transform duration-300 group-hover/btn:translate-x-1"
-                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                                            </svg>
-                                        </span>
+                                <div class="pt-4 mt-auto">
+                                    <a href="#"
+                                        class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
+                                        Lihat Detail <i
+                                            class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
+
+            </div>
+
+            {{-- Footer Action --}}
+            <div class="text-center mt-12">
+                <a href="#"
+                    class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
+                    Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    {{-- 3. SUKU BUNGA --}}
-    <section class="pt-10 pb-8 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    {{-- ================= KONTAK & TESTIMONI (PREMIUM BENTO STYLE) ================= --}}
+    <section class="relative py-12 lg:py-20 bg-slate-50 overflow-hidden" id="kontak">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
+
+            {{-- Decorative Background Glow --}}
             <div
-                class="flex flex-col lg:flex-row shadow-2xl rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden border border-gray-100">
-
-                {{-- LEFT PANEL: LPS --}}
-                {{-- Mengurangi padding mobile dari p-12 ke p-8 --}}
-                <div
-                    class="lg:w-2/5 p-8 md:p-12 bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white relative overflow-hidden">
-                    <div class="absolute -top-20 -left-20 w-64 h-64 bg-white/10 rounded-full blur-3xl hidden md:block">
-                    </div>
-
-                    <div class="relative z-10 h-full flex flex-col justify-between">
-                        <div>
-                            <div
-                                class="inline-flex items-center space-x-2 bg-blue-600/30 px-3 py-1 rounded-full border border-blue-400/30 mb-4 md:mb-6">
-                                <span class="relative flex h-2 w-2">
-                                    <span
-                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
-                                <span class="text-[9px] md:text-[10px] font-bold tracking-widest uppercase">Update Januari
-                                    2026</span>
-                            </div>
-
-                            <p class="text-blue-100 text-[11px] md:text-sm font-medium tracking-wide uppercase">Tingkat
-                                Bunga Penjaminan (LPS)</p>
-                            {{-- Ukuran font responsif: text-5xl di mobile, text-7xl di desktop --}}
-                            <h2 class="text-5xl md:text-7xl font-black mt-1 mb-3 md:mb-4 tracking-tighter">6.00<span
-                                    class="text-2xl md:text-4xl text-blue-300">%</span></h2>
-
-                            <div
-                                class="flex items-start space-x-3 bg-white/10 p-3 md:p-4 rounded-xl backdrop-blur-md border border-white/10">
-                                <svg class="w-5 h-5 text-blue-300 mt-1 shrink-0" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                    </path>
-                                </svg>
-                                <p class="text-[12px] md:text-sm leading-snug text-blue-50">
-                                    Dijamin LPS hingga <span
-                                        class="font-bold text-white underline decoration-blue-400 underline-offset-4">Rp 2
-                                        Miliar</span>.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 md:mt-12">
-                            <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank" rel="noopener"
-                                class="group flex items-center justify-center space-x-3 bg-white text-blue-800 py-3 md:py-4 rounded-xl font-bold hover:bg-blue-50 transition-all text-sm shadow-lg shadow-blue-900/20">
-                                <span>Cek LPS Rate</span>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- RIGHT PANEL: RINCIAN --}}
-                {{-- Mengurangi p-12 ke p-6 di mobile --}}
-                <div class="lg:w-3/5 p-6 md:p-12 bg-white flex flex-col justify-center" x-data="{ selected: 1 }">
-                    <div class="mb-6 md:mb-10 text-center md:text-left">
-                        <h3 class="text-xl md:text-3xl font-extrabold text-gray-900">Rincian Suku Bunga</h3>
-                    </div>
-
-                    <div class="space-y-4 md:y-6">
-                        {{-- TABUNGAN --}}
-                        <div class="border-b border-gray-100 pb-3">
-                            <button @click="selected !== 1 ? selected = 1 : selected = null"
-                                class="flex justify-between items-center w-full py-1 text-left focus:outline-none group">
-                                <span class="text-md md:text-lg font-bold text-gray-800 flex items-center">
-                                    <span
-                                        class="w-6 h-6 md:w-8 md:h-8 bg-blue-50 text-blue-600 rounded flex items-center justify-center mr-2 md:mr-3 text-[10px] md:text-sm">01</span>
-                                    Suku Bunga Tabungan
-                                </span>
-                                <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
-                                    :class="selected === 1 ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-
-                            <div x-show="selected === 1" x-collapse>
-                                <div class="pt-3 pb-1 space-y-2">
-                                    <div
-                                        class="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-sm md:text-base">
-                                        <span class="text-gray-600">Simbada</span>
-                                        <span class="font-black text-blue-600">5.00%</span>
-                                    </div>
-                                    <div
-                                        class="flex justify-between items-center bg-gray-50 p-3 rounded-lg text-sm md:text-base">
-                                        <span class="text-gray-600">TabunganKU</span>
-                                        <span class="font-black text-blue-600">3.00%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        {{-- DEPOSITO --}}
-                        <div class="border-b border-gray-100 pb-3">
-                            <button @click="selected !== 2 ? selected = 2 : selected = null"
-                                class="flex justify-between items-center w-full py-1 text-left focus:outline-none group">
-                                <span class="text-md md:text-lg font-bold text-gray-800 flex items-center">
-                                    <span
-                                        class="w-6 h-6 md:w-8 md:h-8 bg-blue-50 text-blue-600 rounded flex items-center justify-center mr-2 md:mr-3 text-[10px] md:text-sm">02</span>
-                                    Suku Bunga Deposito
-                                </span>
-                                <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
-                                    :class="selected === 2 ? 'rotate-180' : ''" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round"
-                                        stroke-linejoin="round" />
-                                </svg>
-                            </button>
-
-                            <div x-show="selected === 2" x-collapse>
-                                <div class="pt-3 pb-1 space-y-2">
-                                    <div
-                                        class="flex justify-between items-center bg-blue-50/50 p-3 rounded-lg text-sm md:text-base">
-                                        <span class="text-gray-700 font-bold">Tenor 12 Bulan</span>
-                                        <span class="font-black text-blue-700">6.00%</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- 4. BERITA TERKINI --}}
-    <section class="py-16 bg-white text-gray-800 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {{-- Header dengan link responsif --}}
-            <div class="flex justify-between items-end mb-8 md:mb-10">
-                <div>
-                    <h2 class="text-2xl md:text-3xl font-bold">Berita Terkini</h2>
-                    <div class="w-12 h-1 bg-blue-600 mt-2 rounded-full"></div>
-                </div>
-                <a href="#" class="text-blue-600 font-bold hover:underline text-sm md:text-base">Berita Lainnya
-                    →</a>
+                class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-100 rounded-full blur-[100px] opacity-50 pointer-events-none">
             </div>
 
-            {{-- Container Swipe --}}
-            {{-- md:grid-cols-3 aktif di layar sedang ke atas, flex & overflow-x di mobile --}}
-            <div
-                class="flex overflow-x-auto pb-8 hide-scrollbar snap-x snap-mandatory md:grid md:grid-cols-3 md:gap-6 md:overflow-visible">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
 
-                @php
-                    // Contoh data berita (bisa diganti dengan data dari controller)
-                    $news = [
-                        [
-                            'title' => 'Rapat Koordinasi Tahunan PT. BPR NTB (Perseroda)',
-                            'desc' =>
-                                'Membangun sinergi untuk memperkuat ekonomi daerah NTB melalui inovasi perbankan.',
-                        ],
-                        [
-                            'title' => 'Penyaluran Kredit Usaha Rakyat untuk UMKM Mataram',
-                            'desc' => 'Dukungan nyata BPR NTB bagi pelaku usaha kecil di kota Mataram.',
-                        ],
-                        [
-                            'title' => 'Edukasi Literasi Keuangan Siswa Sekolah Dasar',
-                            'desc' => 'Mengenalkan pentingnya menabung sejak dini kepada generasi muda.',
-                        ],
-                    ];
-                @endphp
+                {{-- LEFT PANEL: TESTIMONI (Featured Card Style) --}}
+                <div class="lg:col-span-5 group relative">
+                    <div
+                        class="relative z-10 h-full min-h-[350px] p-8 lg:p-12 flex flex-col justify-between overflow-hidden rounded-[3rem] bg-gradient-to-br from-blue-700 via-blue-800 to-[#00326B] shadow-2xl transition-all duration-500 hover:shadow-blue-900/30">
 
-                @foreach ($news as $item)
-                    {{-- min-w-[80%] memberikan celah agar berita selanjutnya terlihat sedikit (peek effect) --}}
-                    <div class="flex-none w-[82%] mr-5 snap-center md:w-auto md:mr-0">
+                        {{-- Icon Quote Dekoratif --}}
                         <div
-                            class="relative group h-72 md:h-80 rounded-2xl overflow-hidden shadow-lg border border-gray-100">
-                            <img src="{{ asset('images/berita.png') }}"
-                                class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
-                                alt="Berita BPR NTB">
+                            class="absolute top-10 right-10 text-white/10 text-8xl lg:text-9xl font-black pointer-events-none">
+                            <i class="bi bi-chat-quote-fill"></i>
+                        </div>
 
-                            {{-- Gradient Overlay --}}
+                        <div class="relative z-20">
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex flex-col justify-end p-5 md:p-6">
-                                {{-- Tag/Kategori (Opsional) --}}
-                                <span
-                                    class="text-[10px] text-blue-400 font-bold uppercase tracking-widest mb-2">Kegiatan</span>
-
-                                <h5
-                                    class="text-white font-bold text-base md:text-lg leading-tight group-hover:text-blue-300 transition duration-300">
-                                    {{ $item['title'] }}
-                                </h5>
-
-                                {{-- Deskripsi muncul halus di desktop, tetap terbaca di mobile jika diperlukan --}}
-                                <p
-                                    class="text-gray-300 text-xs md:text-sm mt-3 line-clamp-2 md:opacity-0 md:group-hover:opacity-100 md:group-hover:translate-y-0 md:translate-y-4 transition-all duration-300">
-                                    {{ $item['desc'] }}
-                                </p>
+                                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 mb-8">
+                                <i class="bi bi-star-fill text-[#fbbf24] text-[10px]"></i>
+                                <span class="text-[10px] font-black tracking-widest uppercase text-white">Nasabah
+                                    Story</span>
                             </div>
 
-                            {{-- Link overlay agar satu card bisa diklik --}}
-                            <a href="#" class="absolute inset-0 z-10"></a>
+                            <p class="text-lg lg:text-2xl font-light italic leading-relaxed text-blue-50 mb-10">
+                                "Proses lelangnya sangat transparan dan cepat. Timnya profesional, hasilnya melebihi
+                                ekspektasi saya. Terima kasih banyak BPR NTB!"
+                            </p>
                         </div>
-                    </div>
-                @endforeach
-            </div>
-    </section>
 
-    {{-- Pastikan class hide-scrollbar sudah ada di CSS global Anda --}}
-
-    {{-- 5. KONTAK & TESTIMONI --}}
-    <section class="py-20 bg-gray-50" id="kontak">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                <div class="bg-blue-600 rounded-3xl p-10 text-white shadow-xl">
-                    <h2 class="text-2xl font-bold mb-6">Testimoni Nasabah</h2>
-                    <p class="text-lg italic opacity-90 leading-relaxed">
-                        "Proses lelangnya sangat transparan dan cepat. Timnya profesional,
-                        hasilnya melebihi ekspektasi saya. Terima kasih banyak!"
-                    </p>
-                    <div class="flex items-center mt-8">
+                        {{-- Profil Nasabah --}}
                         <div
-                            class="w-12 h-12 bg-white text-blue-600 rounded-full flex items-center justify-center font-bold text-lg">
-                            NS</div>
-                        <div class="ml-4">
-                            <div class="font-bold">Ni Made Sari</div>
-                            <div class="text-sm opacity-75">Pengusaha UMKM - Bali</div>
+                            class="relative z-20 flex items-center gap-4 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all group-hover:bg-white/10">
+                            <div
+                                class="w-14 h-14 rounded-2xl bg-[#fbbf24] flex items-center justify-center text-[#00326B] font-black text-xl shadow-lg">
+                                NS
+                            </div>
+                            <div>
+                                <h4 class="font-black text-white text-base">Ni Made Sari</h4>
+                                <p class="text-[10px] font-bold uppercase tracking-widest text-blue-300/80">Pengusaha UMKM
+                                    - Bali</p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-3xl p-10 shadow-lg border border-gray-100">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Hubungi Kami</h2>
-                    <form action="#" class="space-y-4">
-                        <input type="text" placeholder="Nama Lengkap"
-                            class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="email" placeholder="Email"
-                                class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
-                            <input type="tel" placeholder="Telepon"
-                                class="px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                {{-- RIGHT PANEL: HUBUNGI KAMI (Clean Bento Form) --}}
+                <div class="lg:col-span-7 group relative">
+                    <div
+                        class="h-full p-8 lg:p-12 bg-white rounded-[3rem] shadow-xl border border-slate-100 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5">
+                        <div class="mb-8 space-y-2">
+                            <div class="flex items-center gap-3">
+                                <span class="h-[1px] w-8 bg-blue-600"></span>
+                                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">Connect With
+                                    Us</span>
+                            </div>
+                            <h2 class="text-3xl lg:text-4xl font-black text-[#00326B]">Kirim <span
+                                    class="text-blue-600 italic font-light">Pesan</span></h2>
                         </div>
-                        <textarea rows="4" placeholder="Pesan Anda..."
-                            class="w-full px-4 py-3 rounded-xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"></textarea>
-                        <button type="submit"
-                            class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl hover:bg-blue-700 transition-transform active:scale-95 shadow-lg">
-                            Kirim Pesan
-                        </button>
-                    </form>
+
+                        <form action="#" class="space-y-5">
+                            <div class="relative group/input">
+                                <input type="text" placeholder="Nama Lengkap"
+                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <input type="email" placeholder="Alamat Email"
+                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                <input type="tel" placeholder="Nomor Telepon"
+                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                            </div>
+
+                            <textarea rows="4" placeholder="Apa yang bisa kami bantu?"
+                                class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic resize-none"></textarea>
+
+                            <button type="submit"
+                                class="group/btn w-full bg-[#00326B] text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-900/20 transition-all hover:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs">
+                                <span>Kirim Sekarang</span>
+                                <i
+                                    class="bi bi-send-fill transition-transform group-hover/btn:translate-x-2 group-hover/btn:-translate-y-1"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
+
             </div>
         </div>
     </section>
