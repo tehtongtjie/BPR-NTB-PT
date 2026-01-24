@@ -7,20 +7,13 @@ use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Share data $menus ke semua views
         View::share('menus', [
             'Produk & Layanan' => [
                 ['label' => 'Tabungan', 'route' => 'tabungan.show', 'param' => 'tabunganku', 'icon' => 'bi-wallet2'],
@@ -46,8 +39,10 @@ class AppServiceProvider extends ServiceProvider
             ],
             'Publikasi' => [
                 ['label' => 'Berita Terkini', 'route' => 'berita.index', 'icon' => 'bi-newspaper'],
+                ['label' => 'Galeri', 'route' => 'galeri.index', 'icon' => 'bi-images'],
                 ['label' => 'Pengumuman Lelang', 'route' => 'lelang.index', 'icon' => 'bi-megaphone'],
                 ['label' => 'Informasi Karier', 'route' => 'karir.index', 'icon' => 'bi-person-lines-fill'],
+                ['label' => 'E-Procurement', 'route' => 'eproc.index', 'icon' => 'bi-cart-check'],
                 [
                     'label' => 'Laporan',
                     'icon' => 'bi-file-earmark-bar-graph',
@@ -56,8 +51,7 @@ class AppServiceProvider extends ServiceProvider
                         ['label' => 'Laporan Keuangan', 'route' => 'laporan.keuangan', 'icon' => 'bi-cash-coin'],
                         ['label' => 'Laporan GCG', 'route' => 'laporan.gcg', 'icon' => 'bi-shield-check'],
                     ],
-                ],
-                ['label' => 'E-Procurement', 'route' => 'eproc.index', 'icon' => 'bi-cart-check'],
+                ], 
             ],
             'Jaringan' => [
                 ['label' => 'Jaringan Kantor', 'route' => 'jaringan.kantor', 'icon' => 'bi-geo-alt']

@@ -7,7 +7,6 @@ use Illuminate\Support\Str;
 
 class LelangController extends Controller
 {
-    // Kita simpan data di property agar bisa dipanggil oleh index maupun show
     private function getLelangData()
     {
         return [
@@ -55,13 +54,10 @@ class LelangController extends Controller
 
     public function show($slug)
     {
-        // Mencari data spesifik berdasarkan slug agar detail yang muncul sesuai dengan yang diklik
         $allLelang = $this->getLelangData();
-        
-        // Cari data yang slug-nya cocok
+
         $lelang = collect($allLelang)->firstWhere('slug', $slug);
 
-        // Jika tidak ketemu, lempar ke halaman 404
         if (!$lelang) {
             abort(404);
         }

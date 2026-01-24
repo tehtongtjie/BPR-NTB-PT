@@ -27,7 +27,7 @@ use App\Http\Controllers\Admin\InterestRateController;
 
 /*
 |--------------------------------------------------------------------------
-| HALAMAN UTAMA & TESTING
+| HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn() => view('pages.home'))->name('home');
@@ -53,11 +53,13 @@ Route::prefix('pinjaman')->name('pinjaman.')->group(function () {
     Route::get('/{slug}', [PinjamanController::class, 'show'])->name('show');
 });
 
-/*
-|--------------------------------------------------------------------------
-| SIMULASI
-|--------------------------------------------------------------------------
-*/
+// Halaman Daftar UMKM Mitra (Etalase)
+Route::prefix('umkm-mitra')->name('umkm.')->group(function () { 
+    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
+    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+    
+});
+
 Route::name('pages.simulasi.')->prefix('simulasi')->group(function () {
     Route::get('/deposito', fn() => view('pages.simulasi.deposito'))->name('deposito');
     Route::get('/kredit', fn() => view('pages.simulasi.kredit'))->name('kredit');
@@ -87,8 +89,10 @@ Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
 });
 
+// 3. DAFTAR KARIR
 Route::get('/karir', [KarirController::class, 'index'])->name('karir.index');
 
+// 4. DAFTAR LAPORAN
 Route::prefix('laporan')->name('laporan.')->group(function () {
     Route::get('/tahunan', [LaporanController::class, 'tahunan'])->name('tahunan');
     Route::get('/keuangan', [LaporanController::class, 'keuangan'])->name('keuangan');
@@ -97,18 +101,22 @@ Route::prefix('laporan')->name('laporan.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| PERUSAHAAN & JARINGAN
+| PERUSAHAAN
 |--------------------------------------------------------------------------
 */
-Route::prefix('berita')->name('berita.')->group(function () {
-    Route::get('/', [BeritaController::class, 'index'])->name('index');
-    Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
-});
-
 Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
     Route::get('/komisaris/{slug}', [PerusahaanController::class, 'komisarisDetail'])->name('komisaris.detail');
     Route::get('/direksi/{slug}', [PerusahaanController::class, 'direksiDetail'])->name('direksi.detail');
     Route::get('/{slug}', [PerusahaanController::class, 'show'])->name('show');
+});
+
+/*
+|--------------------------------------------------------------------------
+| JARINGAN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('jaringan')->name('jaringan.')->group(function () {
+    Route::get('/kantor', [JaringankantorController::class, 'index'])->name('kantor');
 });
 
 /*

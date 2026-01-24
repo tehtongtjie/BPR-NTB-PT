@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // ===== ELEMENT =====
     const pinjamanInput = document.getElementById("pinjaman");
 
-    // GUARD: Hentikan jika bukan di halaman kredit
     if (!pinjamanInput) return;
 
     const jenisSelect = document.getElementById("jenis_kredit");
@@ -16,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const summaryBunga = document.getElementById("summary_bunga");
     const anuitasInfo = document.getElementById("anuitas-info");
 
-    // ===== HELPER =====
     function rupiah(n) {
         return "Rp " + Math.round(n).toLocaleString("id-ID");
     }
@@ -32,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return 0;
     }
 
-    // ===== VALIDASI LANGSUNG =====
     function validasiLangsung() {
         const P = angka(pinjamanInput.value);
         const jenis = jenisSelect.value;
@@ -200,7 +196,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 bungaInfo.textContent = `Suku Bunga: ${(totalPersen / n).toFixed(3)}% / bulan`;
                 angsuran = P / n + (P * (totalPersen / 100)) / n;
-                // Logika total bunga anuitas sesuai script Anda: P * (rate/100)
                 angsuran = P / n + (P * (totalPersen / 100)) / n;
             }
         }

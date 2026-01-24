@@ -9,10 +9,8 @@ class JaringanKantorController extends Controller
 {
     public function index(Request $request)
     {
-        // Ambil semua kantor dari config
-        $semuaKantor = collect(config('jaringan_kantor.kantor'));
 
-        // ================= STATISTIK =================
+        $semuaKantor = collect(config('jaringan_kantor.kantor'));
         $stats = [
             'total' => $semuaKantor->count(),
             'cabang' => $semuaKantor->filter(fn ($k) =>
@@ -23,7 +21,6 @@ class JaringanKantorController extends Controller
             )->count(),
         ];
 
-        // ================= PAGINATION =================
         $perPage = 10;
         $currentPage = LengthAwarePaginator::resolveCurrentPage();
 
@@ -42,10 +39,10 @@ class JaringanKantorController extends Controller
             ]
         );
 
-        return view('users.jaringan-kantor.index', [
-            'kantor' => $kantor,           // untuk tabel (pagination)
-            'semuaKantor' => $semuaKantor, // untuk map
-            'stats' => $stats,             // ✅ INI YANG TADI HILANG
+        return view('pages.jaringan-kantor.index', [
+            'kantor' => $kantor,           
+            'semuaKantor' => $semuaKantor, 
+            'stats' => $stats,             
         ]);
     }
 }
