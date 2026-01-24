@@ -170,6 +170,7 @@ Route::prefix('admin')->group(function () {
         // ===== ARTICLE =====
         Route::prefix('article')->name('article.')->group(function () {
 
+            Route::get('/', [ArticleController::class, 'index'])->name('index');
             Route::get('/create', [ArticleController::class, 'create'])->name('create');
             Route::post('/', [ArticleController::class, 'store'])->name('store');
             Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');

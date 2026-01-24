@@ -8,8 +8,18 @@ class Article extends Model
 {
     protected $fillable = [
         'title',
-        'image',
+        'slug',
+        'category',
+        'author',
+        'thumbnail',
+        'excerpt',
         'content',
-        'status',
+        'published_at',
+        'is_published',
+    ];
+
+    protected $casts = [
+        'published_at' => 'date',
+        'is_published' => 'boolean',
     ];
 }

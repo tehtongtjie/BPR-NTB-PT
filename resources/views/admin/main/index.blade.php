@@ -8,10 +8,11 @@
     @include('admin.main.banner.index')
 
     @include('admin.main.promo.index')
-
+    
+    @include('admin.main.interest-rate.index')
+    
     @include('admin.main.article.index')
 
-    @include('admin.main.interest-rate.index')
 
 </div>
 @endsection
