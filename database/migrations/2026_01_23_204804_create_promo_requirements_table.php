@@ -7,20 +7,21 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('promos', function (Blueprint $table) {
+        Schema::create('promo_requirements', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('promo_id')
+                  ->constrained('promos')
+                  ->cascadeOnDelete();
+
             $table->string('title');
-            $table->string('image');
-            $table->string('slug')->unique();
-            $table->text('short_desc');
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('promos');
+        Schema::dropIfExists('promo_requirements');
     }
 };
