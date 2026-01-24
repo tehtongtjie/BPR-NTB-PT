@@ -93,9 +93,14 @@ Route::get('/karir', [KarirController::class, 'index'])->name('karir.index');
 
 // 5. DAFTAR LAPORAN
 Route::prefix('laporan')->name('laporan.')->group(function () {
-    Route::get('/tahunan', [LaporanController::class, 'tahunan'])->name('tahunan');
-    Route::get('/keuangan', [LaporanController::class, 'keuangan'])->name('keuangan');
-    Route::get('/gcg', [LaporanController::class, 'gcg'])->name('gcg');
+    // Rute utama menggunakan parameter dinamis {tipe}
+    // Tipe: keuangan, tata-kelola, berkelanjutan
+    Route::get('/{tipe}', [LaporanController::class, 'index'])->name('index');
+
+    // Jika Anda tetap ingin rute eksplisit sesuai ServiceProvider sebelumnya:
+    Route::get('/keuangan', [LaporanController::class, 'index'])->defaults('tipe', 'keuangan')->name('keuangan');
+    Route::get('/tata-kelola', [LaporanController::class, 'index'])->defaults('tipe', 'tata-kelola')->name('gcg');
+    Route::get('/berkelanjutan', [LaporanController::class, 'index'])->defaults('tipe', 'berkelanjutan')->name('berkelanjutan');
 });
 
 // 6. UMKM MITRA

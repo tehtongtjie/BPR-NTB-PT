@@ -7,10 +7,7 @@ use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-
-    }
+    public function register(): void {}
 
     public function boot(): void
     {
@@ -42,16 +39,15 @@ class AppServiceProvider extends ServiceProvider
                 ['label' => 'Galeri', 'route' => 'galeri.index', 'icon' => 'bi-images'],
                 ['label' => 'Pengumuman Lelang', 'route' => 'lelang.index', 'icon' => 'bi-megaphone'],
                 ['label' => 'Informasi Karier', 'route' => 'karir.index', 'icon' => 'bi-person-lines-fill'],
-                ['label' => 'E-Procurement', 'route' => 'eproc.index', 'icon' => 'bi-cart-check'],
                 [
                     'label' => 'Laporan',
-                    'icon' => 'bi-file-earmark-bar-graph',
+                    'icon' => 'bi-journal-text',
                     'children' => [
-                        ['label' => 'Laporan Tahunan', 'route' => 'laporan.tahunan', 'icon' => 'bi-file-earmark-pdf'],
-                        ['label' => 'Laporan Keuangan', 'route' => 'laporan.keuangan', 'icon' => 'bi-cash-coin'],
-                        ['label' => 'Laporan GCG', 'route' => 'laporan.gcg', 'icon' => 'bi-shield-check'],
-                    ],
-                ], 
+                        ['label' => 'Lap. Keuangan', 'route' => 'laporan.index', 'param' => 'keuangan'],
+                        ['label' => 'Lap. Tata Kelola', 'route' => 'laporan.index', 'param' => 'tata-kelola'],
+                        ['label' => 'Lap. Berkelanjutan', 'route' => 'laporan.index', 'param' => 'berkelanjutan'],
+                    ]
+                ],
             ],
             'Jaringan' => [
                 ['label' => 'Jaringan Kantor', 'route' => 'jaringan.kantor', 'icon' => 'bi-geo-alt']

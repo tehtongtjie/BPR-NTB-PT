@@ -1,4 +1,3 @@
-
 <div x-data="{ mobile: false, scrolled: false }" class="relative">
 
     <header @scroll.window="scrolled = window.pageYOffset > 20" @keydown.escape.window="mobile = false"
@@ -78,7 +77,7 @@
                                                 {{ $i['label'] }}</p>
                                             <div class="space-y-1">
                                                 @foreach ($i['children'] as $c)
-                                                    <a href="{{ route($c['route']) }}"
+                                                    <a href="{{ isset($c['param']) ? route($c['route'], $c['param']) : route($c['route']) }}"
                                                         class="block px-3 py-2 text-sm font-semibold text-gray-600 rounded-xl hover:bg-blue-50 hover:text-[#00326B] transition-all">
                                                         {{ $c['label'] }}
                                                     </a>
@@ -149,7 +148,7 @@
                                             class="px-4 py-2 text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 border-l-2 border-[#fbbf24] ml-2">
                                             {{ $i['label'] }}</div>
                                         @foreach ($i['children'] as $c)
-                                            <a href="{{ Route::has($c['route']) ? route($c['route']) : '#' }}"
+                                            <a href="{{ isset($c['param']) ? route($c['route'], $c['param']) : (Route::has($c['route']) ? route($c['route']) : '#') }}"
                                                 @click="mobile = false"
                                                 class="flex items-center gap-3 pl-6 py-2 text-sm font-semibold text-gray-500 hover:text-[#00326B]">
                                                 <span class="w-1 h-1 bg-[#fbbf24] rounded-full"></span>
