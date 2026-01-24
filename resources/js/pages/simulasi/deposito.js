@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const nominalInput = document.getElementById("nominal");
     const tenorSelect = document.getElementById("tenor");
 
-    // GUARD: Hentikan script jika elemen tidak ditemukan (mencegah error di halaman lain)
     if (!nominalInput || !tenorSelect) return;
 
     const CONFIG = {
@@ -36,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const nominal = parseRaw(nominalInput.value);
         const tenor = parseInt(tenorSelect.value);
 
-        // Validasi Nominal Minimal (Tailwind Compatible)
         if (nominal > 0 && nominal < CONFIG.minNominal) {
             errorText.classList.remove("hidden");
             nominalInput.classList.add("ring-2", "ring-red-500");
@@ -45,7 +43,6 @@ document.addEventListener("DOMContentLoaded", function () {
             nominalInput.classList.remove("ring-2", "ring-red-500");
         }
 
-        // Jika data belum lengkap, tampilkan Rp 0
         if (!nominal || !tenor || nominal < CONFIG.minNominal) {
             updateDisplay(0, 0);
             return;
@@ -54,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const rateBunga = CONFIG.bungaTenor[tenor] / 100;
         let bungaBruto = nominal * rateBunga * (tenor / 12);
 
-        // Hitung Pajak (20% jika nominal > 7.5jt)
         let pajak = 0;
         if (nominal > CONFIG.thresholdPajak) {
             pajak = bungaBruto * CONFIG.ratePajak;
@@ -67,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function updateDisplay(bunga, total) {
-        // Tampilkan hasil ke ID display_bunga dan display_total
         if (displayBunga)
             displayBunga.innerText =
                 bunga > 0 ? formatIDR(Math.floor(bunga)) : "Rp 0";
@@ -76,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 total > 0 ? formatIDR(Math.floor(total)) : "Rp 0";
     }
 
-    // Listener Input Nominal (Auto Format)
     nominalInput.addEventListener("input", function (e) {
         let cursorStart = this.selectionStart;
         let oldLength = this.value.length;
@@ -84,8 +78,6 @@ document.addEventListener("DOMContentLoaded", function () {
         let angka = parseRaw(this.value);
 
         if (angka > 0) {
-            // Kita gunakan format IDR tapi hapus simbol 'Rp' sementara untuk kenyamanan input
-            // Namun karena desain Anda punya span 'Rp' di kiri, kita bisa biarkan format murninya
             this.value = angka.toLocaleString("id-ID");
         } else {
             this.value = "";
@@ -98,11 +90,9 @@ document.addEventListener("DOMContentLoaded", function () {
         hitungDeposito();
     });
 
-    // Listener Tenor
     tenorSelect.addEventListener("change", function () {
         const val = this.value;
 
-        // Update tampilan suku bunga di field readonly
         if (val) {
             bungaInput.value = CONFIG.bungaTenor[val].toFixed(2);
         } else {

@@ -8,7 +8,6 @@ class KarirController extends Controller
 {
     public function index()
     {
-        // Data Dummy Lowongan
         $jobs = [
             [
                 'id' => 1,

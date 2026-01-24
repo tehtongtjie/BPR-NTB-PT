@@ -5,6 +5,6 @@ export default {
     content: ["./resources/**/*.blade.php", "./resources/**/*.js"],
     plugins: [daisyui],
     daisyui: {
-        themes: ["light", "dark"], // bisa diganti nanti
+        themes: ["light", "dark"], 
     },
 };

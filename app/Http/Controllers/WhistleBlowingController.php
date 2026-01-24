@@ -20,11 +20,6 @@ class WhistleBlowingController extends Controller
             'laporan'     => 'required|string|min:20',
         ]);
 
-        // NANTI BISA:
-        // - simpan ke database
-        // - kirim email ke internal
-        // - log khusus WBS network
-
         return redirect()
             ->route('pengaduan.wbs')
             ->with('success', 'Laporan Anda berhasil dikirim. Identitas Anda kami lindungi.');

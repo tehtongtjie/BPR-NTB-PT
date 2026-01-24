@@ -3,15 +3,11 @@
 @section('title', 'Berita & Publikasi - BPR NTB')
 
 @section('content')
-    {{-- Update Padding Top: pt-32 untuk mobile, lg:pt-40 untuk desktop --}}
     <main class="bg-[#F8FAFC] min-h-screen pt-32 lg:pt-40 pb-24 font-sans antialiased">
 
-        {{-- 1. HERO SECTION --}}
-        {{-- Menambahkan mt-6 untuk extra space di mobile --}}
         <section class="relative mx-4 lg:mx-8 mb-12 mt-6 lg:mt-0">
             <div
                 class="relative rounded-[2.5rem] lg:rounded-[3rem] bg-[#00326B] overflow-hidden shadow-2xl shadow-blue-900/30">
-                {{-- Decorative Animated Elements --}}
                 <div
                     class="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[500px] lg:w-[600px] h-[500px] lg:h-[600px] bg-blue-500 rounded-full blur-[100px] lg:blur-[140px] opacity-30 animate-pulse">
                 </div>
@@ -20,7 +16,6 @@
                 </div>
 
                 <div class="max-w-7xl mx-auto px-6 lg:px-8 py-12 lg:py-24 relative z-10">
-                    {{-- Breadcrumb --}}
                     <nav
                         class="flex mb-8 lg:mb-10 text-blue-200/50 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em]">
                         <ol class="inline-flex items-center space-x-2 lg:space-x-3">
@@ -39,7 +34,6 @@
                                 class="text-[9px] lg:text-[10px] font-black text-white uppercase tracking-widest text-nowrap">Media
                                 Center BPR NTB</span>
                         </div>
-                        {{-- Ukuran Font Mobile dioptimalkan jadi text-4xl agar tidak terlalu memakan layar --}}
                         <h1
                             class="text-4xl md:text-8xl font-black text-white leading-[1.1] lg:leading-[0.9] tracking-tighter mb-6 lg:mb-8">
                             Kabar & <br class="hidden lg:block"><span
@@ -54,8 +48,6 @@
             </div>
         </section>
 
-        {{-- 2. CATEGORY FILTER --}}
-        {{-- top-20 di mobile agar tidak tertutup navbar saat scroll --}}
         <div class="sticky top-20 lg:top-28 z-30 mb-12 lg:mb-16 px-4">
             <div
                 class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">

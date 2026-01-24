@@ -6,10 +6,6 @@ use Illuminate\Http\Request;
 
 class BeritaController extends Controller
 {
-    /**
-     * Data Pusat Berita (Dummy)
-     * Agar data di Index dan Show selalu sama.
-     */
     private function getBeritaData()
     {
         return [
@@ -55,27 +51,16 @@ class BeritaController extends Controller
             ]
         ];
     }
-
-    /**
-     * Menampilkan Daftar Berita
-     */
     public function index()
     {
         $beritas = $this->getBeritaData();
         return view('pages.berita.index', compact('beritas'));
     }
-
-    /**
-     * Menampilkan Detail Berita berdasarkan Slug
-     */
     public function show($slug)
     {
         $allBerita = $this->getBeritaData();
-        
-        // Cari berita yang slug-nya cocok
         $berita = collect($allBerita)->firstWhere('slug', $slug);
 
-        // Jika tidak ditemukan, tampilkan halaman 404
         if (!$berita) {
             abort(404);
         }

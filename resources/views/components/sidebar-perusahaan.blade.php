@@ -1,12 +1,10 @@
 <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
     <div class="p-7">
-        {{-- Heading Sidebar --}}
         <div class="flex items-center gap-3 mb-6 px-2">
             <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
             <h6 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Tentang Perusahaan</h6>
         </div>
 
-        {{-- List Menu --}}
         <ul class="space-y-2">
             @php
                 $perusahaanMenu = [
@@ -33,7 +31,6 @@
                             {{ $menu['label'] }}
                         </span>
 
-                        {{-- Ikon panah interaktif --}}
                         <i
                             class="bi bi-chevron-right text-xs transition-all duration-300 
                            {{ $isActive ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100' }}">
@@ -43,7 +40,6 @@
             @endforeach
         </ul>
 
-        {{-- Footer Sidebar (Opsional) --}}
         <div class="mt-8 px-5 py-5 bg-gray-50 rounded-[1.5rem] border border-dashed border-gray-200">
             <p class="text-[9px] text-gray-400 font-bold leading-relaxed uppercase tracking-wider">
                 Laporan Tahunan & Publikasi dapat dilihat pada halaman <br>

@@ -7,15 +7,12 @@
 
     <title>@yield('title', 'BPR NTB')</title>
 
-    {{-- Tailwind + daisyUI --}}
     @vite('resources/css/app.css')
 
-    {{-- Favicon (opsional) --}}
     <link rel="icon" href="{{ asset('images/favicon.ico') }}">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
-    {{-- Leaflet CSS (Wajib di Head agar peta tidak berantakan) --}}
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
@@ -72,7 +69,7 @@
             </span>
         </a>
     </div>
-    {{-- FOOTER (nanti) --}}
+    {{-- FOOTER --}}
     @include('components.footer')
 
 </body>
