@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     JaringanKantorController,
     UmkmController,
     BeritaController,
+    GaleriController,
     LelangController,
     KarirController,
     EprocController,
@@ -21,6 +22,7 @@ use App\Http\Controllers\{
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', fn() => view('pages.home'))->name('home');
 Route::get('/test-navbar', fn() => view('users.test-navbar'));
 
@@ -45,10 +47,9 @@ Route::prefix('pinjaman')->name('pinjaman.')->group(function () {
 });
 
 // Halaman Daftar UMKM Mitra (Etalase)
-Route::prefix('umkm-mitra')->name('umkm.')->group(function () { 
+Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
     Route::get('/', [UmkmController::class, 'index'])->name('mitra');
     Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
-    
 });
 
 Route::name('pages.simulasi.')->prefix('simulasi')->group(function () {
@@ -65,10 +66,11 @@ Route::post('/simulasi/permintaan/submit', [SimulasiController::class, 'submit']
 
 /*
 |--------------------------------------------------------------------------
-| PUBLIKASI (Berita, Lelang, Laporan)
+| PUBLIKASI & MEDIA CENTER
 |--------------------------------------------------------------------------
 */
-// 1. DAFTAR LELANG (Harus di atas rute slug umum)
+
+// 1. DAFTAR LELANG
 Route::prefix('lelang')->name('lelang.')->group(function () {
     Route::get('/', [LelangController::class, 'index'])->name('index');
     Route::get('/{slug}', [LelangController::class, 'show'])->name('show');
@@ -80,16 +82,27 @@ Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
 });
 
-// 3. DAFTAR KARIR
+// 3. DAFTAR GALERI
+Route::prefix('galeri')->name('galeri.')->group(function () {
+    Route::get('/', [GaleriController::class, 'index'])->name('index');
+    Route::get('/{id}', [GaleriController::class, 'show'])->name('show');
+});
+
+// 4. DAFTAR KARIR
 Route::get('/karir', [KarirController::class, 'index'])->name('karir.index');
 
-// 4. DAFTAR LAPORAN
+// 5. DAFTAR LAPORAN
 Route::prefix('laporan')->name('laporan.')->group(function () {
     Route::get('/tahunan', [LaporanController::class, 'tahunan'])->name('tahunan');
     Route::get('/keuangan', [LaporanController::class, 'keuangan'])->name('keuangan');
     Route::get('/gcg', [LaporanController::class, 'gcg'])->name('gcg');
 });
 
+// 6. UMKM MITRA
+Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
+    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
+    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+});
 /*
 |--------------------------------------------------------------------------
 | PERUSAHAAN
