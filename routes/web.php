@@ -23,6 +23,9 @@ use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\InterestRateController;
+use App\Http\Controllers\Admin\AuctionController;
+
+
 
 
 /*
@@ -176,6 +179,15 @@ Route::prefix('admin')->group(function () {
             Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
             Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
             Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
+        });
+        // ===== LELANG =====
+        Route::prefix('lelang')->name('lelang.')->group(function () {
+            Route::get('/', [AuctionController::class, 'index'])->name('index');
+            Route::get('/create', [AuctionController::class, 'create'])->name('create');
+            Route::post('/', [AuctionController::class, 'store'])->name('store');
+            Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
+            Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
+            Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
         });
             // ===== INTEREST RATE (SUKU BUNGA) =====
         Route::prefix('interest-rate')->name('interest-rate.')->group(function () {

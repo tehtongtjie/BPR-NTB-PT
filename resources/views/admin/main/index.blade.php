@@ -13,6 +13,7 @@
     
     @include('admin.main.article.index')
 
+    @include('admin.main.lelang.index')
 
 </div>
 @endsection
