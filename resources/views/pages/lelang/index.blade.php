@@ -154,7 +154,7 @@
                             </div>
 
                             <div class="mt-auto pt-6 border-t border-slate-50 flex justify-between items-center">
-                                <a href="#"
+                                <a href="{{ route('lelang.show', $l['slug']) }}"
                                     class="text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] hover:text-[#fbbf24] transition-all">
                                     Lihat Detail
                                 </a>
