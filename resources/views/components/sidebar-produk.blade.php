@@ -1,12 +1,10 @@
 <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
     <div class="p-6">
-        {{-- Label Sidebar --}}
         <div class="flex items-center gap-2 mb-6 px-2">
             <div class="w-1.5 h-6 bg-blue-600 rounded-full"></div>
             <h6 class="text-xs font-black uppercase tracking-widest text-gray-400">Daftar Produk</h6>
         </div>
 
-        {{-- Navigasi List --}}
         <ul class="space-y-2">
             @php
                 $sidebarMenus = [
@@ -14,7 +12,6 @@
                     ['slug' => 'tabungan-sukses', 'label' => 'Tabungan Sukses', 'icon' => 'bi-graph-up-arrow'],
                     ['slug' => 'simbada', 'label' => 'SIMBADA', 'icon' => 'bi-trophy'],
                     ['slug' => 'tabungan-simpel', 'label' => 'Tabungan Simpel', 'icon' => 'bi-lightning-charge'],
-                    ['slug' => 'tabungan-siswa', 'label' => 'Tabungan Siswa', 'icon' => 'bi-mortarboard'],
                 ];
             @endphp
 
@@ -36,7 +33,6 @@
                             <span class="text-sm font-bold tracking-tight">{{ $menu['label'] }}</span>
                         </div>
 
-                        {{-- Ikon panah muncul saat aktif atau hover --}}
                         <i
                             class="bi bi-chevron-right text-[10px] transition-transform duration-300 {{ $isActive ? 'translate-x-0 opacity-100' : '-translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100' }}"></i>
                     </a>
@@ -45,7 +41,6 @@
         </ul>
     </div>
 
-    {{-- Info Footer Sidebar (Opsional) --}}
     <div class="bg-gray-50 p-6 border-t border-gray-100">
         <p class="text-[10px] text-gray-400 font-medium leading-relaxed italic">
             * Suku bunga dapat berubah sewaktu-waktu sesuai ketentuan penjaminan LPS.

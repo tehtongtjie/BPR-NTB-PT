@@ -1,8 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
     const nominalInput = document.getElementById("nominal");
     const tenorSelect = document.getElementById("tenor");
+    const bungaInput = document.getElementById("bunga");
+    
+    // Elemen Display (Disesuaikan dengan ID di HTML Blade Anda)
+    const displayPokok = document.getElementById("summary_plafond"); // ID di Blade: summary_plafond
+    const displayBunga = document.getElementById("display_bunga");
+    const displayTotal = document.getElementById("display_total");
+    const errorText = document.getElementById("nominal-error");
 
-    // GUARD: Hentikan script jika elemen tidak ditemukan (mencegah error di halaman lain)
+    // Pastikan elemen ada sebelum lanjut
     if (!nominalInput || !tenorSelect) return;
 
     const CONFIG = {
@@ -14,29 +21,22 @@ document.addEventListener("DOMContentLoaded", function () {
         },
         minNominal: 5000000,
         thresholdPajak: 7500000,
-        ratePajak: 0.2,
+        ratePajak: 0.2, // Pajak 20%
     };
-
-    const bungaInput = document.getElementById("bunga");
-    const displayBunga = document.getElementById("display_bunga");
-    const displayTotal = document.getElementById("display_total");
-    const errorText = document.getElementById("nominal-error");
 
     const formatIDR = (angka) => {
-        return new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            minimumFractionDigits: 0,
-        }).format(angka);
+        return "Rp " + Math.floor(angka).toLocaleString("id-ID");
     };
 
-    const parseRaw = (str) => parseInt(str.replace(/[^0-9]/g, "")) || 0;
+    const parseRaw = (str) => {
+        return parseInt(str.replace(/\D/g, "")) || 0;
+    };
 
     function hitungDeposito() {
         const nominal = parseRaw(nominalInput.value);
         const tenor = parseInt(tenorSelect.value);
 
-        // Validasi Nominal Minimal (Tailwind Compatible)
+        // Validasi Minimal Nominal
         if (nominal > 0 && nominal < CONFIG.minNominal) {
             errorText.classList.remove("hidden");
             nominalInput.classList.add("ring-2", "ring-red-500");
@@ -45,16 +45,18 @@ document.addEventListener("DOMContentLoaded", function () {
             nominalInput.classList.remove("ring-2", "ring-red-500");
         }
 
-        // Jika data belum lengkap, tampilkan Rp 0
-        if (!nominal || !tenor || nominal < CONFIG.minNominal) {
-            updateDisplay(0, 0);
+        // Reset display jika input tidak valid atau tenor belum dipilih
+        if (!nominal || isNaN(tenor) || nominal < CONFIG.minNominal) {
+            if (displayPokok) displayPokok.innerText = "Rp 0";
+            if (displayBunga) displayBunga.innerText = "Rp 0";
+            if (displayTotal) displayTotal.innerText = "Rp 0";
             return;
         }
 
         const rateBunga = CONFIG.bungaTenor[tenor] / 100;
         let bungaBruto = nominal * rateBunga * (tenor / 12);
 
-        // Hitung Pajak (20% jika nominal > 7.5jt)
+        // Hitung Pajak jika di atas threshold Rp 7.500.000
         let pajak = 0;
         if (nominal > CONFIG.thresholdPajak) {
             pajak = bungaBruto * CONFIG.ratePajak;
@@ -63,29 +65,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const bungaNetto = bungaBruto - pajak;
         const total = nominal + bungaNetto;
 
-        updateDisplay(bungaNetto, total);
+        // Update Tampilan
+        if (displayPokok) displayPokok.innerText = formatIDR(nominal);
+        if (displayBunga) displayBunga.innerText = formatIDR(bungaNetto);
+        if (displayTotal) displayTotal.innerText = formatIDR(total);
     }
 
-    function updateDisplay(bunga, total) {
-        // Tampilkan hasil ke ID display_bunga dan display_total
-        if (displayBunga)
-            displayBunga.innerText =
-                bunga > 0 ? formatIDR(Math.floor(bunga)) : "Rp 0";
-        if (displayTotal)
-            displayTotal.innerText =
-                total > 0 ? formatIDR(Math.floor(total)) : "Rp 0";
-    }
-
-    // Listener Input Nominal (Auto Format)
+    // Listener Input dengan Formatting Ribuan Otomatis
     nominalInput.addEventListener("input", function (e) {
         let cursorStart = this.selectionStart;
         let oldLength = this.value.length;
-
         let angka = parseRaw(this.value);
 
         if (angka > 0) {
-            // Kita gunakan format IDR tapi hapus simbol 'Rp' sementara untuk kenyamanan input
-            // Namun karena desain Anda punya span 'Rp' di kiri, kita bisa biarkan format murninya
             this.value = angka.toLocaleString("id-ID");
         } else {
             this.value = "";
@@ -98,17 +90,15 @@ document.addEventListener("DOMContentLoaded", function () {
         hitungDeposito();
     });
 
-    // Listener Tenor
+    // Listener Ganti Tenor
     tenorSelect.addEventListener("change", function () {
         const val = this.value;
-
-        // Update tampilan suku bunga di field readonly
         if (val) {
-            bungaInput.value = CONFIG.bungaTenor[val].toFixed(2);
-        } else {
-            bungaInput.value = "0.00";
+            bungaInput.value = CONFIG.bungaTenor[val].toFixed(2) + "%";
         }
-
         hitungDeposito();
     });
+
+    // Jalankan kalkulasi awal
+    hitungDeposito();
 });

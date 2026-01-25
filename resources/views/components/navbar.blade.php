@@ -1,53 +1,8 @@
-@php
-    // Data Menu Utama
-    $menus = $menus ?? [
-        'Produk & Layanan' => [
-            ['label' => 'Tabungan', 'route' => 'tabungan.show', 'param' => 'tabunganku', 'icon' => 'bi-wallet2'],
-            ['label' => 'Deposito', 'route' => 'deposito.index', 'icon' => 'bi-piggy-bank'],
-            ['label' => 'Pinjaman', 'route' => 'pinjaman.index', 'icon' => 'bi-cash-stack'],
-            [
-                'label' => 'Simulasi',
-                'icon' => 'bi-calculator',
-                'children' => [
-                    ['label' => 'Simulasi Deposito', 'route' => 'pages.simulasi.deposito', 'icon' => 'bi-calculator'],
-                    ['label' => 'Simulasi Kredit', 'route' => 'pages.simulasi.kredit', 'icon' => 'bi-calculator-fill'],
-                ],
-            ],
-        ],
-        'Perusahaan' => [
-            ['label' => 'Sejarah', 'route' => 'perusahaan.show', 'param' => 'sejarah', 'icon' => 'bi-clock-history'],
-            ['label' => 'Visi & Misi', 'route' => 'perusahaan.show', 'param' => 'visi-misi', 'icon' => 'bi-bullseye'],
-            ['label' => 'Budaya Perusahaan', 'route' => 'perusahaan.show', 'param' => 'budaya', 'icon' => 'bi-award'],
-            ['label' => 'Dewan Komisaris', 'route' => 'perusahaan.show', 'param' => 'komisaris', 'icon' => 'bi-people'],
-            [
-                'label' => 'Dewan Direksi',
-                'route' => 'perusahaan.show',
-                'param' => 'direksi',
-                'icon' => 'bi-person-badge',
-            ],
-            [
-                'label' => 'Tata Kelola (GCG)',
-                'route' => 'perusahaan.show',
-                'param' => 'tata-kelola',
-                'icon' => 'bi-shield-check',
-            ],
-        ],
-        'Jaringan' => [['label' => 'Jaringan Kantor', 'route' => 'jaringan.kantor', 'icon' => 'bi-geo-alt']],
-        'Pengaduan' => [
-            ['label' => 'Alur Pengaduan', 'route' => 'pengaduan.alur', 'icon' => 'bi-diagram-3'],
-            ['label' => 'Whistle Blowing System', 'route' => 'pengaduan.wbs', 'icon' => 'bi-shield-lock'],
-        ],
-    ];
-@endphp
-
-{{-- ================= WRAPPER ALPINE ================= --}}
 <div x-data="{ mobile: false, scrolled: false }" class="relative">
 
-    {{-- ================= HEADER (STICKY UNIT) ================= --}}
     <header @scroll.window="scrolled = window.pageYOffset > 20" @keydown.escape.window="mobile = false"
         class="fixed top-0 left-0 w-full z-50 transition-all duration-300">
 
-        {{-- 1. TOPBAR - Menggunakan BPR Blue --}}
         <div class="w-full h-9 flex items-center border-b transition-all duration-300"
             :class="scrolled ? 'bg-[#00326B]/90 backdrop-blur-md border-white/5' : 'bg-[#00326B] border-white/10 shadow-inner'">
             <div
@@ -60,7 +15,6 @@
                         15.00 WITA</span>
                 </div>
 
-                {{-- Tengah: Running Text --}}
                 <div class="flex-grow overflow-hidden whitespace-nowrap flex items-center">
                     <div class="animate-marquee inline-block text-white/70 italic font-medium">
                         @php
@@ -72,7 +26,6 @@
                     </div>
                 </div>
 
-                {{-- Kanan: Media Sosial --}}
                 <div class="hidden md:flex items-center gap-5 shrink-0 ml-6 pl-6 border-l border-white/10 h-9">
                     <a href="#" class="text-white/60 hover:text-[#fbbf24] transition-all hover:scale-110"><i
                             class="bi bi-facebook"></i></a>
@@ -84,18 +37,15 @@
             </div>
         </div>
 
-        {{-- 2. NAVBAR - Putih Bersih dengan Aksen BPR Blue & Gold --}}
         <nav :class="scrolled ? 'bg-white/80 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,50,107,0.08)] h-16' : 'bg-white h-20'"
             class="transition-all duration-300 border-b border-gray-100 flex items-center">
             <div class="max-w-7xl mx-auto px-6 h-full w-full flex justify-between items-center">
 
-                {{-- Logo --}}
                 <a href="/" class="transition-all duration-300 transform"
                     :class="scrolled ? 'scale-90' : 'scale-100'">
                     <img src="{{ asset('images/logobpr.png') }}" class="h-30 w-auto" alt="BPR NTB">
                 </a>
 
-                {{-- DESKTOP MENU --}}
                 <div class="hidden lg:flex items-center gap-1">
                     <a href="/"
                         class="px-4 py-2 text-[12px] font-bold uppercase tracking-widest text-gray-500 hover:text-[#00326B] transition-colors relative group">
@@ -127,7 +77,7 @@
                                                 {{ $i['label'] }}</p>
                                             <div class="space-y-1">
                                                 @foreach ($i['children'] as $c)
-                                                    <a href="{{ route($c['route']) }}"
+                                                    <a href="{{ isset($c['param']) ? route($c['route'], $c['param']) : route($c['route']) }}"
                                                         class="block px-3 py-2 text-sm font-semibold text-gray-600 rounded-xl hover:bg-blue-50 hover:text-[#00326B] transition-all">
                                                         {{ $c['label'] }}
                                                     </a>
@@ -147,7 +97,6 @@
                     @endforeach
                 </div>
 
-                {{-- Action --}}
                 <div class="flex items-center gap-4">
                     <button @click="mobile = true"
                         class="lg:hidden p-2 text-[#00326B] hover:bg-gray-100 rounded-xl transition-colors">
@@ -158,7 +107,6 @@
         </nav>
     </header>
 
-    {{-- ================= MOBILE MENU - Panel dengan Aksen Gold ================= --}}
     <template x-teleport="body">
         <div x-show="mobile" x-transition:opacity x-cloak class="fixed inset-0 z-[9999] lg:hidden">
             <div class="absolute inset-0 bg-[#00326B]/40 backdrop-blur-md" @click="mobile=false"></div>
@@ -200,7 +148,7 @@
                                             class="px-4 py-2 text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2 border-l-2 border-[#fbbf24] ml-2">
                                             {{ $i['label'] }}</div>
                                         @foreach ($i['children'] as $c)
-                                            <a href="{{ Route::has($c['route']) ? route($c['route']) : '#' }}"
+                                            <a href="{{ isset($c['param']) ? route($c['route'], $c['param']) : (Route::has($c['route']) ? route($c['route']) : '#') }}"
                                                 @click="mobile = false"
                                                 class="flex items-center gap-3 pl-6 py-2 text-sm font-semibold text-gray-500 hover:text-[#00326B]">
                                                 <span class="w-1 h-1 bg-[#fbbf24] rounded-full"></span>

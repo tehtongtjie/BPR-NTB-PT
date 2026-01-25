@@ -1,5 +1,3 @@
-// resources/js/pages/jaringan/jaringan.js
-// === TAILWIND VERSION (NO BOOTSTRAP) – READY TO COPY ===
 
 class JaringanKantor {
     constructor() {

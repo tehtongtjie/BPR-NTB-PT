@@ -4,9 +4,6 @@ namespace App\Http\Controllers;
 
 class DepositoController extends Controller
 {
-    /**
-     * Redirect ke deposito default
-     */
     public function index()
     {
         return redirect()->route(
@@ -15,9 +12,6 @@ class DepositoController extends Controller
         );
     }
 
-    /**
-     * Tampilkan detail deposito
-     */
     public function show($slug)
     {
         $deposito = config("deposito.$slug");

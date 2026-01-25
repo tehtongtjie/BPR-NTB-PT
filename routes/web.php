@@ -1,165 +1,266 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SimulasiController;
-use App\Http\Controllers\TabunganController;
-use App\Http\Controllers\PinjamanController;
-use App\Http\Controllers\DepositoController;
-use App\Http\Controllers\PerusahaanController;
-use App\Http\Controllers\JaringanKantorController;
-use App\Http\Controllers\UmkmController;
+use App\Http\Controllers\{
+    SimulasiController,
+    TabunganController,
+    PinjamanController,
+    DepositoController,
+    PerusahaanController,
+    JaringanKantorController,
+    UmkmController,
+    BeritaController,
+    GaleriController,
+    LelangController,
+    KarirController,
+    EprocController,
+    LaporanController
+};
+
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\crypt;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\PromoController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\InterestRateController;
+use App\Http\Controllers\Admin\AuctionController;
+use App\Http\Controllers\PromoPublicController;
 
 /*
 |--------------------------------------------------------------------------
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('pages.home');
-})->name('home');
+
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/test-navbar', fn() => view('users.test-navbar'));
 
 /*
 |--------------------------------------------------------------------------
-| SIMULASI
+| PRODUK & LAYANAN
 |--------------------------------------------------------------------------
 */
-Route::get('/simulasi/deposito', function () {
-    return view('pages.simulasi.deposito');
-})->name('pages.simulasi.deposito');
+// Tabungan
+Route::get('/tabungan/{slug}', [TabunganController::class, 'show'])->name('tabungan.show');
+Route::get('/produk/{slug}', [PromoPublicController::class, 'show'])
+    ->name('produk.show');
 
-Route::get('/simulasi/kredit', function () {
-    return view('pages.simulasi.kredit');
-})->name('pages.simulasi.kredit');
+// Deposito
+Route::prefix('deposito')->name('deposito.')->group(function () {
+    Route::get('/', [DepositoController::class, 'index'])->name('index');
+    Route::get('/{slug}', [DepositoController::class, 'show'])->name('show');
+});
 
-/*
-|--------------------------------------------------------------------------
-| FORM PERMINTAAN SIMULASI
-|--------------------------------------------------------------------------
-*/
+// Pinjaman
+Route::prefix('pinjaman')->name('pinjaman.')->group(function () {
+    Route::get('/', [PinjamanController::class, 'index'])->name('index');
+    Route::get('/{slug}', [PinjamanController::class, 'show'])->name('show');
+});
+
+// Halaman Daftar UMKM Mitra (Etalase)
+Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
+    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
+    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+});
+
+Route::name('pages.simulasi.')->prefix('simulasi')->group(function () {
+    Route::get('/deposito', fn() => view('pages.simulasi.deposito'))->name('deposito');
+    Route::get('/kredit', fn() => view('pages.simulasi.kredit'))->name('kredit');
+});
+
 Route::get('/simulasi/{jenis}/permintaan', function ($jenis) {
-    if (!in_array($jenis, ['deposito', 'kredit'])) {
-        abort(404);
-    }
-
+    if (!in_array($jenis, ['deposito', 'kredit'])) abort(404);
     return view('users.simulasi.permintaan-simulasi', compact('jenis'));
 })->name('simulasi.permintaan');
 
-Route::post(
-    '/simulasi/permintaan/submit',
-    [SimulasiController::class, 'submit']
-)->name('simulasi.permintaan.submit');
+Route::post('/simulasi/permintaan/submit', [SimulasiController::class, 'submit'])->name('simulasi.permintaan.submit');
 
 /*
 |--------------------------------------------------------------------------
-| DEPOSITO
+| PUBLIKASI & MEDIA CENTER
 |--------------------------------------------------------------------------
 */
-Route::prefix('deposito')->group(function () {
 
-    Route::get('/', [DepositoController::class, 'index'])
-        ->name('deposito.index');
+// 1. DAFTAR LELANG
+Route::prefix('lelang')->name('lelang.')->group(function () {
+    Route::get('/', [LelangController::class, 'index'])->name('index');
+    Route::get('/{slug}', [LelangController::class, 'show'])->name('show');
+});
 
-    Route::get('/{slug}', [DepositoController::class, 'show'])
-        ->name('deposito.show');
+// 2. DAFTAR BERITA
+Route::prefix('berita')->name('berita.')->group(function () {
+    Route::get('/', [BeritaController::class, 'index'])->name('index');
+    Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
+});
 
+// 3. DAFTAR GALERI
+Route::prefix('galeri')->name('galeri.')->group(function () {
+    Route::get('/', [GaleriController::class, 'index'])->name('index');
+    Route::get('/{id}', [GaleriController::class, 'show'])->name('show');
+});
+
+// 4. DAFTAR KARIR
+Route::get('/karir', [KarirController::class, 'index'])->name('karir.index');
+
+// 5. DAFTAR LAPORAN
+Route::prefix('laporan')->name('laporan.')->group(function () {
+    // Rute utama menggunakan parameter dinamis {tipe}
+    // Tipe: keuangan, tata-kelola, berkelanjutan
+    Route::get('/{tipe}', [LaporanController::class, 'index'])->name('index');
+
+    // Jika Anda tetap ingin rute eksplisit sesuai ServiceProvider sebelumnya:
+    Route::get('/keuangan', [LaporanController::class, 'index'])->defaults('tipe', 'keuangan')->name('keuangan');
+    Route::get('/tata-kelola', [LaporanController::class, 'index'])->defaults('tipe', 'tata-kelola')->name('gcg');
+    Route::get('/berkelanjutan', [LaporanController::class, 'index'])->defaults('tipe', 'berkelanjutan')->name('berkelanjutan');
+});
+
+// 6. UMKM MITRA
+Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
+    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
+    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+});
+/*
+|--------------------------------------------------------------------------
+| PERUSAHAAN
+|--------------------------------------------------------------------------
+*/
+Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
+    Route::get('/komisaris/{slug}', [PerusahaanController::class, 'komisarisDetail'])->name('komisaris.detail');
+    Route::get('/direksi/{slug}', [PerusahaanController::class, 'direksiDetail'])->name('direksi.detail');
+    Route::get('/{slug}', [PerusahaanController::class, 'show'])->name('show');
 });
 
 /*
 |--------------------------------------------------------------------------
-| TABUNGAN
+| JARINGAN
 |--------------------------------------------------------------------------
 */
-Route::get(
-    '/tabungan/{slug}',
-    [TabunganController::class, 'show']
-)->name('tabungan.show');
-
-/*
-|--------------------------------------------------------------------------
-| PINJAMAN
-|--------------------------------------------------------------------------
-*/
-Route::get(
-    '/pinjaman',
-    [PinjamanController::class, 'index']
-)->name('pinjaman.index');
-
-Route::get(
-    '/pinjaman/{slug}',
-    [PinjamanController::class, 'show']
-)->name('pinjaman.show');
-
-/*
-|--------------------------------------------------------------------------
-| UMKM MITRA
-|--------------------------------------------------------------------------
-*/
-Route::get(
-    '/umkm-mitra',
-    [UmkmController::class, 'index']
-)->name('umkm.mitra');
-
-/*
-|--------------------------------------------------------------------------
-| PENGADUAN (TANPA CONTROLLER)
-|--------------------------------------------------------------------------
-*/
-
-Route::prefix('pengaduan')->group(function () {
-
-    // Alur Pengaduan Nasabah
-    Route::get('/alur', function () {
-        // Pastikan nama folder di resources/views adalah 'pengaduan' (bukan pegaduan)
-        return view('pages.pengaduan.alur-pengaduan');
-    })->name('pengaduan.alur');
-
-    // Whistle Blowing System (Halaman Form)
-    Route::get('/whistle-blowing-system', function () {
-        // Disarankan menggunakan kebab-case atau snake_case untuk nama file blade
-        return view('pages.pengaduan.whistleblowingsystem');
-    })->name('pengaduan.wbs');
-
-    // Submit WBS (Proses Pengiriman)
-    Route::post('/whistle-blowing-system', function () {
-        // Logic simpan data nantinya ditaruh di sini
-        return redirect()
-            ->route('pengaduan.wbs')
-            ->with('success', 'Laporan Anda berhasil dikirim. Terima kasih atas partisipasi Anda.');
-    })->name('pengaduan.wbs.store');
-
+Route::prefix('jaringan')->name('jaringan.')->group(function () {
+    Route::get('/kantor', [JaringankantorController::class, 'index'])->name('kantor');
 });
 
 /*
 |--------------------------------------------------------------------------
-| PERUSAHAAN – DETAIL
+| PENGADUAN
 |--------------------------------------------------------------------------
 */
-Route::get(
-    '/perusahaan/komisaris/{slug}',
-    [PerusahaanController::class, 'komisarisDetail']
-)->name('perusahaan.komisaris.detail');
+Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
+    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))->name('alur');
+    Route::get('/whistle-blowing-system', fn() => view('pages.pengaduan.whistleblowingsystem'))->name('wbs');
+    Route::post('/whistle-blowing-system', fn() => redirect()->route('pengaduan.wbs'))->name('wbs.store');
+});
 
-Route::get(
-    '/perusahaan/direksi/{slug}',
-    [PerusahaanController::class, 'direksiDetail']
-)->name('perusahaan.direksi.detail');
+
+
 
 /*
 |--------------------------------------------------------------------------
-| PERUSAHAAN – HALAMAN UMUM
+| ADMIN PANEL (DASHBOARD + CRUD)
 |--------------------------------------------------------------------------
 */
-Route::get(
-    '/perusahaan/{slug}',
-    [PerusahaanController::class, 'show']
-)->name('perusahaan.show');
+Route::prefix('admin')->group(function () {
 
+    // ===== MAIN DASHBOARD =====
+    Route::prefix('main')->name('admin.main.')->group(function () {
 
-// jaringan kantor
-Route::get('/jaringan-kantor', [JaringanKantorController::class, 'index'])
-    ->name('jaringan.kantor');
+        Route::get('/', [MainController::class, 'index'])
+            ->name('index');
 
-    Route::get('/test-navbar', function () {
-    return view('users.test-navbar');
+        // ===== PROMO (SUDAH BENAR) =====
+        Route::prefix('promo')->name('promo.')->group(function () {
+
+            Route::get('/', [PromoController::class, 'index'])->name('index');
+            Route::get('/create', [PromoController::class, 'create'])->name('create');
+            Route::post('/', [PromoController::class, 'store'])->name('store');
+            Route::get('/{promo}/edit', [PromoController::class, 'edit'])->name('edit');
+            Route::put('/{promo}', [PromoController::class, 'update'])->name('update');
+            Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
+        });
+
+        // ===== BANNER (FIX TOTAL) =====
+        Route::prefix('banner')->name('banner.')->group(function () {
+
+            Route::get('/', [BannerController::class, 'index'])->name('index');
+            Route::get('/create', [BannerController::class, 'create'])->name('create');
+            Route::post('/', [BannerController::class, 'store'])->name('store');
+            Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
+            Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
+            Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
+        });
+
+        // ===== ARTICLE =====
+        Route::prefix('article')->name('article.')->group(function () {     
+
+            Route::get('/', [ArticleController::class, 'index'])->name('index');
+            Route::get('/create', [ArticleController::class, 'create'])->name('create');
+            Route::post('/', [ArticleController::class, 'store'])->name('store');
+            Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
+            Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
+            Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
+        });
+        // ===== LELANG =====
+        Route::prefix('lelang')->name('lelang.')->group(function () {
+            Route::get('/', [AuctionController::class, 'index'])->name('index');
+            Route::get('/create', [AuctionController::class, 'create'])->name('create');
+            Route::post('/', [AuctionController::class, 'store'])->name('store');
+            Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
+            Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
+            Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
+        });
+        // ===== INTEREST RATE =====
+        Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
+
+            // PERIOD (UTAMA)
+            Route::get('/', [InterestRateController::class, 'index'])->name('index');
+            Route::get('/create', [InterestRateController::class, 'create'])->name('create');
+            Route::post('/', [InterestRateController::class, 'store'])->name('store');
+            Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
+            Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
+            Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
+        });
+    });
 });
 
+
+// login admin (POST)
+Route::post('/admin/{token}', [AdminAuthController::class, 'login'])
+    ->name('admin.auth.login');
+
+
+
+// Path admin secured access
+Route::get('/admin/{pathToken?}', function (Request $request, $pathToken = null) {
+
+    if ($request->query('token')) {
+
+        $plainToken = $request->query('token');
+
+        if ($plainToken !== 'abcd') {
+            abort(404);
+        }
+        $encodedToken = Crypt::encryptString($plainToken);
+
+        return redirect('/admin/' . urlencode($encodedToken));
+    }
+
+    if ($pathToken) {
+        try {
+            $decoded = Crypt::decryptString($pathToken);
+
+            if ($decoded !== 'abcd') {
+                abort(404);
+            }
+        } catch (\Exception $e) {
+            abort(404);
+        }
+
+        // dibagian return view ini ganti jadi admin dashboard
+        return view('admin.auth.login');
+    }
+
+    abort(404);
+});

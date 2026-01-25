@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Promo;
 
 class TabunganController extends Controller
 {
-    public function show(string $slug)
+    public function show($slug)
     {
-        $tabungan = config("tabungan.$slug");
+        $promo = Promo::with(['benefits', 'requirements'])
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
 
-        if (!$tabungan) {
-            abort(404);
-        }
-
-        return view('pages.tabungan.show', compact('tabungan'));
+        return view('pages.tabungan.show', compact('promo'));
     }
 }
