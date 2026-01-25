@@ -22,6 +22,8 @@ import collapse from "@alpinejs/collapse";
 import "./pages/simulasi/deposito";
 import "./pages/simulasi/kredit";
 import "./pages/jaringan/jaringan";
+import "./pages/rekomendasi/rekomendasi";
+
 
 Alpine.plugin(collapse);
 window.Alpine = Alpine;

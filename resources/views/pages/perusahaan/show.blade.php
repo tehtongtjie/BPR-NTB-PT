@@ -205,7 +205,8 @@
                                                     class="group relative p-10 rounded-[3rem] bg-white border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:-translate-y-3">
                                                     <div
                                                         class="mb-8 w-16 h-16 bg-bpr-blue text-bpr-gold rounded-2xl flex items-center justify-center text-3xl shadow-xl transition-transform duration-700 group-hover:rotate-[360deg]">
-                                                        <i class="bi bi-shield-check"></i></div>
+                                                        <i class="bi bi-shield-check"></i>
+                                                    </div>
                                                     <h4
                                                         class="text-2xl font-black text-bpr-blue uppercase tracking-tighter mb-4">
                                                         {{ $item['key'] }}</h4>
@@ -258,7 +259,8 @@
                                             <div class="flex items-center gap-8 relative z-10">
                                                 <div
                                                     class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-4xl text-bpr-gold border border-white/10">
-                                                    <i class="bi bi-file-earmark-pdf"></i></div>
+                                                    <i class="bi bi-file-earmark-pdf"></i>
+                                                </div>
                                                 <div>
                                                     <h5 class="text-2xl font-black mb-1">Laporan GCG Tahunan</h5>
                                                     <p class="text-blue-200/50 text-xs font-bold uppercase tracking-widest">
@@ -280,26 +282,36 @@
                                                 <div class="flex flex-col lg:flex-row gap-12 items-center">
                                                     <div
                                                         class="w-full lg:w-72 flex-shrink-0 relative overflow-hidden rounded-[2.5rem] aspect-[3/4] shadow-xl">
+                                                        {{-- Grayscale dihapus, gambar sekarang berwarna normal --}}
                                                         <img src="{{ asset($member['photo'] ?? $member['image']) }}"
-                                                            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105">
+                                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+
+                                                        {{-- Overlay gradient opsional, bisa dihapus jika ingin benar-benar polos --}}
                                                         <div
-                                                            class="absolute inset-0 bg-gradient-to-t from-bpr-blue/40 to-transparent">
+                                                            class="absolute inset-0 bg-gradient-to-t from-bpr-blue/20 to-transparent">
                                                         </div>
                                                     </div>
+
                                                     <div class="flex-1 text-center lg:text-left">
                                                         <div class="mb-6">
                                                             <h3 class="text-3xl lg:text-4xl font-black text-bpr-blue mb-2">
-                                                                {{ $member['name'] }}</h3>
+                                                                {{ $member['name'] }}
+                                                            </h3>
                                                             <span
-                                                                class="inline-block px-5 py-2 rounded-xl bg-bpr-gold text-bpr-blue text-[10px] font-black uppercase tracking-widest shadow-md">{{ $member['position'] }}</span>
+                                                                class="inline-block px-5 py-2 rounded-xl bg-bpr-gold text-bpr-blue text-[10px] font-black uppercase tracking-widest shadow-md">
+                                                                {{ $member['position'] }}
+                                                            </span>
                                                         </div>
+
                                                         <p
                                                             class="text-slate-500 text-lg mb-8 line-clamp-3 italic font-medium leading-relaxed">
-                                                            {{ $member['summary'] ?? $member['excerpt'] }}</p>
+                                                            {{ $member['summary'] ?? $member['excerpt'] }}
+                                                        </p>
+
                                                         <a href="{{ url('/perusahaan/' . $slug . '/' . $member['slug']) }}"
                                                             class="inline-flex items-center gap-3 text-bpr-blue font-black uppercase text-[11px] tracking-widest hover:gap-6 transition-all">
-                                                            Detailed Bio <i
-                                                                class="bi bi-arrow-right text-bpr-gold text-xl"></i>
+                                                            Detailed Bio
+                                                            <i class="bi bi-arrow-right text-bpr-gold text-xl"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -308,10 +320,10 @@
                                     </div>
                                 @endif
 
-                            </div> {{-- End Main Typography Wrapper --}}
+                            </div>
                         </div>
                     </div>
-                </div> {{-- End Content Area --}}
+                </div>
             </div>
         </div>
     </main>
