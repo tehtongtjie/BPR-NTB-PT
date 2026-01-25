@@ -5,9 +5,10 @@
 @section('content')
 
     {{-- 1. HERO SECTION --}}
-    <section x-data="{
+    <section
+    x-data="{
         activeSlide: 0,
-        slides: [0, 1],
+        slides: {{ $banners->count() }},
         timer: null,
         startAutoPlay() {
             this.timer = setInterval(() => {
@@ -18,41 +19,50 @@
             if (this.timer) clearInterval(this.timer);
         },
         next() {
-            this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+            this.activeSlide = (this.activeSlide + 1) % this.slides;
         },
         prev() {
-            this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
+            this.activeSlide = (this.activeSlide - 1 + this.slides) % this.slides;
         }
-    }" x-init="startAutoPlay()" @mouseenter="stopAutoPlay()" @mouseleave="startAutoPlay()"
+    }"
+    x-init="startAutoPlay()" @mouseenter="stopAutoPlay()" @mouseleave="startAutoPlay()"
         class="relative w-full overflow-hidden pt-[120px] bg-white">
 
         {{-- Aspect Ratio Container --}}
         {{-- Menggunakan grid agar semua slide bertumpuk di titik yang sama tanpa merusak layout flow --}}
-        <div class="relative w-full grid grid-cols-1">
-
-            {{-- SLIDE 1 --}}
-            <div x-show="activeSlide === 0" x-transition:enter="transition opacity duration-1000 ease-in-out"
-                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                x-transition:leave="transition opacity duration-1000 ease-in-out" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0" class="col-start-1 row-start-1 w-full">
-                <img src="{{ asset('images/SimbadaHero.png') }}" class="w-full h-auto block" alt="Simbada Hero"
-                    loading="eager">
-            </div>
-
-            {{-- SLIDE 2 --}}
-            <div x-show="activeSlide === 1" x-transition:enter="transition opacity duration-1000 ease-in-out"
-                x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
-                x-transition:leave="transition opacity duration-1000 ease-in-out" x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0" class="col-start-1 row-start-1 w-full" x-cloak>
-                <img src="{{ asset('images/tabungan-hero.png') }}" class="w-full h-auto block" alt="Tabungan Hero">
+            <div class="relative w-full grid grid-cols-1">
+                @foreach ($banners as $index => $banner)
+                    <div
+                        x-show="activeSlide === {{ $index }}"
+                        x-transition:enter="transition opacity duration-1000 ease-in-out"
+                        x-transition:enter-start="opacity-0"
+                        x-transition:enter-end="opacity-100"
+                        x-transition:leave="transition opacity duration-1000 ease-in-out"
+                        x-transition:leave-start="opacity-100"
+                        x-transition:leave-end="opacity-0"
+                        class="col-start-1 row-start-1 w-full"
+                        x-cloak
+                    >
+                        <img
+                            src="{{ asset('storage/' . $banner->image) }}"
+                            class="w-full h-auto block"
+                            alt="Banner {{ $index + 1 }}"
+                            loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
+                        >
+                    </div>
+                @endforeach
             </div>
 
             {{-- INDICATORS --}}
             <div class="absolute z-30 flex -translate-x-1/2 bottom-5 md:bottom-10 left-1/2 space-x-3">
-                <template x-for="(slide, index) in slides" :key="index">
-                    <button @click="activeSlide = index" class="h-1 md:h-1.5 transition-all duration-300 rounded-full"
-                        :class="activeSlide === index ? 'w-8 bg-[#fbbf24]' : 'w-2 bg-white/50 hover:bg-white'">
-                    </button>
+                <template x-for="index in slides" :key="index">
+                    <button
+                        @click="activeSlide = index - 1"
+                        class="h-1 md:h-1.5 transition-all duration-300 rounded-full"
+                        :class="activeSlide === index - 1
+                            ? 'w-8 bg-[#fbbf24]'
+                            : 'w-2 bg-white/50 hover:bg-white'"
+                    ></button>
                 </template>
             </div>
 
@@ -75,7 +85,7 @@
         </div>
     </section>
 
-    {{-- ================= PRODUK UNGGULAN (PREMIUM BENTO STYLE) ================= --}}
+    {{-- ================= PRODUK UNGGULAN (DINAMIS, MAX 3) ================= --}}
     <section class="relative py-12 bg-[#F8FAFC] overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
@@ -84,113 +94,121 @@
                 <div class="space-y-3">
                     <div class="inline-flex items-center gap-3">
                         <span class="h-[1px] w-12 bg-blue-600"></span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Smart Financial
-                            Solutions</span>
+                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">
+                            Smart Financial Solutions
+                        </span>
                     </div>
-                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Produk <span
-                            class="text-blue-600 italic font-light">Unggulan</span></h2>
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">
+                        Produk <span class="text-blue-600 italic font-light">Unggulan</span>
+                    </h2>
                 </div>
                 <div class="hidden md:block">
-                    <p class="text-slate-500 max-w-xs text-right italic font-medium">Pilih solusi perbankan yang dirancang
-                        khusus untuk mewujudkan rencana masa depan Anda.</p>
+                    <p class="text-slate-500 max-w-xs text-right italic font-medium">
+                        Pilih solusi perbankan yang dirancang khusus untuk masa depan Anda.
+                    </p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {{-- FEATURED PRODUCT: SIMBADA (Besar di Kiri) --}}
+                {{-- ================= FEATURED PROMO (KIRI) ================= --}}
+                @if($featured)
                 <div class="lg:col-span-7 group relative">
                     <div
-                        class="relative z-10 h-full min-h-[500px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700 border border-white">
-                        <img src="{{ asset('images/simbada-card.png') }}"
-                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                            alt="SIMBADA">
+                        class="relative z-10 h-full min-h-[500px] overflow-hidden rounded-[3rem]
+                            shadow-2xl border border-white">
 
-                        {{-- Deep Blue Gradient Overlay --}}
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent"></div>
+                        <img
+                            src="{{ asset('storage/'.$featured->image) }}"
+                            class="absolute inset-0 w-full h-full object-cover
+                                transition-transform duration-1000 group-hover:scale-110"
+                            alt="{{ $featured->title }}">
+
+                        <div class="absolute inset-0 bg-gradient-to-t
+                                    from-[#00326B] via-[#00326B]/30 to-transparent"></div>
 
                         <div class="absolute bottom-0 left-0 p-10 lg:p-12 text-white z-10">
                             <div class="flex items-center gap-3 mb-4">
                                 <span
-                                    class="px-4 py-1.5 rounded-full bg-[#fbbf24] text-[#00326B] text-[10px] font-black uppercase tracking-widest shadow-xl">Most
-                                    Popular</span>
+                                    class="px-4 py-1.5 rounded-full bg-[#fbbf24]
+                                        text-[#00326B] text-[10px] font-black uppercase tracking-widest">
+                                    Most Popular
+                                </span>
                                 <i class="bi bi-trophy-fill text-[#fbbf24]"></i>
                             </div>
-                            <h3 class="text-3xl lg:text-4xl font-black leading-tight mb-4">SIMBADA</h3>
-                            <p class="text-white/80 text-sm lg:text-base font-medium italic max-w-md mb-8 leading-relaxed">
-                                "Simpanan Berhadiah Anda dengan peluang memenangkan undian menarik dan beragam hadiah
-                                spektakuler setiap periode."
+
+                            <h3 class="text-3xl lg:text-4xl font-black mb-4">
+                                {{ $featured->title }}
+                            </h3>
+
+                            <p class="text-white/80 text-sm lg:text-base italic max-w-md mb-8 leading-relaxed">
+                                {{ $featured->short_desc }}
                             </p>
-                            <a href="{{ route('tabungan.show', 'simbada') }}"
-                                class="group/btn inline-flex items-center gap-4 text-xs font-black uppercase tracking-widest">
-                                <span>Buka Tabungan</span>
+
+                            <a href="#"
+                            class="inline-flex items-center gap-4 text-xs font-black uppercase tracking-widest">
+                                <span>Buka Produk</span>
                                 <div
-                                    class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover/btn:bg-[#fbbf24] group-hover/btn:text-[#00326B] transition-all">
+                                    class="w-10 h-10 rounded-full bg-white/10
+                                        flex items-center justify-center">
                                     <i class="bi bi-arrow-up-right"></i>
                                 </div>
                             </a>
                         </div>
                     </div>
                 </div>
+                @endif
 
-                {{-- OTHER PRODUCTS LIST (Di Kanan) --}}
+                {{-- ================= PROMO LAINNYA (KANAN, MAX 2) ================= --}}
                 <div class="lg:col-span-5 flex flex-col gap-6">
+                    @foreach($others as $promo)
+                        <div
+                            class="group relative bg-white rounded-[2.5rem] p-6
+                                border border-slate-100 shadow-sm
+                                transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
 
-                    {{-- TabunganKU --}}
-                    <div
-                        class="group relative bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
-                        <div class="flex items-center gap-6">
-                            <div
-                                class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner">
-                                <img src="{{ asset('images/tabunganku.png') }}"
-                                    class="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500">
+                            <div class="flex items-center gap-6">
+                                <div
+                                    class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
+                                        bg-slate-50 border border-slate-100 shadow-inner">
+                                    <img
+                                        src="{{ asset('storage/'.$promo->image) }}"
+                                        class="w-full h-full object-contain p-2
+                                            group-hover:scale-110 transition-transform duration-500">
+                                </div>
+
+                                <div class="space-y-2">
+                                    <h4
+                                        class="text-xl font-black text-[#00326B]
+                                            group-hover:text-blue-600 transition-colors leading-tight">
+                                        {{ $promo->title }}
+                                    </h4>
+
+                                    <p class="text-slate-500 text-xs italic line-clamp-2">
+                                        {{ $promo->short_desc }}
+                                    </p>
+                                </div>
                             </div>
-                            <div class="space-y-2">
-                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-emerald-600">Pilihan
-                                    Hemat</span>
-                                <h4
-                                    class="text-xl font-black text-[#00326B] group-hover:text-blue-600 transition-colors leading-tight">
-                                    TabunganKU</h4>
-                                <p class="text-slate-500 text-xs leading-relaxed italic line-clamp-2">Tanpa biaya
-                                    administrasi bulanan, setoran awal sangat ringan.</p>
-                            </div>
+
+                            <a href="#" class="absolute inset-0"></a>
                         </div>
-                        <a href="{{ route('tabungan.show', 'tabunganku') }}" class="absolute inset-0"></a>
-                    </div>
+                    @endforeach
 
-                    {{-- Tabungan Sukses --}}
+                    {{-- CTA --}}
                     <div
-                        class="group relative bg-white rounded-[2.5rem] p-6 border border-slate-100 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6
+                            transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
                         <div class="flex items-center gap-6">
                             <div
-                                class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden bg-slate-50 border border-slate-100 shadow-inner">
-                                <img src="{{ asset('images/tabungan-sukses.png') }}"
-                                    class="w-full h-full object-contain p-2 group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <div class="space-y-2">
-                                <span
-                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500">Investasi</span>
-                                <h4
-                                    class="text-xl font-black text-[#00326B] group-hover:text-blue-600 transition-colors leading-tight">
-                                    Tabungan Sukses</h4>
-                                <p class="text-slate-500 text-xs leading-relaxed italic line-clamp-2">Investasi aman dengan
-                                    suku bunga kompetitif untuk rencana Anda.</p>
-                            </div>
-                        </div>
-                        <a href="{{ route('tabungan.show', 'tabungan-sukses') }}" class="absolute inset-0"></a>
-                    </div>
-
-                    {{-- CTA More Products --}}
-                    <div
-                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/30 hover:-translate-y-1">
-                        <div class="flex items-center gap-6">
-                            <div
-                                class="w-28 h-28 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-[#fbbf24]">
+                                class="w-28 h-28 shrink-0 rounded-2xl bg-white/10
+                                    flex items-center justify-center text-[#fbbf24]">
                                 <i class="bi bi-grid-fill text-3xl"></i>
                             </div>
                             <div class="space-y-1">
                                 <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
-                                <p class="text-white/60 text-xs italic">Lihat beragam solusi finansial lengkap kami.</p>
+                                <p class="text-white/60 text-xs italic">
+                                    Lihat seluruh produk BPR NTB.
+                                </p>
                             </div>
                         </div>
                         <a href="#" class="absolute inset-0"></a>
@@ -200,6 +218,7 @@
             </div>
         </div>
     </section>
+
 
     {{-- ================= SUKU BUNGA SECTION (PREMIUM BENTO STYLE) ================= --}}
     <section class="relative py-12 bg-white overflow-hidden">

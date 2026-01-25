@@ -2,18 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Promo;
 
-class TabunganController extends Controller
+class PromoPublicController extends Controller
 {
-    public function show($slug)
+    public function show(string $slug)
     {
         $promo = Promo::with(['benefits', 'requirements'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
-        return view('pages.tabungan.show', compact('promo'));
+        return view('pages.tabungan-detail', compact('promo'));
     }
 }

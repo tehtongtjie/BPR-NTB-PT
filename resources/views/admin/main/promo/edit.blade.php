@@ -49,13 +49,37 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        {{-- ================= SUBTITLE ================= --}}
+        <div class="space-y-1.5">
+            <label class="text-sm font-medium text-slate-600">
+                Subtitle Promo
+            </label>
+            <input type="text"
+                name="subtitle"
+                value="{{ old('subtitle', $promo->subtitle) }}"
+                placeholder="Contoh: Tabungan SIMBADA BPR NTB"
+                class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
+                        focus:bg-white
+                        focus:border-[#00326B]
+                        focus:ring-4 focus:ring-[#00326B]/10
+                        transition-all">
+        </div>
 
-        {{-- ================= DESKRIPSI ================= --}}
+
+        {{-- ================= DESKRIPSI PENDEK ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">Deskripsi Singkat</label>
             <textarea name="short_desc" rows="3"
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('short_desc', $promo->short_desc) }}</textarea>
+        </div>
+
+        {{-- ================= DESKRIPSI ================= --}}
+        <div class="space-y-1.5">
+            <label class="text-sm font-medium text-slate-600">Informasi Produk</label>
+            <textarea name="description" rows="5"
+                class="w-full rounded-xl bg-slate-50 border px-4 py-3
+                       focus:ring-4 focus:ring-[#00326B]/10">{{ old('description', $promo->description) }}</textarea>
         </div>
 
         {{-- ================= KEUNTUNGAN ================= --}}

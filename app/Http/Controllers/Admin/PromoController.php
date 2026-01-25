@@ -40,6 +40,7 @@ class PromoController extends Controller
     {
         $request->validate([
             'title'        => 'required|string|max:100',
+            'subtitle'     => 'nullable|string|max:150',
             'short_desc'   => 'required|string|max:150',
             'description' => 'nullable|string',
             'image'        => 'required|image|mimes:jpg,jpeg,png,webp|max:8192',
@@ -65,6 +66,7 @@ class PromoController extends Controller
             // =====================
             $promo = Promo::create([
                 'title'       => $request->title,
+                'subtitle'    => $request->subtitle,
                 'slug'        => Str::slug($request->title) . '-' . uniqid(),
                 'image'       => $imagePath,
                 'short_desc'  => $request->short_desc,
@@ -119,6 +121,7 @@ class PromoController extends Controller
     {
         $request->validate([
             'title'        => 'required|string|max:100',
+            'subtitle'     => 'nullable|string|max:150',
             'short_desc'   => 'required|string|max:150',
             'description' => 'nullable|string',
             'image'        => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
@@ -150,6 +153,7 @@ class PromoController extends Controller
             // =====================
             $promo->update([
                 'title'       => $request->title,
+                'subtitle'    => $request->subtitle,    
                 'slug'        => Str::slug($request->title),
                 'short_desc'  => $request->short_desc,
                 'description' => $request->description,

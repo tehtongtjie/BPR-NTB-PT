@@ -16,6 +16,8 @@ use App\Http\Controllers\{
     EprocController,
     LaporanController
 };
+
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\crypt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminAuthController;
@@ -25,9 +27,7 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\AuctionController;
-
-
-
+use App\Http\Controllers\PromoPublicController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,8 @@ use App\Http\Controllers\Admin\AuctionController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => view('pages.home'))->name('home');
+
+Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/test-navbar', fn() => view('users.test-navbar'));
 
 /*
@@ -45,6 +46,8 @@ Route::get('/test-navbar', fn() => view('users.test-navbar'));
 */
 // Tabungan
 Route::get('/tabungan/{slug}', [TabunganController::class, 'show'])->name('tabungan.show');
+Route::get('/produk/{slug}', [PromoPublicController::class, 'show'])
+    ->name('produk.show');
 
 // Deposito
 Route::prefix('deposito')->name('deposito.')->group(function () {

@@ -41,6 +41,24 @@
                           focus:ring-4 focus:ring-[#00326B]/10
                           transition-all duration-200 ease-out">
         </div>
+        {{-- ================= SUBTITLE PROMO ================= --}}
+        <div class="space-y-1.5">
+            <label class="text-sm font-medium text-slate-600">
+                Subtitle Promo
+            </label>
+            <input type="text"
+                name="subtitle"
+                value="{{ old('subtitle') }}"
+                placeholder="Contoh: Tabungan SIMBADA BPR NTB"
+                class="w-full rounded-xl
+                        bg-slate-50 border border-slate-200
+                        px-4 py-2.5 text-slate-700
+                        placeholder:text-slate-400
+                        focus:bg-white
+                        focus:border-[#00326B]
+                        focus:ring-4 focus:ring-[#00326B]/10
+                        transition-all duration-200 ease-out">
+        </div>
 
         {{-- ================= DESKRIPSI SINGKAT ================= --}}
         <div class="space-y-1.5">
