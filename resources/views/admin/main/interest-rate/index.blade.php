@@ -15,7 +15,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
-            Tambah Suku Bunga
+            Tambah Periode
         </a>
     </div>
 
@@ -30,12 +30,15 @@
                             No
                         </th>
                         <th class="px-6 py-3 text-left font-semibold text-slate-600">
-                            Judul
+                            Periode
                         </th>
-                        <th class="px-6 py-3 w-24 text-left font-semibold text-slate-600">
-                            Rate
+                        <th class="px-6 py-3 text-left font-semibold text-slate-600">
+                            Tabungan
                         </th>
-                        <th class="px-6 py-3 w-28 text-center font-semibold text-slate-600">
+                        <th class="px-6 py-3 text-left font-semibold text-slate-600">
+                            Deposito
+                        </th>
+                        <th class="px-6 py-3 w-24 text-center font-semibold text-slate-600">
                             Status
                         </th>
                         <th class="px-6 py-3 w-32 text-right font-semibold text-slate-600">
@@ -45,7 +48,7 @@
                 </thead>
 
                 <tbody class="divide-y divide-slate-100">
-                    @forelse($rates as $rate)
+                    @forelse($periods as $period)
                         <tr class="hover:bg-slate-50 transition">
 
                             {{-- NO --}}
@@ -53,19 +56,54 @@
                                 {{ $loop->iteration }}
                             </td>
 
-                            {{-- JUDUL --}}
-                            <td class="px-6 py-4 font-medium text-slate-800">
-                                {{ $rate->title }}
+                            {{-- PERIODE --}}
+                            <td class="px-6 py-4">
+                                <div class="font-medium text-slate-800">
+                                    {{ $period->title }}
+                                </div>
+                                <div class="text-xs text-slate-500">
+                                    {{ sprintf('%02d', $period->month) }}/{{ $period->year }}
+                                </div>
                             </td>
 
-                            {{-- RATE --}}
-                            <td class="px-6 py-4 text-slate-700">
-                                {{ number_format($rate->rate, 2) }}%
+                            {{-- TABUNGAN --}}
+                            <td class="px-6 py-4 text-slate-600">
+                                <ul class="space-y-1">
+                                    @foreach($period->tabungans as $tabungan)
+                                        <li>
+                                            <span class="font-medium">
+                                                {{ $tabungan->tabungan_type }}
+                                            </span>
+                                            : {{ rtrim(rtrim($tabungan->rate, '0'), '.') }}%
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </td>
+
+                            {{-- DEPOSITO --}}
+                            <td class="px-6 py-4 text-slate-600">
+                                <ul class="space-y-1">
+                                    @foreach($period->depositos as $deposito)
+                                        <li>
+                                            {{ $deposito->tenor_month }} bln :
+                                            <span class="font-medium">
+                                                {{ rtrim(rtrim($deposito->rate, '0'), '.') }}%
+                                            </span>
+                                            @if($deposito->is_best)
+                                                <span class="ml-1 rounded-full
+                                                             bg-emerald-50 px-2 py-0.5
+                                                             text-xs text-emerald-700">
+                                                    {{ $deposito->label ?? 'Best' }}
+                                                </span>
+                                            @endif
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </td>
 
                             {{-- STATUS --}}
                             <td class="px-6 py-4 text-center">
-                                @if($rate->is_active)
+                                @if($period->is_active)
                                     <span class="inline-flex items-center rounded-full
                                                  bg-emerald-50 px-3 py-1
                                                  text-xs font-medium text-emerald-700">
@@ -75,7 +113,7 @@
                                     <span class="inline-flex items-center rounded-full
                                                  bg-slate-100 px-3 py-1
                                                  text-xs font-medium text-slate-600">
-                                        Nonaktif
+                                        Arsip
                                     </span>
                                 @endif
                             </td>
@@ -85,7 +123,7 @@
                                 <div class="flex justify-end gap-2">
 
                                     {{-- EDIT --}}
-                                    <a href="{{ route('admin.main.interest-rate.edit', $rate->id) }}"
+                                    <a href="{{ route('admin.main.interest-rate.edit', $period->id) }}"
                                        class="inline-flex items-center justify-center
                                               rounded-lg border border-yellow-200
                                               bg-yellow-50 p-2 text-yellow-700
@@ -103,9 +141,9 @@
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <form action="{{ route('admin.main.interest-rate.destroy', $rate->id) }}"
+                                    <form action="{{ route('admin.main.interest-rate.destroy', $period->id) }}"
                                           method="POST"
-                                          onsubmit="return confirm('Hapus suku bunga ini?')">
+                                          onsubmit="return confirm('Hapus periode suku bunga ini?')">
                                         @csrf
                                         @method('DELETE')
 
@@ -134,7 +172,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5"
+                            <td colspan="6"
                                 class="px-6 py-14 text-center text-slate-500">
                                 Belum ada data suku bunga
                             </td>
@@ -145,9 +183,9 @@
         </div>
 
         {{-- PAGINATION --}}
-        @if(method_exists($rates, 'links'))
+        @if(method_exists($periods, 'links'))
             <div class="border-t border-slate-200 px-6 py-4">
-                {{ $rates->links() }}
+                {{ $periods->links() }}
             </div>
         @endif
 

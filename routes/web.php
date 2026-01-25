@@ -190,7 +190,7 @@ Route::prefix('admin')->group(function () {
         });
 
         // ===== ARTICLE =====
-        Route::prefix('article')->name('article.')->group(function () {
+        Route::prefix('article')->name('article.')->group(function () {     
 
             Route::get('/', [ArticleController::class, 'index'])->name('index');
             Route::get('/create', [ArticleController::class, 'create'])->name('create');
@@ -208,24 +208,16 @@ Route::prefix('admin')->group(function () {
             Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
             Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
         });
-            // ===== INTEREST RATE (SUKU BUNGA) =====
+        // ===== INTEREST RATE =====
         Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
 
+            // PERIOD (UTAMA)
             Route::get('/', [InterestRateController::class, 'index'])->name('index');
             Route::get('/create', [InterestRateController::class, 'create'])->name('create');
             Route::post('/', [InterestRateController::class, 'store'])->name('store');
-            Route::get('/{interestRate}/edit', [InterestRateController::class, 'edit'])->name('edit');
-            Route::put('/{interestRate}', [InterestRateController::class, 'update'])->name('update');
-            Route::delete('/{interestRate}', [InterestRateController::class, 'destroy'])->name('destroy');
-
-            // ===== DETAIL SUKU BUNGA =====
-            Route::post('/{interestRate}/detail',
-                [InterestRateController::class, 'storeDetail']
-            )->name('detail.store');
-
-            Route::delete('/detail/{detail}',
-                [InterestRateController::class, 'destroyDetail']
-            )->name('detail.destroy');
+            Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
+            Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
+            Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
         });
     });
 });
