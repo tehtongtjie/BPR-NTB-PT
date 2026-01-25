@@ -63,68 +63,73 @@
             </div>
         </div>
 
-        {{-- Content Area --}}
+        {{-- Content Area (Full Width) --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-24 relative z-20">
-            <div class="flex flex-col lg:flex-row gap-12">
+            <div class="space-y-12"> {{-- Container Vertikal Tanpa Kolom Sidebar --}}
 
-                {{-- Kolom Kiri (Main Content) --}}
-                <div class="lg:w-2/3 space-y-12">
-
-                    {{-- Main Visual Card --}}
-                    <div class="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
-                        <div class="aspect-[16/9] relative group overflow-hidden">
-                            <img src="{{ asset($deposito['gambar']) }}" alt="{{ $deposito['nama'] }}"
-                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        </div>
-
-                        <div class="p-10 md:p-16 text-center">
-                            <h3 class="text-blue-600 text-sm font-black uppercase tracking-[0.3em] mb-4">Tentang Produk</h3>
-                            <p class="text-gray-500 text-2xl leading-relaxed font-medium mb-16 italic px-4">
-                                "{{ $deposito['deskripsi'] }}"
-                            </p>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mt-10">
-                                @foreach ($deposito['keuntungan'] as $item)
-                                    <div class="flex gap-6 p-2 group">
-                                        <div
-                                            class="flex-shrink-0 w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all duration-500 shadow-sm">
-                                            <i class="bi bi-patch-check-fill text-2xl"></i>
-                                        </div>
-                                        <div>
-                                            <h4
-                                                class="text-gray-900 font-bold text-lg mb-1 leading-tight group-hover:text-blue-600 transition-colors">
-                                                {{ $item }}</h4>
-                                            <p class="text-gray-400 text-sm leading-relaxed">Keamanan investasi Anda adalah
-                                                prioritas utama kami.</p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
+                {{-- Main Visual & Deskripsi Card --}}
+                <div class="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="aspect-[21/9] relative group overflow-hidden hidden md:block">
+                        <img src="{{ asset($deposito['gambar']) }}" alt="{{ $deposito['nama'] }}"
+                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>
 
-                    {{-- Suku Bunga Section --}}
-                    <div class="space-y-6">
-                        <h2 class="text-3xl font-black text-gray-900 tracking-tighter px-4">Suku Bunga Unggulan</h2>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            @foreach ($deposito['suku_bunga'] as $bulan => $bunga)
+                    <div class="p-10 md:p-16 text-center">
+                        <h3 class="text-blue-600 text-sm font-black uppercase tracking-[0.3em] mb-4">Tentang Produk</h3>
+                        <p
+                            class="text-gray-500 text-2xl lg:text-3xl leading-relaxed font-medium mb-16 italic max-w-5xl mx-auto">
+                            "{{ $deposito['deskripsi'] }}"
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-left mt-10">
+                            @foreach ($deposito['keuntungan'] as $item)
                                 <div
-                                    class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm text-center hover:border-blue-600 transition-all duration-300 group">
-                                    <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">
-                                        {{ $bulan }} Bulan</p>
-                                    <p
-                                        class="text-3xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">
-                                        {{ $bunga }}</p>
-                                    <p class="text-[10px] text-blue-600 font-bold mt-2 italic">per tahun</p>
+                                    class="flex flex-col gap-4 p-6 bg-gray-50/50 rounded-3xl group hover:bg-blue-600 transition-all duration-500">
+                                    <div
+                                        class="w-12 h-12 bg-white text-blue-600 rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
+                                        <i class="bi bi-patch-check-fill text-xl"></i>
+                                    </div>
+                                    <h4
+                                        class="text-gray-900 font-bold text-lg leading-tight group-hover:text-white transition-colors">
+                                        {{ $item }}
+                                    </h4>
                                 </div>
                             @endforeach
                         </div>
                     </div>
+                </div>
 
+                {{-- Suku Bunga Section --}}
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between px-4">
+                        <h2 class="text-3xl font-black text-gray-900 tracking-tighter">Suku Bunga Unggulan</h2>
+                        <span
+                            class="px-4 py-1 bg-amber-100 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-widest">Update
+                            2026</span>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                        @foreach ($deposito['suku_bunga'] as $bulan => $bunga)
+                            <div
+                                class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm text-center hover:border-blue-600 hover:shadow-xl transition-all duration-300 group">
+                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-2">
+                                    {{ $bulan }} Bulan</p>
+                                <p
+                                    class="text-4xl font-extrabold text-gray-900 group-hover:text-blue-600 transition-colors">
+                                    {{ $bunga }}</p>
+                                <p class="text-[10px] text-blue-600 font-bold mt-2 italic">per tahun</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- Tabel Simulasi & Persyaratan --}}
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-12">
                     {{-- Tabel Simulasi --}}
                     <div class="bg-white rounded-[3rem] border border-gray-100 shadow-sm overflow-hidden p-8 md:p-12">
-                        <h2 class="text-2xl font-black text-gray-900 mb-8 tracking-tighter">Ilustrasi Perolehan Bunga</h2>
+                        <h2 class="text-2xl font-black text-gray-900 mb-8 tracking-tighter flex items-center gap-3">
+                            <i class="bi bi-calculator text-blue-600"></i> Ilustrasi Perolehan Bunga
+                        </h2>
                         <div class="overflow-x-auto rounded-3xl border border-gray-50">
                             <table class="w-full text-left">
                                 <thead>
@@ -142,14 +147,12 @@
                                         <tr class="hover:bg-blue-50/30 transition-colors">
                                             <td class="px-6 py-5 font-bold text-gray-900">Rp
                                                 {{ number_format($nominal, 0, ',', '.') }}</td>
-                                            <td class="px-6 py-5 text-center text-blue-600 font-medium">Rp
-                                                {{ number_format($simulasi[1], 0, ',', '.') }}</td>
-                                            <td class="px-6 py-5 text-center text-blue-600 font-medium">Rp
-                                                {{ number_format($simulasi[3], 0, ',', '.') }}</td>
-                                            <td class="px-6 py-5 text-center text-blue-600 font-medium">Rp
-                                                {{ number_format($simulasi[6], 0, ',', '.') }}</td>
-                                            <td class="px-6 py-5 text-center text-blue-600 font-medium">Rp
-                                                {{ number_format($simulasi[12], 0, ',', '.') }}</td>
+                                            @foreach ([1, 3, 6, 12] as $tenor)
+                                                <td
+                                                    class="px-6 py-5 text-center text-blue-600 font-medium font-mono text-sm">
+                                                    Rp {{ number_format($simulasi[$tenor], 0, ',', '.') }}
+                                                </td>
+                                            @endforeach
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -157,9 +160,9 @@
                         </div>
                     </div>
 
-                    {{-- Syarat & Ketentuan Modern --}}
+                    {{-- Persyaratan --}}
                     <div x-data="{ open: false }"
-                        class="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden group">
+                        class="bg-white rounded-[3rem] border border-gray-100 shadow-sm overflow-hidden group">
                         <button @click="open = !open"
                             class="w-full p-10 flex items-center justify-between text-left outline-none transition-all">
                             <div class="flex items-center gap-6">
@@ -169,7 +172,7 @@
                                 </div>
                                 <div>
                                     <h3 class="text-2xl font-bold text-gray-900 tracking-tighter">Persyaratan Deposito</h3>
-                                    <p class="text-gray-400 text-sm">Dokumen yang diperlukan untuk pembukaan bilyet</p>
+                                    <p class="text-gray-400 text-sm">Lengkapi dokumen berikut untuk pembukaan bilyet</p>
                                 </div>
                             </div>
                             <div :class="open ? 'rotate-180 bg-blue-600 text-white' : 'bg-gray-100 text-gray-400'"
@@ -178,28 +181,32 @@
                             </div>
                         </button>
 
-                        <div x-show="open" x-collapse>
+                        <div x-show="open" x-collapse x-cloak>
                             <div class="p-10 pt-0 space-y-8">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                    <div>
-                                        <h5 class="text-blue-600 font-black text-xs uppercase tracking-widest mb-4">
-                                            Perorangan</h5>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                                    <div class="space-y-4">
+                                        <h5
+                                            class="text-blue-600 font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-blue-600"></span> Perorangan
+                                        </h5>
                                         <ul class="space-y-3">
                                             @foreach ($deposito['persyaratan']['perorangan'] as $syarat)
-                                                <li class="flex items-center gap-3 text-sm text-gray-600 font-medium">
-                                                    <div class="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                                                <li class="flex items-start gap-3 text-sm text-gray-600 font-medium italic">
+                                                    <i class="bi bi-check2 text-blue-500 font-bold"></i>
                                                     {{ $syarat }}
                                                 </li>
                                             @endforeach
                                         </ul>
                                     </div>
-                                    <div>
-                                        <h5 class="text-blue-600 font-black text-xs uppercase tracking-widest mb-4">Badan
-                                            Usaha</h5>
+                                    <div class="space-y-4">
+                                        <h5
+                                            class="text-cyan-600 font-black text-xs uppercase tracking-widest flex items-center gap-2">
+                                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span> Badan Usaha
+                                        </h5>
                                         <ul class="space-y-3">
                                             @foreach ($deposito['persyaratan']['badan_usaha'] as $syarat)
-                                                <li class="flex items-center gap-3 text-sm text-gray-600 font-medium">
-                                                    <div class="w-1.5 h-1.5 rounded-full bg-cyan-500"></div>
+                                                <li class="flex items-start gap-3 text-sm text-gray-600 font-medium italic">
+                                                    <i class="bi bi-check2 text-cyan-500 font-bold"></i>
                                                     {{ $syarat }}
                                                 </li>
                                             @endforeach
@@ -207,10 +214,14 @@
                                     </div>
                                 </div>
 
-                                {{-- Catatan dalam box amber --}}
-                                <div class="bg-amber-50/50 border border-amber-100 p-6 rounded-[2rem] flex gap-4">
-                                    <i class="bi bi-exclamation-circle text-amber-500 text-xl"></i>
-                                    <ul class="text-amber-900/70 text-xs font-bold leading-relaxed">
+                                <div
+                                    class="bg-amber-50/50 border border-amber-100 p-8 rounded-[2.5rem] flex flex-col md:flex-row gap-6">
+                                    <div
+                                        class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <i class="bi bi-info-circle-fill text-xl"></i>
+                                    </div>
+                                    <ul
+                                        class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-amber-900/70 text-xs font-bold leading-relaxed">
                                         @foreach ($deposito['catatan'] as $note)
                                             <li>• {{ $note }}</li>
                                         @endforeach
@@ -221,38 +232,26 @@
                     </div>
                 </div>
 
-                {{-- Kolom Kanan (Sidebar) --}}
-                <aside class="lg:w-1/3 space-y-8">
-                    <div class="sticky top-28 space-y-8">
-                        {{-- Sidebar Produk (Pastikan file ini ada) --}}
-                        <div class="bg-white rounded-[2.5rem] p-4 shadow-sm border border-gray-100">
-                            @include('components.sidebar-produk')
-                        </div>
-
-                        {{-- Premium CTA Card --}}
-                        <div
-                            class="relative bg-[#0A1D37] rounded-[3rem] p-10 overflow-hidden text-white shadow-2xl shadow-blue-900/40 group">
-                            <div
-                                class="absolute top-0 right-0 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl -mr-16 -mt-16 group-hover:bg-blue-600/40 transition-all duration-700">
-                            </div>
-
-                            <h4 class="text-3xl font-bold mb-4 tracking-tight relative z-10">Mulai Investasi Cerdas</h4>
-                            <p class="text-blue-100/50 mb-10 leading-relaxed relative z-10 text-sm font-medium">
-                                Investasikan masa depan Anda dengan bunga kompetitif dan keamanan terjamin LPS.</p>
-
-                            <div class="space-y-4 relative z-10">
-                                <a href="{{ route('pages.simulasi.deposito') }}"
-                                    class="flex items-center justify-center gap-3 w-full bg-white text-blue-950 py-5 rounded-[1.5rem] font-extrabold hover:bg-blue-50 transition-all active:scale-95 shadow-xl shadow-black/10">
-                                    <i class="bi bi-calculator text-xl text-blue-600"></i> Simulasikan Deposito
-                                </a>
-                                <button onclick="window.print()"
-                                    class="flex items-center justify-center gap-3 w-full bg-white/5 border border-white/10 text-white py-5 rounded-[1.5rem] font-bold hover:bg-white/10 transition-all">
-                                    <i class="bi bi-printer"></i> Cetak Dokumen PDF
-                                </button>
-                            </div>
+                {{-- CTA Section --}}
+                <div class="bg-[#0A1D37] rounded-[3.5rem] p-12 lg:p-20 text-center relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-64 h-64 bg-blue-600/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2">
+                    </div>
+                    <div class="relative z-10 max-w-2xl mx-auto">
+                        <h2 class="text-3xl lg:text-5xl font-black text-white mb-6 tracking-tighter">Mulai Investasi Cerdas
+                            <br>Hari Ini.</h2>
+                        <p class="text-blue-100/60 mb-10 font-medium">Tim marketing kami siap membantu Anda menghitung
+                            potensi keuntungan maksimal untuk masa depan Anda.</p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <a href="https://wa.me/..."
+                                class="px-10 py-5 bg-blue-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-blue-500 transition-all shadow-xl shadow-blue-600/20">Hubungi
+                                WhatsApp</a>
+                            <a href="/jaringan/kantor"
+                                class="px-10 py-5 bg-white/10 text-white border border-white/20 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white/20 transition-all backdrop-blur-md">Cari
+                                Kantor Terdekat</a>
                         </div>
                     </div>
-                </aside>
+                </div>
 
             </div>
         </div>
@@ -263,32 +262,12 @@
             display: none !important;
         }
 
-        /* Menghaluskan transisi CSS */
         .transition-all {
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @media print {
-            .bg-[#0A1D37] {
-                background: white !important;
-                color: black !important;
-            }
-
-            aside,
-            nav,
-            button,
-            [class*="bg-blue-600/20"] {
-                display: none !important;
-            }
-
-            main {
-                padding-bottom: 0 !important;
-                margin-top: -50px !important;
-            }
-
-            .bg-white {
-                border: none !important;
-            }
+        .tracking-tighter {
+            letter-spacing: -0.05em;
         }
     </style>
 @endsection
