@@ -42,7 +42,7 @@
                         x-transition:leave-end="opacity-0"
                         class="col-start-1 row-start-1 w-full"
                         x-cloak
-                    >
+                    >   
                         <img
                             src="{{ asset($banner->image) }}"
                             class="w-full h-auto block"
@@ -172,7 +172,7 @@
                                     class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
                                         bg-slate-50 border border-slate-100 shadow-inner">
                                     <img
-                                        src="{{ asset('storage/'.$promo->image) }}"
+                                        src="{{ asset($promo->image) }}"
                                         class="w-full h-full object-contain p-2
                                             group-hover:scale-110 transition-transform duration-500">
                                 </div>
