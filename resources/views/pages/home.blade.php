@@ -44,7 +44,7 @@
                         x-cloak
                     >
                         <img
-                            src="{{ asset('storage/' . $banner->image) }}"
+                            src="{{ asset($banner->image) }}"
                             class="w-full h-auto block"
                             alt="Banner {{ $index + 1 }}"
                             loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
@@ -119,7 +119,7 @@
                             shadow-2xl border border-white">
 
                         <img
-                            src="{{ asset('storage/'.$featured->image) }}"
+                            src="{{ asset($featured->image) }}"
                             class="absolute inset-0 w-full h-full object-cover
                                 transition-transform duration-1000 group-hover:scale-110"
                             alt="{{ $featured->title }}">

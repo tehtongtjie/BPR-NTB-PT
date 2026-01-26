@@ -84,7 +84,7 @@
             <label class="text-sm font-medium text-slate-600">
                 Informasi Produk
             </label>
-            <textarea name="product_info"
+            <textarea name="description"
                       rows="5"
                       placeholder="Penjelasan detail mengenai produk promo"
                       class="w-full rounded-xl
@@ -94,7 +94,7 @@
                              focus:bg-white
                              focus:border-[#00326B]
                              focus:ring-4 focus:ring-[#00326B]/10
-                             transition-all duration-200 resize-none">{{ old('product_info') }}</textarea>
+                             transition-all duration-200 resize-none">{{ old('description') }}</textarea>
         </div>
 
         {{-- ================= KEUNTUNGAN & FASILITAS ================= --}}

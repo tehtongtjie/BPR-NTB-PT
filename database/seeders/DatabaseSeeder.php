@@ -11,12 +11,14 @@ class DatabaseSeeder extends Seeder
         // $this->call(PromoSeeder::class);
         $this->call([
             AdminSeeder::class,
+            BannerSeeder::class,
+            PromoSeeder::class,
 
             InterestRatePeriodSeeder::class,
             InterestRateTabunganSeeder::class,
             InterestRateDepositoSeeder::class,
             InterestRateLpsSeeder::class,
-
+            
             KantorSeeder::class,
         ]);
     }

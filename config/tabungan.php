@@ -70,7 +70,7 @@ return [
             'Tidak perlu antre, cukup hubungi collector kami',
             'Disediakan buku tabungan manual',
             'Tanpa ATM untuk membantu disiplin menabung',
-            'Persyaratan sangat mudah, hanya KTP',
+            '   ',
         ],
     ],
 
