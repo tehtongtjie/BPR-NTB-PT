@@ -20,10 +20,8 @@ class HomeController extends Controller
 
         $featured = $promos->first();      // 1 besar kiri
         $others   = $promos->skip(1);       // max 2 kanan
-        $kantorPusat = Kantor::where('tipe', 'pusat')->first();
 
         return view('pages.home', compact(
-            'kanorPusat',
             'banners',
             'featured',
             'others'
