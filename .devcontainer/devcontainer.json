@@ -1,0 +1,6 @@
+{
+  "name": "Laravel PHP 8.2",
+  "image": "mcr.microsoft.com/devcontainers/php:8.2",
+  "forwardPorts": [8000],
+  "postCreateCommand": "composer install"
+}
