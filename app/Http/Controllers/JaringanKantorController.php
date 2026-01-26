@@ -2,47 +2,55 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kantor;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 
 class JaringanKantorController extends Controller
 {
     public function index(Request $request)
     {
+        $query = Kantor::query();
 
-        $semuaKantor = collect(config('jaringan_kantor.kantor'));
+        // =====================
+        // 🔍 SEARCH GLOBAL (NAMA + ALAMAT)
+        // =====================
+
+        if ($request->filled('q')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('nama', 'like', '%' . $request->q . '%')
+                ->orWhere('alamat', 'like', '%' . $request->q . '%')
+                ->orWhere('telepon', 'like', '%' . $request->q . '%');
+            });
+        }
+
+        // =====================
+        // 📌 FILTER TIPE (OPTIONAL)
+        // =====================
+        if ($request->filled('tipe') && $request->tipe !== 'all') {
+            $query->where('tipe', $request->tipe);
+        }
+
+        // =====================
+        // 📄 PAGINATION (SETELAH SEARCH)
+        // =====================
+        $kantor = $query
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString(); // 🔥 biar q= tetap kebawa
+
+        // =====================
+        // 📊 STATS
+        // =====================
         $stats = [
-            'total' => $semuaKantor->count(),
-            'cabang' => $semuaKantor->filter(fn ($k) =>
-                str_contains($k['nama'], 'Kantor Cabang')
-            )->count(),
-            'kas' => $semuaKantor->filter(fn ($k) =>
-                str_contains($k['nama'], 'Kantor Kas')
-            )->count(),
+            'total'  => Kantor::count(),
+            'cabang' => Kantor::where('tipe', 'cabang')->count(),
+            'kas'    => Kantor::where('tipe', 'kas')->count(),
         ];
 
-        $perPage = 10;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-
-        $currentItems = $semuaKantor
-            ->slice(($currentPage - 1) * $perPage, $perPage)
-            ->values();
-
-        $kantor = new LengthAwarePaginator(
-            $currentItems,
-            $semuaKantor->count(),
-            $perPage,
-            $currentPage,
-            [
-                'path' => $request->url(),
-                'query' => $request->query(),
-            ]
-        );
-
         return view('pages.jaringan-kantor.index', [
-            'kantor' => $kantor,           
-            'semuaKantor' => $semuaKantor, 
-            'stats' => $stats,             
+            'kantor'  => $kantor,
+            'kantors' => $kantor,
+            'stats'   => $stats,
         ]);
     }
 }

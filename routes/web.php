@@ -28,6 +28,7 @@ use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\AuctionController;
 use App\Http\Controllers\PromoPublicController;
+use App\Http\Controllers\Admin\JaringanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -163,7 +164,15 @@ Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->group(function () {
-
+        // ===== JARINGAN KANTOR =====
+    Route::prefix('jaringan')->name('jaringan.')->group(function () {
+        Route::get('/', [JaringanController::class, 'index'])->name('index');
+        Route::get('/create', [JaringanController::class, 'create'])->name('create');
+        Route::post('/', [JaringanController::class, 'store'])->name('store');
+        Route::get('/{kantor}/edit', [JaringanController::class, 'edit'])->name('edit');
+        Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
+        Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
+    });
     // ===== MAIN DASHBOARD =====
     Route::prefix('main')->name('admin.main.')->group(function () {
 
@@ -223,6 +232,8 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
         });
     });
+
+
 });
 
 
