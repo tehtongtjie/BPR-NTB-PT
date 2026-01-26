@@ -239,7 +239,8 @@
                     </div>
                     <div class="relative z-10 max-w-2xl mx-auto">
                         <h2 class="text-3xl lg:text-5xl font-black text-white mb-6 tracking-tighter">Mulai Investasi Cerdas
-                            <br>Hari Ini.</h2>
+                            <br>Hari Ini.
+                        </h2>
                         <p class="text-blue-100/60 mb-10 font-medium">Tim marketing kami siap membantu Anda menghitung
                             potensi keuntungan maksimal untuk masa depan Anda.</p>
                         <div class="flex flex-col sm:flex-row gap-4 justify-center">
