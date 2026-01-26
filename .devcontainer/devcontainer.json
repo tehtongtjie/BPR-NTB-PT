@@ -1,6 +1,14 @@
 {
   "name": "Laravel PHP 8.2",
   "image": "mcr.microsoft.com/devcontainers/php:8.2",
-  "forwardPorts": [8000],
-  "postCreateCommand": "composer install"
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "20"
+    }
+  },
+  "forwardPorts": [8000, 5173],
+  "postCreateCommand": "composer install",
+  "remoteEnv": {
+    "XDEBUG_MODE": "off"
+  }
 }
