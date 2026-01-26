@@ -29,6 +29,8 @@ use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\AuctionController;
 use App\Http\Controllers\PromoPublicController;
 use App\Http\Controllers\Admin\JaringanController;
+use App\Http\Controllers\WhistleBlowingController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -146,17 +148,21 @@ Route::prefix('jaringan')->name('jaringan.')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
-| PENGADUAN
+| PENGADUAN (WBS)
 |--------------------------------------------------------------------------
 */
 Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
-    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))->name('alur');
-    Route::get('/whistle-blowing-system', fn() => view('pages.pengaduan.whistleblowingsystem'))->name('wbs');
-    Route::post('/whistle-blowing-system', fn() => redirect()->route('pengaduan.wbs'))->name('wbs.store');
+    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))
+        ->name('alur');
+
+    // Halaman Form
+    Route::get('/whistle-blowing-system', [WhistleBlowingController::class, 'index'])
+        ->name('wbs');
+
+    // Proses Simpan (PASTIKAN NAMA RUTE ADALAH pengaduan.wbs.store)
+    Route::post('/whistle-blowing-system', [WhistleBlowingController::class, 'store'])
+        ->name('wbs.store');
 });
-
-
-
 
 /*
 |--------------------------------------------------------------------------
@@ -164,7 +170,15 @@ Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->group(function () {
-        // ===== JARINGAN KANTOR =====
+
+    // 1. ===== WHISTLE BLOWING SYSTEM (URL: /admin/wbs) =====
+    // Diletakkan di luar grup 'main' agar tidak nested/404
+    Route::prefix('wbs')->name('admin.wbs.')->group(function () {
+        Route::get('/', [WhistleBlowingController::class, 'adminIndex'])->name('index');
+        Route::delete('/{id}', [WhistleBlowingController::class, 'destroy'])->name('destroy');
+    });
+
+    // 2. ===== JARINGAN KANTOR =====
     Route::prefix('jaringan')->name('jaringan.')->group(function () {
         Route::get('/', [JaringanController::class, 'index'])->name('index');
         Route::get('/create', [JaringanController::class, 'create'])->name('create');
@@ -173,15 +187,14 @@ Route::prefix('admin')->group(function () {
         Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
         Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
     });
-    // ===== MAIN DASHBOARD =====
+
+    // 3. ===== MAIN DASHBOARD & CONTENT =====
     Route::prefix('main')->name('admin.main.')->group(function () {
 
-        Route::get('/', [MainController::class, 'index'])
-            ->name('index');
+        Route::get('/', [MainController::class, 'index'])->name('index');
 
-        // ===== PROMO (SUDAH BENAR) =====
+        // PROMO
         Route::prefix('promo')->name('promo.')->group(function () {
-
             Route::get('/', [PromoController::class, 'index'])->name('index');
             Route::get('/create', [PromoController::class, 'create'])->name('create');
             Route::post('/', [PromoController::class, 'store'])->name('store');
@@ -190,9 +203,8 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
         });
 
-        // ===== BANNER (FIX TOTAL) =====
+        // BANNER
         Route::prefix('banner')->name('banner.')->group(function () {
-
             Route::get('/', [BannerController::class, 'index'])->name('index');
             Route::get('/create', [BannerController::class, 'create'])->name('create');
             Route::post('/', [BannerController::class, 'store'])->name('store');
@@ -201,9 +213,8 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
         });
 
-        // ===== ARTICLE =====
-        Route::prefix('article')->name('article.')->group(function () {     
-
+        // ARTICLE
+        Route::prefix('article')->name('article.')->group(function () {
             Route::get('/', [ArticleController::class, 'index'])->name('index');
             Route::get('/create', [ArticleController::class, 'create'])->name('create');
             Route::post('/', [ArticleController::class, 'store'])->name('store');
@@ -211,7 +222,8 @@ Route::prefix('admin')->group(function () {
             Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
             Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
         });
-        // ===== LELANG =====
+
+        // LELANG
         Route::prefix('lelang')->name('lelang.')->group(function () {
             Route::get('/', [AuctionController::class, 'index'])->name('index');
             Route::get('/create', [AuctionController::class, 'create'])->name('create');
@@ -220,10 +232,9 @@ Route::prefix('admin')->group(function () {
             Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
             Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
         });
-        // ===== INTEREST RATE =====
-        Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
 
-            // PERIOD (UTAMA)
+        // INTEREST RATE
+        Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
             Route::get('/', [InterestRateController::class, 'index'])->name('index');
             Route::get('/create', [InterestRateController::class, 'create'])->name('create');
             Route::post('/', [InterestRateController::class, 'store'])->name('store');
@@ -232,10 +243,7 @@ Route::prefix('admin')->group(function () {
             Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
         });
     });
-
-
 });
-
 
 // login admin (POST)
 Route::post('/admin/{token}', [AdminAuthController::class, 'login'])

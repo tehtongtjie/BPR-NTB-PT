@@ -38,7 +38,7 @@
             </div>
         </section>
 
-        {{-- 2. CATEGORY FILTER (Sticky Nav) --}}
+        {{-- 2. CATEGORY FILTER --}}
         <div class="sticky top-20 lg:top-28 z-30 mb-16 px-4">
             <div
                 class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-2 rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
@@ -113,11 +113,10 @@
                 @endforeach
             </div>
 
-            {{-- ... CTA Section tetap di bawah sini ... --}}
         </section>
-        {{-- 4. CTA SECTION --}}
+        {{-- 4. tombol CTA --}}
         <div
-            class="mt-24 bg-gradient-to-br from-[#fbbf24] to-amber-500 rounded-[3rem] p-10 lg:p-16 text-center relative overflow-hidden shadow-2xl shadow-amber-500/20">
+            class="mt-24 bg-gradient-to-br from-[#ffc531] to-amber-500 rounded-[3rem] p-10 lg:p-16 text-center relative overflow-hidden shadow-2xl shadow-amber-500/20">
             <div
                 class="absolute top-0 left-0 w-64 h-64 bg-white/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2">
             </div>
