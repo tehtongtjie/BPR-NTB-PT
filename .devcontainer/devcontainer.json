@@ -7,7 +7,7 @@
     }
   },
   "forwardPorts": [8000, 5173],
-  "postCreateCommand": "composer install",
+  "postCreateCommand": "docker-php-ext-install pdo_mysql && composer install",
   "remoteEnv": {
     "XDEBUG_MODE": "off"
   }
