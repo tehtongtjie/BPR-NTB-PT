@@ -3,10 +3,10 @@
     {{-- HEADER --}}
     <div class="flex items-center justify-between">
         <h2 class="text-lg font-semibold text-slate-800">
-            Promo Homepage
+            Manajemen Perusahaan
         </h2>
 
-        <a href="{{ route('admin.main.promo.create') }}"
+        <a href="{{ route('perusahaan.create') }}"
            class="inline-flex items-center gap-2 rounded-xl
                   bg-[#00326B] px-4 py-2 text-sm font-medium
                   text-white hover:bg-[#002855] transition">
@@ -15,12 +15,43 @@
                 <path stroke-linecap="round" stroke-linejoin="round"
                       d="M12 4.5v15m7.5-7.5h-15"/>
             </svg>
-            Tambah Promo
+            Tambah Manajemen
         </a>
     </div>
 
     {{-- CARD --}}
     <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+        {{-- FILTER --}}
+        <form method="GET"
+              class="flex flex-wrap items-center gap-3 px-6 py-4 border-b border-slate-200">
+            <input
+                type="text"
+                name="q"
+                value="{{ request('q') }}"
+                placeholder="Cari nama atau jabatan..."
+                class="w-64 rounded-lg border border-slate-300 px-3 py-2 text-sm
+                       focus:border-[#00326B] focus:ring-[#00326B]"
+            >
+
+            <select name="type"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm
+                       focus:border-[#00326B] focus:ring-[#00326B]">
+                <option value="">Semua Tipe</option>
+                <option value="direksi" {{ request('type') === 'direksi' ? 'selected' : '' }}>
+                    Direksi
+                </option>
+                <option value="komisaris" {{ request('type') === 'komisaris' ? 'selected' : '' }}>
+                    Komisaris
+                </option>
+            </select>
+
+            <button
+                class="rounded-lg bg-[#00326B] px-4 py-2 text-sm text-white
+                       hover:bg-[#002855] transition">
+                Filter
+            </button>
+        </form>
 
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-slate-200 text-sm">
@@ -30,16 +61,13 @@
                             No
                         </th>
                         <th class="px-6 py-3 w-28 text-left font-semibold text-slate-600">
-                            Gambar
+                            Tipe
                         </th>
                         <th class="px-6 py-3 text-left font-semibold text-slate-600">
-                            Judul
+                            Nama
                         </th>
                         <th class="px-6 py-3 text-left font-semibold text-slate-600">
-                            Deskripsi
-                        </th>
-                        <th class="px-6 py-3 w-28 text-center font-semibold text-slate-600">
-                            Status
+                            Jabatan
                         </th>
                         <th class="px-6 py-3 w-32 text-right font-semibold text-slate-600">
                             Aksi
@@ -48,48 +76,33 @@
                 </thead>
 
                 <tbody class="divide-y divide-slate-100">
-                    @forelse($promos as $promo)
+                    @forelse($managements as $item)
                         <tr class="hover:bg-slate-50 transition">
 
                             {{-- NO --}}
                             <td class="px-6 py-4 text-slate-600">
-                                {{ $loop->iteration }}
+                                {{ $loop->iteration + ($managements->currentPage() - 1) * $managements->perPage() }}
                             </td>
 
-                            {{-- GAMBAR --}}
+                            {{-- TIPE --}}
                             <td class="px-6 py-4">
-                                <img
-                                    src="{{ asset('storage/' .$promo->image) }}"
-                                    alt="{{ $promo->title }}"
-                                    class="h-14 w-24 rounded-lg border border-slate-200 object-cover"
-                                />
+                                <span class="inline-flex items-center rounded-full
+                                    px-3 py-1 text-xs font-medium
+                                    {{ $item->type === 'direksi'
+                                        ? 'bg-blue-50 text-blue-700'
+                                        : 'bg-amber-50 text-amber-700' }}">
+                                    {{ strtoupper($item->type) }}
+                                </span>
                             </td>
 
-                            {{-- JUDUL --}}
+                            {{-- NAMA --}}
                             <td class="px-6 py-4 font-medium text-slate-800">
-                                {{ $promo->title }}
+                                {{ $item->name }}
                             </td>
 
-                            {{-- DESKRIPSI --}}
+                            {{-- JABATAN --}}
                             <td class="px-6 py-4 text-slate-600">
-                                {{ Str::limit($promo->short_desc, 60) }}
-                            </td>
-
-                            {{-- STATUS --}}
-                            <td class="px-6 py-4 text-center">
-                                @if($promo->is_active)
-                                    <span class="inline-flex items-center rounded-full
-                                                 bg-emerald-50 px-3 py-1
-                                                 text-xs font-medium text-emerald-700">
-                                        Aktif
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center rounded-full
-                                                 bg-slate-100 px-3 py-1
-                                                 text-xs font-medium text-slate-600">
-                                        Nonaktif
-                                    </span>
-                                @endif
+                                {{ $item->position }}
                             </td>
 
                             {{-- AKSI --}}
@@ -97,7 +110,7 @@
                                 <div class="flex justify-end gap-2">
 
                                     {{-- EDIT --}}
-                                    <a href="{{ route('admin.main.promo.edit', $promo->id) }}"
+                                    <a href="{{ route('perusahaan.edit', $item->id) }}"
                                        class="inline-flex items-center justify-center
                                               rounded-lg border border-yellow-200
                                               bg-yellow-50 p-2 text-yellow-700
@@ -115,9 +128,9 @@
                                     </a>
 
                                     {{-- DELETE --}}
-                                    <form action="{{ route('admin.main.promo.destroy', $promo->id) }}"
+                                    <form action="{{ route('perusahaan.destroy', $item->id) }}"
                                           method="POST"
-                                          onsubmit="return confirm('Hapus promo ini?')">
+                                          onsubmit="return confirm('Hapus data ini?')">
                                         @csrf
                                         @method('DELETE')
 
@@ -146,9 +159,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6"
+                            <td colspan="5"
                                 class="px-6 py-14 text-center text-slate-500">
-                                Belum ada promo
+                                Belum ada data manajemen
                             </td>
                         </tr>
                     @endforelse
@@ -156,12 +169,10 @@
             </table>
         </div>
 
-        {{-- PAGINATION (jika paginate) --}}
-        @if(method_exists($promos, 'links'))
-            <div class="border-t border-slate-200 px-6 py-4">
-                {{ $promos->links() }}
-            </div>
-        @endif
+        {{-- PAGINATION --}}
+        <div class="border-t border-slate-200 px-6 py-4">
+            {{ $managements->links() }}
+        </div>
 
     </div>
 

@@ -228,11 +228,33 @@ class InterestRateController extends Controller
     /**
      * DELETE
      */
-    public function destroy(InterestRatePeriod $interestRate)
-    {
-        DB::transaction(fn () => $interestRate->delete());
+public function destroy(InterestRatePeriod $period)
+{
+    DB::transaction(function () use ($period) {
 
-        return redirect()->route('admin.main.index')
-            ->with('success', 'Suku bunga berhasil dihapus!');
-    }
+        $wasActive = $period->is_active;
+
+        $period->tabungans()->delete();
+        $period->depositos()->delete();
+        $period->lps()->delete();
+
+        $period->delete();
+
+        if ($wasActive) {
+            $next = InterestRatePeriod::where('is_active', false)
+                ->orderBy('year', 'desc')
+                ->orderBy('month', 'desc')
+                ->first();
+
+            if ($next) {
+                $next->update(['is_active' => true]);
+            }
+        }
+    });
+
+    return redirect()->route('admin.main.index')
+        ->with('success', 'Suku bunga berhasil dihapus.');
+}
+
+
 }

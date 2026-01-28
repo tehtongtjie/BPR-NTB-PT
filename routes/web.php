@@ -31,6 +31,7 @@ use App\Http\Controllers\PromoPublicController;
 use App\Http\Controllers\Admin\JaringanController;
 use App\Http\Controllers\WhistleBlowingController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\Admin\PerusahaansController;
 
 
 
@@ -134,11 +135,12 @@ Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
 | PERUSAHAAN
 |--------------------------------------------------------------------------
 */
-Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
-    Route::get('/komisaris/{slug}', [PerusahaanController::class, 'komisarisDetail'])->name('komisaris.detail');
-    Route::get('/direksi/{slug}', [PerusahaanController::class, 'direksiDetail'])->name('direksi.detail');
-    Route::get('/{slug}', [PerusahaanController::class, 'show'])->name('show');
-});
+Route::get('/perusahaan/{slug}', [PerusahaanController::class, 'show'])
+    ->name('perusahaan.show');
+
+Route::get('/perusahaan/{slug}/{management:slug}', [PerusahaanController::class, 'detail'])
+    ->whereIn('slug', ['komisaris', 'direksi'])
+    ->name('perusahaan.detail');
 
 /*
 |--------------------------------------------------------------------------
@@ -177,21 +179,21 @@ Route::post('/kirim-pesan', [MessageController::class, 'store'])
 */
 Route::prefix('admin')->group(function () {
 
-        // ===== MESSAGE (CONTACT FORM) =====
+    //1. ===== MESSAGE (CONTACT FORM) =====
     Route::prefix('messages')->name('admin.messages.')->group(function () {
         Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
         Route::get('/{id}', [MessageController::class, 'show'])->name('show');
         Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
     });
 
-    // 1. ===== WHISTLE BLOWING SYSTEM (URL: /admin/wbs) =====
+    // 2. ===== WHISTLE BLOWING SYSTEM (URL: /admin/wbs) =====
     // Diletakkan di luar grup 'main' agar tidak nested/404
     Route::prefix('wbs')->name('admin.wbs.')->group(function () {
         Route::get('/', [WhistleBlowingController::class, 'adminIndex'])->name('index');
         Route::delete('/{id}', [WhistleBlowingController::class, 'destroy'])->name('destroy');
     });
 
-    // 2. ===== JARINGAN KANTOR =====
+    // 3. ===== JARINGAN KANTOR =====
     Route::prefix('jaringan')->name('jaringan.')->group(function () {
         Route::get('/', [JaringanController::class, 'index'])->name('index');
         Route::get('/create', [JaringanController::class, 'create'])->name('create');
@@ -201,7 +203,17 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
     });
 
-    // 3. ===== MAIN DASHBOARD & CONTENT =====
+
+    // 4. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
+    Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
+        Route::get('/', [PerusahaansController::class, 'index'])->name('index');
+        Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
+        Route::post('/', [PerusahaansController::class, 'store'])->name('store');
+        Route::get('/{management}/edit', [PerusahaansController::class, 'edit'])->name('edit');
+        Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
+        Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
+    });
+    // 5. ===== MAIN DASHBOARD & CONTENT =====
     Route::prefix('main')->name('admin.main.')->group(function () {
 
         Route::get('/', [MainController::class, 'index'])->name('index');

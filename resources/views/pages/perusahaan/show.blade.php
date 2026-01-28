@@ -113,9 +113,6 @@
                                         class="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-blue-50 text-bpr-blue text-[10px] font-black uppercase tracking-[0.4em] mb-6 border border-blue-100">
                                         <i class="bi bi-diagram-3-fill text-bpr-gold"></i> Structure
                                     </div>
-                                    <h1 class="text-4xl lg:text-7xl font-black text-bpr-blue tracking-tight mb-6">
-                                        {{ $slug === 'komisaris' ? 'Dewan Komisaris' : ($slug === 'direksi' ? 'Dewan Direksi' : ($slug === 'tata-kelola' ? 'Tata Kelola' : 'Budaya')) }}
-                                    </h1>
                                     <div class="flex justify-center items-center gap-3">
                                         <span class="w-16 h-[4px] bg-bpr-gold rounded-full"></span>
                                         <span class="w-2 h-2 bg-bpr-blue/20 rounded-full"></span>
@@ -272,54 +269,102 @@
                                                 PDF</a>
                                         </div>
                                     </div>
+                                @endif
 
-                                    {{-- 5. KOMISARIS & DIREKSI --}}
-                                @elseif ($slug === 'komisaris' || $slug === 'direksi')
+                                {{-- ================= KOMISARIS & DIREKSI ================= --}}
+                                @if (in_array($slug, ['komisaris', 'direksi']))
+
+                                    <div class="text-center mb-16">
+                                        <div
+                                            class="inline-flex items-center gap-3 px-6 py-2 rounded-full
+                                                bg-blue-50 text-bpr-blue text-[10px]
+                                                font-black uppercase tracking-[0.4em]
+                                                mb-6 border border-blue-100">
+                                            <i class="bi bi-diagram-3-fill text-bpr-gold"></i>
+
+                                        <div class="flex justify-center items-center gap-3">
+                                            <span class="w-16 h-[4px] bg-bpr-gold rounded-full"></span>
+                                            <span class="w-2 h-2 bg-bpr-blue/20 rounded-full"></span>
+                                        </div>
+                                    </div>
+
                                     <div class="grid grid-cols-1 gap-12">
-                                        @foreach ($data['members'] as $member)
-                                            <div
-                                                class="group bg-white rounded-[3rem] p-6 lg:p-10 border border-slate-100 hover:shadow-2xl transition-all duration-500">
-                                                <div class="flex flex-col lg:flex-row gap-12 items-center">
-                                                    <div
-                                                        class="w-full lg:w-72 flex-shrink-0 relative overflow-hidden rounded-[2.5rem] aspect-[3/4] shadow-xl">
-                                                        {{-- Grayscale dihapus, gambar sekarang berwarna normal --}}
-                                                        <img src="{{ asset($member['photo'] ?? $member['image']) }}"
-                                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
 
-                                                        {{-- Overlay gradient opsional, bisa dihapus jika ingin benar-benar polos --}}
+                                        @forelse ($managements as $member)
+                                            <div
+                                                class="group bg-white rounded-[3rem] p-6 lg:p-10
+                                                    border border-slate-100
+                                                    hover:shadow-2xl transition-all duration-500">
+
+                                                <div class="flex flex-col lg:flex-row gap-12 items-center">
+
+                                                    {{-- FOTO --}}
+                                                    <div
+                                                        class="w-full lg:w-72 flex-shrink-0
+                                                            relative overflow-hidden
+                                                            rounded-[2.5rem] aspect-[3/4]
+                                                            shadow-xl">
+
+                                                        <img src="{{ asset('storage/' . $member->image) }}"
+                                                            alt="{{ $member->name }}"
+                                                            class="w-full h-full object-cover
+                                                                    transition-transform duration-700
+                                                                    group-hover:scale-105">
+
                                                         <div
-                                                            class="absolute inset-0 bg-gradient-to-t from-bpr-blue/20 to-transparent">
+                                                            class="absolute inset-0
+                                                                bg-gradient-to-t
+                                                                from-[#00326B]/30
+                                                                to-transparent">
                                                         </div>
                                                     </div>
 
+                                                    {{-- INFO --}}
                                                     <div class="flex-1 text-center lg:text-left">
+
                                                         <div class="mb-6">
-                                                            <h3 class="text-3xl lg:text-4xl font-black text-bpr-blue mb-2">
-                                                                {{ $member['name'] }}
+                                                            <h3
+                                                                class="text-3xl lg:text-4xl
+                                                                    font-black text-bpr-blue mb-2">
+                                                                {{ $member->name }}
                                                             </h3>
+
                                                             <span
-                                                                class="inline-block px-5 py-2 rounded-xl bg-bpr-gold text-bpr-blue text-[10px] font-black uppercase tracking-widest shadow-md">
-                                                                {{ $member['position'] }}
+                                                                class="inline-block px-5 py-2
+                                                                    rounded-xl bg-bpr-gold
+                                                                    text-bpr-blue text-[10px]
+                                                                    font-black uppercase
+                                                                    tracking-widest shadow-md">
+                                                                {{ $member->position }}
                                                             </span>
                                                         </div>
 
                                                         <p
-                                                            class="text-slate-500 text-lg mb-8 line-clamp-3 italic font-medium leading-relaxed">
-                                                            {{ $member['summary'] ?? $member['excerpt'] }}
+                                                            class="text-slate-500 text-lg mb-8
+                                                                line-clamp-3 italic font-medium
+                                                                leading-relaxed">
+                                                            {{ $member->excerpt }}
                                                         </p>
 
-                                                        <a href="{{ url('/perusahaan/' . $slug . '/' . $member['slug']) }}"
-                                                            class="inline-flex items-center gap-3 text-bpr-blue font-black uppercase text-[11px] tracking-widest hover:gap-6 transition-all">
-                                                            Detailed Bio
+                                                        <a href="{{ route('perusahaan.detail', [$slug, $member->slug]) }}"
+                                                        class="inline-flex items-center gap-3
+                                                                text-bpr-blue font-black uppercase
+                                                                text-[11px] tracking-widest
+                                                                hover:gap-6 transition-all">
+                                                            Detail Profil
                                                             <i class="bi bi-arrow-right text-bpr-gold text-xl"></i>
                                                         </a>
+
                                                     </div>
                                                 </div>
                                             </div>
-                                        @endforeach
+                                        @empty
+                                            <div class="text-center text-slate-400 text-lg">
+                                                Data {{ ucfirst($slug) }} belum tersedia
+                                            </div>
+                                        @endforelse
                                     </div>
                                 @endif
-
                             </div>
                         </div>
                     </div>

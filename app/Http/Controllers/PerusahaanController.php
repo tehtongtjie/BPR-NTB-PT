@@ -2,52 +2,66 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Management;
+use Illuminate\Http\Request;
+
 class PerusahaanController extends Controller
 {
-    public function show($slug)
+    /**
+     * HALAMAN PERUSAHAAN (SEJARAH, VISI MISI, DIREKSI, KOMISARIS)
+     */
+    public function show(string $slug)
     {
-        if ($slug === 'komisaris') {
-            $data = [
-                'members' => config('komisaris'),
-            ];
-        }
-        elseif ($slug === 'direksi') {
-            $data = [
-                'members' => config('direksi'),
-            ];
-        }
-        else {
-            $data = config("perusahaan.$slug");
+        /**
+         * 1. Ambil data statis dari config
+         * (sejarah, visi-misi, budaya, tata-kelola, dll)
+         */
+        $data = config("perusahaan.$slug");
+
+        // kalau slug tidak ada di config & bukan direksi/komisaris
+        abort_if(!$data && !in_array($slug, ['direksi', 'komisaris']), 404);
+
+        /**
+         * 2. Default managements (WAJIB ADA walau kosong)
+         */
+        $managements = collect();
+
+        /**
+         * 3. Jika slug direksi / komisaris → ambil dari DB
+         */
+        if (in_array($slug, ['direksi', 'komisaris'])) {
+            $managements = Management::where('type', $slug)
+                ->where('is_active', 1)
+                ->orderBy('order')
+                ->get();
         }
 
-        if (!$data) {
-            abort(404);
-        }
-
-        return view('pages.perusahaan.show', compact('data', 'slug'));
+        /**
+         * 4. Return ke view
+         */
+        return view('pages.perusahaan.show', [
+            'slug'        => $slug,
+            'data'        => $data,        // dari config
+            'managements' => $managements, // dari database
+        ]);
     }
 
-    public function komisarisDetail($slug)
+    /**
+     * DETAIL DIREKSI / KOMISARIS (PUBLIK)
+     * URL: /perusahaan/{direksi|komisaris}/{management:slug}
+     */
+    public function detail(string $slug, Management $management)
     {
-        $data = collect(config('komisaris'))
-            ->firstWhere('slug', $slug);
+        // Validasi ekstra (opsional tapi aman)
+        abort_if(
+            !in_array($slug, ['direksi', 'komisaris']) ||
+            $management->type !== $slug,
+            404
+        );
 
-        if (!$data) {
-            abort(404);
-        }
-
-        return view('pages.perusahaan.komisaris-detail', compact('data'));
-    }
-
-    public function direksiDetail($slug)
-    {
-        $data = collect(config('direksi'))
-            ->firstWhere('slug', $slug);
-
-        if (!$data) {
-            abort(404);
-        }
-
-        return view('pages.perusahaan.direksi-detail', compact('data'));
+        return view('pages.perusahaan.direksi-detail', [
+            'slug'       => $slug,
+            'management' => $management,
+        ]);
     }
 }
