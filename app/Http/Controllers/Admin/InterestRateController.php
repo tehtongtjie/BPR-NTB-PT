@@ -42,25 +42,30 @@ class InterestRateController extends Controller
             'title'     => 'required|string|max:100',
             'month'     => 'required|integer|min:1|max:12',
             'year'      => 'required|integer|min:2000',
-            'is_active' => 'required|boolean',
+            'is_active' => 'sometimes|boolean',
 
-            'tabungans'         => 'nullable|array',
-            'tabungans.*.type' => 'required|string|max:50',
-            'tabungans.*.rate' => 'required|numeric|min:0',
+            // TABUNGAN (DINAMIS & AMAN)
+            'tabungans'             => 'nullable|array',
+            'tabungans.*.type'      => 'sometimes|required|string|max:50',
+            'tabungans.*.rate'      => 'sometimes|required|numeric|min:0',
 
-            'depositos'         => 'nullable|array',
-            'depositos.*.tenor'=> 'required|integer|min:1',
-            'depositos.*.rate' => 'required|numeric|min:0',
-            'depositos.*.label'=> 'nullable|string|max:50',
+            // DEPOSITO
+            'depositos'             => 'nullable|array',
+            'depositos.*.tenor'     => 'sometimes|required|integer|min:1',
+            'depositos.*.rate'      => 'sometimes|required|numeric|min:0',
+            'depositos.*.label'     => 'nullable|string|max:50',
 
-            'lps_rate'             => 'required|numeric|min:0',
-            'lps_note'             => 'nullable|string|max:255',
-            'lps_verification_url' => 'nullable|url',
+            // LPS
+            'lps_rate'              => 'required|numeric|min:0',
+            'lps_note'              => 'nullable|string|max:255',
+            'lps_verification_url'  => 'nullable|url',
         ]);
 
         DB::transaction(function () use ($request) {
 
-            if ($request->is_active) {
+            $isActive = $request->boolean('is_active');
+
+            if ($isActive) {
                 InterestRatePeriod::where('is_active', true)
                     ->update(['is_active' => false]);
             }
@@ -69,26 +74,43 @@ class InterestRateController extends Controller
                 'title'     => $request->title,
                 'month'     => $request->month,
                 'year'      => $request->year,
-                'is_active' => $request->is_active,
+                'is_active' => $isActive,
             ]);
 
-            foreach ($request->tabungans ?? [] as $t) {
-                InterestRateTabungan::create([
-                    'interest_rate_period_id' => $period->id,
-                    'tabungan_type'           => $t['type'],
-                    'rate'                    => $t['rate'],
-                ]);
-            }
+            /**
+             * ================= TABUNGAN
+             */
+            collect($request->tabungans ?? [])
+                ->filter(fn ($t) =>
+                    !empty($t['type']) && $t['rate'] !== null
+                )
+                ->each(function ($t) use ($period) {
+                    InterestRateTabungan::create([
+                        'interest_rate_period_id' => $period->id,
+                        'tabungan_type'           => $t['type'],
+                        'rate'                    => $t['rate'],
+                    ]);
+                });
 
-            foreach ($request->depositos ?? [] as $d) {
-                InterestRateDeposito::create([
-                    'interest_rate_period_id' => $period->id,
-                    'tenor_month'             => $d['tenor'],
-                    'rate'                    => $d['rate'],
-                    'label'                   => $d['label'] ?? null,
-                ]);
-            }
+            /**
+             * ================= DEPOSITO
+             */
+            collect($request->depositos ?? [])
+                ->filter(fn ($d) =>
+                    !empty($d['tenor']) && $d['rate'] !== null
+                )
+                ->each(function ($d) use ($period) {
+                    InterestRateDeposito::create([
+                        'interest_rate_period_id' => $period->id,
+                        'tenor_month'             => $d['tenor'],
+                        'rate'                    => $d['rate'],
+                        'label'                   => $d['label'] ?? null,
+                    ]);
+                });
 
+            /**
+             * ================= LPS
+             */
             InterestRateLps::create([
                 'interest_rate_period_id' => $period->id,
                 'rate'                    => $request->lps_rate,
@@ -111,7 +133,7 @@ class InterestRateController extends Controller
     }
 
     /**
-     * UPDATE (FIX AMAN)
+     * UPDATE (AMAN TOTAL)
      */
     public function update(Request $request, InterestRatePeriod $period)
     {
@@ -119,24 +141,27 @@ class InterestRateController extends Controller
             'title'     => 'required|string|max:100',
             'month'     => 'required|integer|min:1|max:12',
             'year'      => 'required|integer|min:2000',
-            'is_active' => 'required|boolean',
+            'is_active' => 'sometimes|boolean',
 
-            'tabungans'         => 'nullable|array',
-            'tabungans.*.type' => 'required|string|max:50',
-            'tabungans.*.rate' => 'required|numeric|min:0',
+            'tabungans'             => 'nullable|array',
+            'tabungans.*.type'      => 'sometimes|required|string|max:50',
+            'tabungans.*.rate'      => 'sometimes|required|numeric|min:0',
 
-            'depositos'         => 'nullable|array',
-            'depositos.*.tenor'=> 'required|integer|min:1',
-            'depositos.*.rate' => 'required|numeric|min:0',
+            'depositos'             => 'nullable|array',
+            'depositos.*.tenor'     => 'sometimes|required|integer|min:1',
+            'depositos.*.rate'      => 'sometimes|required|numeric|min:0',
+            'depositos.*.label'     => 'nullable|string|max:50',
 
-            'lps_rate'             => 'required|numeric|min:0',
-            'lps_note'             => 'nullable|string|max:255',
-            'lps_verification_url' => 'nullable|url',
+            'lps_rate'              => 'required|numeric|min:0',
+            'lps_note'              => 'nullable|string|max:255',
+            'lps_verification_url'  => 'nullable|url',
         ]);
 
         DB::transaction(function () use ($request, $period) {
 
-            if ($request->is_active) {
+            $isActive = $request->boolean('is_active');
+
+            if ($isActive) {
                 InterestRatePeriod::where('id','!=',$period->id)
                     ->update(['is_active' => false]);
             }
@@ -145,42 +170,43 @@ class InterestRateController extends Controller
                 'title'     => $request->title,
                 'month'     => $request->month,
                 'year'      => $request->year,
-                'is_active' => $request->is_active,
+                'is_active' => $isActive,
             ]);
 
             /**
-             * ================= TABUNGAN (AMAN)
+             * ================= TABUNGAN (RESET TOTAL)
              */
-            $validTabungans = collect($request->tabungans ?? [])
+            InterestRateTabungan::where('interest_rate_period_id',$period->id)->delete();
+
+            collect($request->tabungans ?? [])
                 ->filter(fn ($t) =>
                     !empty($t['type']) && $t['rate'] !== null
-                );
-
-            if ($validTabungans->count() > 0) {
-                InterestRateTabungan::where('interest_rate_period_id',$period->id)->delete();
-
-                foreach ($validTabungans as $t) {
+                )
+                ->each(function ($t) use ($period) {
                     InterestRateTabungan::create([
                         'interest_rate_period_id' => $period->id,
                         'tabungan_type'           => $t['type'],
                         'rate'                    => $t['rate'],
                     ]);
-                }
-            }
+                });
 
             /**
-             * ================= DEPOSITO
+             * ================= DEPOSITO (RESET TOTAL)
              */
             InterestRateDeposito::where('interest_rate_period_id',$period->id)->delete();
 
-            foreach ($request->depositos ?? [] as $d) {
-                InterestRateDeposito::create([
-                    'interest_rate_period_id' => $period->id,
-                    'tenor_month'             => $d['tenor'],
-                    'rate'                    => $d['rate'],
-                    'label'                   => $d['label'] ?? null,
-                ]);
-            }
+            collect($request->depositos ?? [])
+                ->filter(fn ($d) =>
+                    !empty($d['tenor']) && $d['rate'] !== null
+                )
+                ->each(function ($d) use ($period) {
+                    InterestRateDeposito::create([
+                        'interest_rate_period_id' => $period->id,
+                        'tenor_month'             => $d['tenor'],
+                        'rate'                    => $d['rate'],
+                        'label'                   => $d['label'] ?? null,
+                    ]);
+                });
 
             /**
              * ================= LPS

@@ -22,7 +22,7 @@
                 <i class="bi bi-envelope-fill"></i>
             </div>
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Total Pesan</p>
+                <p class="text-[10px] font-bold text-slate-400 uppercase leading-none mb-1">Total Pesan</p>
                 <p class="text-lg font-black text-slate-700">{{ $messages->count() }}</p>
             </div>
         </div>
