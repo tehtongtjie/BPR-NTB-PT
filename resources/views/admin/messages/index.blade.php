@@ -45,18 +45,18 @@
 
                 <tbody class="divide-y divide-slate-50">
                     @forelse ($messages as $message)
-                        <tr
-                            class="hover:bg-blue-50/30 transition-all duration-300 group
-                            {{ $message->status === 'baru' ? 'bg-yellow-50/30' : '' }}">
+                        <tr class="bg-white hover:bg-blue-50/30 transition-all duration-300 group">
 
                             {{-- TANGGAL --}}
                             <td class="px-8 py-6">
                                 <span class="text-sm font-black text-slate-700">
                                     {{ $message->created_at->translatedFormat('d F Y') }}
                                 </span>
+
                                 @if ($message->status === 'baru')
                                     <span
-                                        class="inline-flex mt-1 px-3 py-1 rounded-lg bg-yellow-100 text-[10px] font-black text-yellow-700 uppercase">
+                                        class="inline-flex mt-1 px-3 py-1 rounded-lg
+                                        bg-slate-100 text-[10px] font-black text-slate-600 uppercase">
                                         Baru
                                     </span>
                                 @endif
@@ -84,14 +84,35 @@
 
                             {{-- AKSI --}}
                             <td class="px-8 py-6 text-center">
-                                <button type="button"
-                                    onclick="openModalMessage('{{ $message->id }}')"
-                                    class="group-hover:scale-110 transition-all duration-300 p-3
-                                    bg-[#00326B] text-white rounded-2xl shadow-lg shadow-blue-900/20
-                                    hover:bg-yellow-400 hover:text-blue-900">
-                                    <i class="bi bi-eye-fill"></i>
-                                </button>
+                                <div class="flex items-center justify-center gap-3">
+
+                                    {{-- VIEW (kalau mau pakai modal lagi) --}}
+                                    {{-- 
+                                    <button type="button"
+                                        onclick="openModalMessage('{{ $message->id }}')"
+                                        class="p-3 bg-[#00326B] text-white rounded-2xl
+                                        hover:bg-blue-700 transition-all duration-300 shadow-lg shadow-blue-900/20">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </button>
+                                    --}}
+
+                                    {{-- DELETE --}}
+                                    <form action="{{ route('admin.messages.destroy', $message->id) }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus pesan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                            class="p-3 bg-red-500 text-white rounded-2xl
+                                            hover:bg-red-600 transition-all duration-300 shadow-lg shadow-red-500/20">
+                                            <i class="bi bi-trash-fill"></i>
+                                        </button>
+                                    </form>
+
+                                </div>
                             </td>
+
                         </tr>
                     @empty
                         <tr>
