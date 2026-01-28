@@ -101,7 +101,7 @@
         {{-- ================= KONTEN ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">Konten Artikel</label>
-            <textarea name="content" rows="8"
+            <textarea name="content" id="content" rows="8"
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('content', $article->content) }}</textarea>
         </div>
@@ -138,3 +138,44 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE_API_KEY') }}/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#content',
+        height: 420,
+        menubar: true,
+
+        plugins: [
+            'advlist autolink lists link image charmap preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table help wordcount'
+        ],
+
+        toolbar:
+            'undo redo | blocks | ' +
+            'bold italic underline | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | ' +
+            'link image | code fullscreen',
+
+        setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave();
+            });
+        },
+
+        content_style: `
+            body {
+                font-family: Inter, system-ui, -apple-system, sans-serif;
+                font-size: 14px;
+            }
+        `
+    });
+</script>
+@endpush
+
