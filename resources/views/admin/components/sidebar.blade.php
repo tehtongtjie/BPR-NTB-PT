@@ -78,6 +78,23 @@
             </svg>
             <span class="font-bold">Publikasi</span>
         </a>
+        <a href="{{ route('admin.messages.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
+            {{ request()->is('admin/messages*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/messages*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2v10z" />
+            </svg>
+
+            <div class="flex flex-col leading-tight">
+                <span class="font-bold">Message</span>
+                <span class="text-[9px] font-medium text-slate-400">
+                    Pesan Masuk
+                </span>
+            </div>
+        </a>
 
         {{-- LABEL: KEAMANAN --}}
         <div class="px-4 mt-6 mb-2">

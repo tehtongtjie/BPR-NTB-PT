@@ -85,43 +85,44 @@
         </div>
     </section>
 
-    {{-- ================= PRODUK UNGGULAN (DINAMIS, MAX 3) ================= --}}
-    <section class="relative py-12 bg-[#F8FAFC] overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+{{-- ================= PRODUK UNGGULAN (DINAMIS, MAX 3) ================= --}}
+<section class="relative py-12 bg-[#F8FAFC] overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-            {{-- Header --}}
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
-                <div class="space-y-3">
-                    <div class="inline-flex items-center gap-3">
-                        <span class="h-[1px] w-12 bg-blue-600"></span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">
-                            Smart Financial Solutions
-                        </span>
-                    </div>
-                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">
-                        Produk <span class="text-blue-600 italic font-light">Unggulan</span>
-                    </h2>
+        {{-- Header --}}
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div class="space-y-3">
+                <div class="inline-flex items-center gap-3">
+                    <span class="h-[1px] w-12 bg-blue-600"></span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">
+                        Smart Financial Solutions
+                    </span>
                 </div>
-                <div class="hidden md:block">
-                    <p class="text-slate-500 max-w-xs text-right italic font-medium">
-                        Pilih solusi perbankan yang dirancang khusus untuk masa depan Anda.
-                    </p>
-                </div>
+                <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">
+                    Produk <span class="text-blue-600 italic font-light">Unggulan</span>
+                </h2>
             </div>
+            <div class="hidden md:block">
+                <p class="text-slate-500 max-w-xs text-right italic font-medium">
+                    Pilih solusi perbankan yang dirancang khusus untuk masa depan Anda.
+                </p>
+            </div>
+        </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {{-- ================= FEATURED PROMO (KIRI) ================= --}}
-                @if($featured)
-                <div class="lg:col-span-7 group relative">
+            {{-- ================= FEATURED (KIRI) ================= --}}
+            @if($featured)
+            <div class="lg:col-span-7 group relative">
+                <a href="{{ route('tabungan.show', $featured->slug) }}">
                     <div
                         class="relative z-10 h-full min-h-[500px] overflow-hidden rounded-[3rem]
-                            shadow-2xl border border-white">
+                               shadow-2xl border border-white">
 
                         <img
-                            src="{{ asset('storage/' .$featured->image) }}"
+                            src="{{ asset('storage/'.$featured->image) }}"
                             class="absolute inset-0 w-full h-full object-cover
-                                transition-transform duration-1000 group-hover:scale-110"
+                                   transition-transform duration-1000 group-hover:scale-110"
                             alt="{{ $featured->title }}">
 
                         <div class="absolute inset-0 bg-gradient-to-t
@@ -131,7 +132,7 @@
                             <div class="flex items-center gap-3 mb-4">
                                 <span
                                     class="px-4 py-1.5 rounded-full bg-[#fbbf24]
-                                        text-[#00326B] text-[10px] font-black uppercase tracking-widest">
+                                           text-[#00326B] text-[10px] font-black uppercase tracking-widest">
                                     Most Popular
                                 </span>
                                 <i class="bi bi-trophy-fill text-[#fbbf24]"></i>
@@ -145,79 +146,78 @@
                                 {{ $featured->short_desc }}
                             </p>
 
-                            <a href="#"
-                            class="inline-flex items-center gap-4 text-xs font-black uppercase tracking-widest">
-                                <span>Buka Produk</span>
+                            <div
+                                class="inline-flex items-center gap-4 text-xs font-black uppercase tracking-widest">
+                                <span>Buka Tabungan</span>
                                 <div
                                     class="w-10 h-10 rounded-full bg-white/10
-                                        flex items-center justify-center">
+                                           flex items-center justify-center">
                                     <i class="bi bi-arrow-up-right"></i>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                @endif
+                </a>
+            </div>
+            @endif
 
-                {{-- ================= PROMO LAINNYA (KANAN, MAX 2) ================= --}}
-                <div class="lg:col-span-5 flex flex-col gap-6">
-                    @foreach($others as $promo)
-                        <div
-                            class="group relative bg-white rounded-[2.5rem] p-6
-                                border border-slate-100 shadow-sm
-                                transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
+            {{-- ================= PROMO LAINNYA (KANAN) ================= --}}
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                @foreach($others as $promo)
+                    <a href="{{ route('tabungan.show', $promo->slug) }}"
+                       class="group relative bg-white rounded-[2.5rem] p-6
+                              border border-slate-100 shadow-sm
+                              transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
 
-                            <div class="flex items-center gap-6">
-                                <div
-                                    class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
-                                        bg-slate-50 border border-slate-100 shadow-inner">
-                                    <img
-                                        src="{{ asset('storage/' .$promo->image) }}"
-                                        class="w-full h-full object-contain p-2
-                                            group-hover:scale-110 transition-transform duration-500">
-                                </div>
-
-                                <div class="space-y-2">
-                                    <h4
-                                        class="text-xl font-black text-[#00326B]
-                                            group-hover:text-blue-600 transition-colors leading-tight">
-                                        {{ $promo->title }}
-                                    </h4>
-
-                                    <p class="text-slate-500 text-xs italic line-clamp-2">
-                                        {{ $promo->short_desc }}
-                                    </p>
-                                </div>
-                            </div>
-
-                            <a href="#" class="absolute inset-0"></a>
-                        </div>
-                    @endforeach
-
-                    {{-- CTA --}}
-                    <div
-                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6
-                            transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
                         <div class="flex items-center gap-6">
                             <div
-                                class="w-28 h-28 shrink-0 rounded-2xl bg-white/10
-                                    flex items-center justify-center text-[#fbbf24]">
-                                <i class="bi bi-grid-fill text-3xl"></i>
+                                class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
+                                       bg-slate-50 border border-slate-100 shadow-inner">
+                                <img
+                                    src="{{ asset('storage/'.$promo->image) }}"
+                                    class="w-full h-full object-contain p-2
+                                           group-hover:scale-110 transition-transform duration-500">
                             </div>
-                            <div class="space-y-1">
-                                <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
-                                <p class="text-white/60 text-xs italic">
-                                    Lihat seluruh produk BPR NTB.
+
+                            <div class="space-y-2">
+                                <h4
+                                    class="text-xl font-black text-[#00326B]
+                                           group-hover:text-blue-600 transition-colors leading-tight">
+                                    {{ $promo->title }}
+                                </h4>
+
+                                <p class="text-slate-500 text-xs italic line-clamp-2">
+                                    {{ $promo->short_desc }}
                                 </p>
                             </div>
                         </div>
-                        <a href="#" class="absolute inset-0"></a>
-                    </div>
+                    </a>
+                @endforeach
 
-                </div>
+                {{-- CTA --}}
+                <a href="#"
+                   class="group relative bg-[#00326B] rounded-[2.5rem] p-6
+                          transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
+                    <div class="flex items-center gap-6">
+                        <div
+                            class="w-28 h-28 shrink-0 rounded-2xl bg-white/10
+                                   flex items-center justify-center text-[#fbbf24]">
+                            <i class="bi bi-grid-fill text-3xl"></i>
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
+                            <p class="text-white/60 text-xs italic">
+                                Lihat seluruh tabungan BPR NTB.
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
 
     {{-- ================= SUKU BUNGA SECTION (PREMIUM BENTO STYLE) ================= --}}
@@ -694,29 +694,92 @@
                                     class="text-blue-600 italic font-light">Pesan</span></h2>
                         </div>
 
-                        <form action="#" class="space-y-5">
+                        <form action="{{ route('messages.store') }}" method="POST" class="space-y-5">
+                            @csrf
+
+                            {{-- ALERT SUCCESS --}}
+                            @if (session('success'))
+                                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-bold">
+                                    <i class="bi bi-check-circle-fill mr-2"></i>
+                                    {{ session('success') }}
+                                </div>
+                            @endif
+
+                            {{-- NAMA --}}
                             <div class="relative group/input">
-                                <input type="text" placeholder="Nama Lengkap"
-                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value="{{ old('name') }}"
+                                    placeholder="Nama Lengkap"
+                                    required
+                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
+                                        focus:ring-2 focus:ring-blue-600 transition-all outline-none
+                                        text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                @error('name')
+                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
                             </div>
 
+                            {{-- EMAIL & TELEPON --}}
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <input type="email" placeholder="Alamat Email"
-                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
-                                <input type="tel" placeholder="Nomor Telepon"
-                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                <div>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value="{{ old('email') }}"
+                                        placeholder="Alamat Email"
+                                        required
+                                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
+                                            focus:ring-2 focus:ring-blue-600 transition-all outline-none
+                                            text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                    @error('email')
+                                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+
+                                <div>
+                                    <input
+                                        type="tel"
+                                        name="phone"
+                                        value="{{ old('phone') }}"
+                                        placeholder="Nomor Telepon"
+                                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
+                                            focus:ring-2 focus:ring-blue-600 transition-all outline-none
+                                            text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
+                                    @error('phone')
+                                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
                             </div>
 
-                            <textarea rows="4" placeholder="Apa yang bisa kami bantu?"
-                                class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 transition-all outline-none text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic resize-none"></textarea>
+                            {{-- PESAN --}}
+                            <div>
+                                <textarea
+                                    name="message"
+                                    rows="4"
+                                    required
+                                    placeholder="Apa yang bisa kami bantu?"
+                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
+                                        focus:ring-2 focus:ring-blue-600 transition-all outline-none
+                                        text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic resize-none">{{ old('message') }}</textarea>
+                                @error('message')
+                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
 
+                            {{-- SUBMIT --}}
                             <button type="submit"
-                                class="group/btn w-full bg-[#00326B] text-white font-black py-5 rounded-2xl shadow-xl shadow-blue-900/20 transition-all hover:bg-blue-700 active:scale-[0.98] flex items-center justify-center gap-3 uppercase tracking-[0.2em] text-xs">
+                                class="group/btn w-full bg-[#00326B] text-white font-black py-5 rounded-2xl
+                                    shadow-xl shadow-blue-900/20 transition-all hover:bg-blue-700
+                                    active:scale-[0.98] flex items-center justify-center gap-3
+                                    uppercase tracking-[0.2em] text-xs">
                                 <span>Kirim Sekarang</span>
-                                <i
-                                    class="bi bi-send-fill transition-transform group-hover/btn:translate-x-2 group-hover/btn:-translate-y-1"></i>
+                                <i class="bi bi-send-fill transition-transform
+                                        group-hover/btn:translate-x-2 group-hover/btn:-translate-y-1"></i>
                             </button>
                         </form>
+
                     </div>
                 </div>
 

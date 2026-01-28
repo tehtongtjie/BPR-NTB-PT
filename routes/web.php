@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\AuctionController;
 use App\Http\Controllers\PromoPublicController;
 use App\Http\Controllers\Admin\JaringanController;
 use App\Http\Controllers\WhistleBlowingController;
+use App\Http\Controllers\MessageController;
+
 
 
 /*
@@ -165,12 +167,22 @@ Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
         ->name('wbs.store');
 });
 
+Route::post('/kirim-pesan', [MessageController::class, 'store'])
+    ->name('messages.store');
+
 /*
 |--------------------------------------------------------------------------
 | ADMIN PANEL (DASHBOARD + CRUD)
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->group(function () {
+
+        // ===== MESSAGE (CONTACT FORM) =====
+    Route::prefix('messages')->name('admin.messages.')->group(function () {
+        Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
+        Route::get('/{id}', [MessageController::class, 'show'])->name('show');
+        Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
+    });
 
     // 1. ===== WHISTLE BLOWING SYSTEM (URL: /admin/wbs) =====
     // Diletakkan di luar grup 'main' agar tidak nested/404
