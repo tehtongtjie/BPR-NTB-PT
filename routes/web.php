@@ -13,7 +13,7 @@ use App\Http\Controllers\{
     GaleriController,
     LelangController,
     KarirController,
-    EprocController,
+    RecommenderController,
     LaporanController
 };
 
@@ -73,17 +73,17 @@ Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
     Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
 });
 
+// Simulasi Pages
 Route::name('pages.simulasi.')->prefix('simulasi')->group(function () {
     Route::get('/deposito', fn() => view('pages.simulasi.deposito'))->name('deposito');
     Route::get('/kredit', fn() => view('pages.simulasi.kredit'))->name('kredit');
+
+    // Pindahkan permintaan ke dalam group agar namanya konsisten
+    Route::get('/{jenis}/permintaan', function ($jenis) {
+        if (!in_array($jenis, ['deposito', 'kredit'])) abort(404);
+        return view('users.simulasi.permintaan-simulasi', compact('jenis'));
+    })->name('permintaan'); // Namanya akan menjadi pages.simulasi.permintaan
 });
-
-Route::get('/simulasi/{jenis}/permintaan', function ($jenis) {
-    if (!in_array($jenis, ['deposito', 'kredit'])) abort(404);
-    return view('users.simulasi.permintaan-simulasi', compact('jenis'));
-})->name('simulasi.permintaan');
-
-Route::post('/simulasi/permintaan/submit', [SimulasiController::class, 'submit'])->name('simulasi.permintaan.submit');
 
 /*
 |--------------------------------------------------------------------------
@@ -296,3 +296,5 @@ Route::get('/admin/{pathToken?}', function (Request $request, $pathToken = null)
 
     abort(404);
 });
+
+Route::get('/asisten-cerdas', [RecommenderController::class, 'index'])->name('recommender.index');

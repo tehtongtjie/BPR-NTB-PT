@@ -25,14 +25,12 @@
                         <span>{{ $runningText }}</span>
                     </div>
                 </div>
-
                 <div class="hidden md:flex items-center gap-5 shrink-0 ml-6 pl-6 border-l border-white/10 h-9">
-                    <a href="#" class="text-white/60 hover:text-[#fbbf24] transition-all hover:scale-110"><i
-                            class="bi bi-facebook"></i></a>
-                    <a href="#" class="text-white/60 hover:text-[#fbbf24] transition-all hover:scale-110"><i
-                            class="bi bi-instagram"></i></a>
-                    <a href="#" class="text-white/60 hover:text-[#fbbf24] transition-all hover:scale-110"><i
-                            class="bi bi-twitter-x"></i></a>
+                    {{-- Instagram --}}
+                    <a href="https://surl.li/cfzadj" target="_blank" rel="noopener noreferrer"
+                        class="text-white/60 hover:text-[#fbbf24] transition-all hover:scale-110">
+                        <i class="bi bi-instagram"></i>
+                    </a>
                 </div>
             </div>
         </div>
