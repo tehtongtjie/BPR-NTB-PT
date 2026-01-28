@@ -43,13 +43,36 @@
             <label class="text-sm font-medium text-slate-600">
                 Kategori
             </label>
-            <input type="text"
-                   name="category"
-                   value="{{ old('category') }}"
-                   placeholder="Contoh: Konstruksi"
-                   class="w-full rounded-xl bg-slate-50 border border-slate-200
-                          px-4 py-2.5 focus:ring-4 focus:ring-[#00326B]/10">
+
+            <select
+                name="category"
+                class="w-full rounded-xl bg-slate-50 border border-slate-200
+                    px-4 py-2.5 focus:ring-4 focus:ring-[#00326B]/10">
+
+                <option value="">-- Pilih Kategori --</option>
+
+                <option value="JASA & KONSULTASI"
+                    {{ old('category') === 'JASA & KONSULTASI' ? 'selected' : '' }}>
+                    JASA & KONSULTASI
+                </option>
+
+                <option value="KONSTRUKSI"
+                    {{ old('category') === 'KONSTRUKSI' ? 'selected' : '' }}>
+                    KONSTRUKSI
+                </option>
+
+                <option value="TEKNOLOGI"
+                    {{ old('category') === 'TEKNOLOGI' ? 'selected' : '' }}>
+                    TEKNOLOGI
+                </option>
+
+                <option value="LOGISTIK"
+                    {{ old('category') === 'LOGISTIK' ? 'selected' : '' }}>
+                    LOGISTIK
+                </option>
+            </select>
         </div>
+
 
         {{-- ================= DESKRIPSI SINGKAT ================= --}}
         <div class="space-y-1.5">

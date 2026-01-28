@@ -47,18 +47,25 @@
             <label class="text-sm font-medium text-slate-600">
                 Kategori
             </label>
-            <input type="text"
-                   name="category"
-                   value="{{ old('category') }}"
-                   placeholder="Contoh: Internal"
-                   required
-                   class="w-full rounded-xl
-                          bg-slate-50 border border-slate-200
-                          px-4 py-2.5 text-slate-700
-                          focus:bg-white
-                          focus:border-[#00326B]
-                          focus:ring-4 focus:ring-[#00326B]/10
-                          transition">
+            <select name="category"
+                    required
+                    class="w-full rounded-xl
+                        bg-slate-50 border border-slate-200
+                        px-4 py-2.5 text-slate-700
+                        focus:bg-white
+                        focus:border-[#00326B]
+                        focus:ring-4 focus:ring-[#00326B]/10
+                        transition">
+
+                <option value="" disabled {{ old('category') ? '' : 'selected' }}>
+                    -- Pilih Kategori --
+                </option>
+
+                <option value="EKONOMI" {{ old('category') == 'EKONOMI' ? 'selected' : '' }}>EKONOMI</option>
+                <option value="CSR" {{ old('category') == 'CSR' ? 'selected' : '' }}>CSR</option>
+                <option value="INTERNAL" {{ old('category') == 'INTERNAL' ? 'selected' : '' }}>INTERNAL</option>
+                <option value="PENGHARGAAN" {{ old('category') == 'PENGHARGAAN' ? 'selected' : '' }}>PENGHARGAAN</option>
+            </select>
         </div>
 
         {{-- ================= PENULIS ================= --}}

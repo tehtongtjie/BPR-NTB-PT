@@ -39,7 +39,7 @@
 
             <input type="file"
                    name="image"
-                   accept="image/jpeg,image/png,image/webp"
+                   accept="image/*"
                    required
                    class="block w-full text-sm text-slate-600
                           file:mr-4

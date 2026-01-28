@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Promo;
 use App\Models\Banner;
 use App\Models\InterestRate;
-use App\Models\Kantor;
+use App\Models\Article;
 
 class HomeController extends Controller
 {
@@ -20,11 +20,16 @@ class HomeController extends Controller
 
         $featured = $promos->first();      // 1 besar kiri
         $others   = $promos->skip(1);       // max 2 kanan
+        $articles = Article::where('is_published', true)
+        ->orderBy('published_at', 'desc')
+        ->take(4)
+        ->get();
 
         return view('pages.home', compact(
             'banners',
             'featured',
-            'others'
+            'others',
+            'articles'
         ));
     }
 }

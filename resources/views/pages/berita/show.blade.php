@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $berita['judul'] . ' - BPR NTB')
+@section('title', $article->title . ' - BPR NTB')
 
 @section('content')
     {{-- Jarak pt-32 mobile, lg:pt-40 desktop agar tidak nabrak navbar --}}
@@ -14,7 +14,7 @@
                     <li><i class="bi bi-circle-fill text-[4px]"></i></li>
                     <li><a href="{{ route('berita.index') }}" class="hover:text-[#00326B] transition-colors">Berita</a></li>
                     <li><i class="bi bi-circle-fill text-[4px]"></i></li>
-                    <li class="text-[#00326B] line-clamp-1">{{ $berita['judul'] }}</li>
+                    <li class="text-[#00326B] line-clamp-1">{{ $article->title }}</li>
                 </ol>
             </nav>
         </div>
@@ -29,14 +29,15 @@
                         <div class="inline-flex items-center gap-3 mb-6">
                             <span
                                 class="px-4 py-1.5 rounded-full bg-blue-50 text-blue-600 text-[10px] font-black uppercase tracking-widest border border-blue-100">
-                                {{ $berita['kategori'] }}
+                                {{ $article->category }}
                             </span>
                             <span class="text-slate-400 text-[10px] font-bold uppercase tracking-widest">
-                                <i class="bi bi-calendar3 me-2"></i>{{ $berita['tanggal'] }}
+                                <i class="bi bi-calendar3 me-2"></i>
+                                {{ \Carbon\Carbon::parse($article->published_at)->translatedFormat('d M Y') }}
                             </span>
                         </div>
                         <h1 class="text-4xl lg:text-6xl font-black text-[#00326B] leading-[1.1] tracking-tighter mb-8">
-                            {{ $berita['judul'] }}
+                            {{ $article->title }}
                         </h1>
                         <div class="flex items-center gap-4 py-6 border-y border-slate-100">
                             <div
@@ -46,7 +47,9 @@
                             <div>
                                 <p class="text-[10px] font-black text-[#00326B] uppercase tracking-widest">Diterbitkan Oleh
                                 </p>
-                                <p class="text-xs text-slate-500 font-medium italic">Humas BPR NTB</p>
+                                <p class="text-xs text-slate-500 font-medium italic">
+                                    {{ $article->author ?? 'Humas BPR NTB' }}
+                                </p>
                             </div>
                         </div>
                     </header>
@@ -54,18 +57,18 @@
                     {{-- Image Utama --}}
                     <div
                         class="relative rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-900/10 mb-12 border-8 border-white">
-                        <img src="{{ asset('images/' . $berita['gambar']) }}" class="w-full h-full object-cover"
-                            alt="{{ $berita['judul'] }}">
+                        <img src="{{ asset('storage/' .$article->thumbnail) }}" class="w-full h-full object-cover"
+                            alt="{{ $article->title }}">
                     </div>
 
                     {{-- Konten Berita --}}
                     <div class="prose prose-slate lg:prose-xl max-w-none text-slate-600 leading-relaxed font-medium">
                         <p class="text-2xl font-light italic text-[#00326B] mb-10 leading-relaxed">
-                            {!! $berita['ringkasan'] !!}
+                            {{ $article->excerpt }}
                         </p>
 
                         <div class="article-body">
-                            {!! $berita['konten'] ?? 'Konten lengkap berita akan muncul di sini...' !!}
+                            {!! $article->content !!}
                         </div>
                     </div>
 
@@ -114,7 +117,7 @@
                                 @for ($i = 0; $i < 3; $i++)
                                     <a href="#" class="group flex gap-4">
                                         <div class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden">
-                                            <img src="{{ asset('images/berita.png') }}"
+                                            <img src="{{ asset('storage/' .$article->thumbnail) }}" 
                                                 class="w-full h-full object-cover transition-transform group-hover:scale-110">
                                         </div>
                                         <div>

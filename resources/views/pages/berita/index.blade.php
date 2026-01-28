@@ -69,7 +69,7 @@
                     class="group relative bg-white rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-blue-900/5 border border-white overflow-hidden transition-all duration-700">
                     <div class="flex flex-col lg:flex-row min-h-[400px] lg:min-h-[500px]">
                         <div class="lg:w-3/5 relative overflow-hidden">
-                            <img src="{{ asset('images/' . $beritas[0]['gambar']) }}"
+                            <img src="{{ asset('storage/' . $beritas[0]->thumbnail) }}"
                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                 alt="Featured News">
                             <div
@@ -85,14 +85,14 @@
                         </div>
                         <div class="lg:w-2/5 p-8 lg:p-16 flex flex-col justify-center bg-white">
                             <span
-                                class="text-blue-600 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $beritas[0]['kategori'] }}</span>
+                                class="text-blue-600 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $beritas[0]->category }}</span>
                             <h2
                                 class="text-2xl lg:text-5xl font-black text-[#00326B] leading-[1.2] lg:leading-[1.1] tracking-tighter mb-6 lg:mb-8 group-hover:text-blue-600 transition-colors">
-                                {{ $beritas[0]['judul'] }}
+                                {{ $beritas[0]->title }}
                             </h2>
                             <p
                                 class="text-slate-500 text-sm lg:text-lg leading-relaxed italic mb-8 border-l-4 border-slate-100 pl-4 lg:pl-6">
-                                "{{ Str::limit($beritas[0]['ringkasan'], 120) }}"
+                                "{{ Str::limit($beritas[0]->excerpt, 120) }}"
                             </p>
                             <div class="flex items-center justify-between mt-auto pt-6 lg:pt-8 border-t border-slate-50">
                                 <div class="flex items-center gap-3">
@@ -101,9 +101,11 @@
                                         <i class="bi bi-calendar3 text-xs lg:text-base"></i>
                                     </div>
                                     <span
-                                        class="text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">{{ $beritas[0]['tanggal'] }}</span>
+                                        class="text-[9px] lg:text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                        {{ \Carbon\Carbon::parse($beritas[0]->published_at)->translatedFormat('d M Y') }}
+                                    </span>
                                 </div>
-                                <a href="{{ route('berita.show', $beritas[0]['slug']) }}"
+                                <a href="{{ route('berita.show', $beritas[0]->slug) }}"
                                     class="w-10 lg:w-12 h-10 lg:h-12 rounded-xl lg:rounded-2xl bg-[#00326B] text-white flex items-center justify-center hover:bg-[#fbbf24] hover:text-[#00326B] transition-all shadow-lg active:scale-90">
                                     <i class="bi bi-arrow-right text-lg lg:text-xl"></i>
                                 </a>
@@ -123,33 +125,35 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-                @forelse(array_slice($beritas, 1) as $b)
+                @forelse($beritas->slice(1) as $b)
                     <div
                         class="group flex flex-col h-full bg-white rounded-[2rem] lg:rounded-[3rem] shadow-xl shadow-blue-900/5 border border-slate-50 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3">
                         <div class="aspect-[4/3] overflow-hidden relative">
-                            <img src="{{ asset('images/' . $b['gambar']) }}"
+                            <img src="{{ asset('storage/' . $b->thumbnail) }}"
                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute bottom-4 left-4">
                                 <span
                                     class="bg-white/90 backdrop-blur-md px-3 py-1 lg:px-4 lg:py-1.5 rounded-lg lg:rounded-xl text-[8px] lg:text-[9px] font-black uppercase tracking-widest text-[#00326B] shadow-sm">
-                                    {{ $b['kategori'] }}
+                                    {{ $b->category }}
                                 </span>
                             </div>
                         </div>
 
                         <div class="p-6 lg:p-8 flex flex-col flex-grow">
                             <span
-                                class="text-slate-400 text-[8px] lg:text-[9px] font-black uppercase tracking-[0.2em] mb-3 lg:mb-4 block">{{ $b['tanggal'] }}</span>
+                                class="text-slate-400 text-[8px] lg:text-[9px] font-black uppercase tracking-[0.2em] mb-3 lg:mb-4 block">
+                                {{ \Carbon\Carbon::parse($b->published_at)->translatedFormat('d M Y') }}
+                            </span>
                             <h3
                                 class="text-lg lg:text-2xl font-black text-[#00326B] leading-tight mb-4 lg:mb-6 group-hover:text-blue-600 transition-colors line-clamp-2">
-                                {{ $b['judul'] }}
+                                {{ $b->title }}
                             </h3>
                             <p class="text-slate-500 text-xs lg:text-sm italic leading-relaxed line-clamp-3 mb-8 lg:mb-10">
-                                "{{ $b['ringkasan'] }}"
+                                "{{ $b->excerpt }}"
                             </p>
 
                             <div class="mt-auto">
-                                <a href="{{ route('berita.show', $b['slug']) }}"
+                                <a href="{{ route('berita.show', $b->slug) }}"
                                     class="inline-flex items-center gap-2 lg:gap-3 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-blue-600 transition-all">
                                     <span>Read Full Story</span>
                                     <i

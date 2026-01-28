@@ -44,7 +44,7 @@
                         x-cloak
                     >   
                         <img
-                            src="{{ asset($banner->image) }}"
+                            src="{{ asset('storage/' .$banner->image) }}"
                             class="w-full h-auto block"
                             alt="Banner {{ $index + 1 }}"
                             loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
@@ -119,7 +119,7 @@
                             shadow-2xl border border-white">
 
                         <img
-                            src="{{ asset($featured->image) }}"
+                            src="{{ asset('storage/' .$featured->image) }}"
                             class="absolute inset-0 w-full h-full object-cover
                                 transition-transform duration-1000 group-hover:scale-110"
                             alt="{{ $featured->title }}">
@@ -172,7 +172,7 @@
                                     class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
                                         bg-slate-50 border border-slate-100 shadow-inner">
                                     <img
-                                        src="{{ asset($promo->image) }}"
+                                        src="{{ asset('storage/' .$promo->image) }}"
                                         class="w-full h-full object-contain p-2
                                             group-hover:scale-110 transition-transform duration-500">
                                 </div>
@@ -290,7 +290,7 @@
                 {{-- RIGHT PANEL: RINCIAN TABEL (BENTO CARDS) --}}
                 <div class="lg:col-span-7 flex flex-col gap-6" x-data="{ selected: 1 }">
 
-                    {{-- Card 1: Tabungan --}}
+                    {{-- Card 1:     --}}
                     <div
                         class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl">
                         <div class="flex items-center justify-between mb-6">
@@ -348,124 +348,111 @@
             </div>
         </div>
     </section>
-    {{-- ================= BERITA TERKINI (PREMIUM BENTO STYLE) ================= --}}
-    <section class="relative py-12 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+{{-- ================= BERITA TERKINI (PREMIUM BENTO STYLE) ================= --}}
+<section class="relative py-12 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-            {{-- Header --}}
-            <div class="flex items-end justify-between mb-12">
-                <div class="space-y-3">
-                    <div class="inline-flex items-center gap-3">
-                        <span class="h-[1px] w-12 bg-blue-600"></span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Latest
-                            Updates</span>
-                    </div>
-                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Berita <span
-                            class="text-blue-600 italic font-light">Terkini</span></h2>
+        {{-- Header --}}
+        <div class="flex items-end justify-between mb-12">
+            <div class="space-y-3">
+                <div class="inline-flex items-center gap-3">
+                    <span class="h-[1px] w-12 bg-blue-600"></span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Latest
+                        Updates</span>
                 </div>
-                <a href="#"
-                    class="hidden md:inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-600 hover:text-[#00326B] transition-colors">
-                    Semua Berita <i class="bi bi-arrow-right"></i>
-                </a>
+                <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Berita <span
+                        class="text-blue-600 italic font-light">Terkini</span></h2>
             </div>
+            <a href="{{ route('berita.index') }}"
+                class="hidden md:inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-600 hover:text-[#00326B] transition-colors">
+                Semua Berita <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-                {{-- FEATURED NEWS (Besar di Kiri) --}}
-                <div class="lg:col-span-7 group relative">
-                    <div
-                        class="relative z-10 h-full min-h-[450px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700">
-                        <img src="{{ asset('images/berita.png') }}"
-                            class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                            alt="Berita Utama">
-                        <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent">
+            {{-- FEATURED NEWS (Besar di Kiri) --}}
+            @if(isset($articles[0]))
+            <div class="lg:col-span-7 group relative">
+                <div
+                    class="relative z-10 h-full min-h-[450px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700">
+                    <img src="{{ asset('storage/' . $articles[0]->thumbnail) }}"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        alt="{{ $articles[0]->title }}">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-[#00326B]/20 to-transparent">
+                    </div>
+
+                    <div class="absolute bottom-0 left-0 p-10 lg:p-12 text-white z-10">
+                        <span
+                            class="inline-block px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest mb-4 shadow-xl">
+                            {{ $articles[0]->category ?? 'Utama' }}
+                        </span>
+                        <h3 class="text-2xl lg:text-4xl font-black leading-tight mb-4">
+                            {{ $articles[0]->title }}
+                        </h3>
+                        <p class="text-white/80 text-sm lg:text-base font-medium italic max-w-md mb-6 leading-relaxed">
+                            "{{ $articles[0]->excerpt }}"
+                        </p>
+                        <a href="{{ route('berita.show', $articles[0]->slug) }}"
+                            class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest hover:text-blue-300 transition-colors">
+                            Baca Selengkapnya <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- SIDE NEWS LIST (Kecil di Kanan) --}}
+            <div class="lg:col-span-5 flex flex-col gap-6">
+
+                @foreach($articles->slice(1,2) as $a)
+                <div
+                    class="group relative bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:-translate-y-1">
+                    <div class="flex items-center gap-6">
+                        <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
+                            <img src="{{ asset('storage/' . $a->thumbnail) }}"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         </div>
-
-                        <div class="absolute bottom-0 left-0 p-10 lg:p-12 text-white z-10">
+                        <div class="space-y-2">
                             <span
-                                class="inline-block px-4 py-1.5 rounded-full bg-blue-600 text-white text-[10px] font-black uppercase tracking-widest mb-4 shadow-xl">Utama</span>
-                            <h3 class="text-2xl lg:text-4xl font-black leading-tight mb-4">Rapat Koordinasi Tahunan PT. BPR
-                                NTB (Perseroda)</h3>
-                            <p class="text-white/80 text-sm lg:text-base font-medium italic max-w-md mb-6 leading-relaxed">
-                                "Membangun sinergi untuk memperkuat ekonomi daerah NTB melalui inovasi perbankan
-                                berkelanjutan."
+                                class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">
+                                {{ $a->category }}
+                            </span>
+                            <h4
+                                class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
+                                {{ $a->title }}
+                            </h4>
+                            <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">
+                                {{ $a->excerpt }}
                             </p>
-                            <a href="#"
-                                class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest hover:text-blue-300 transition-colors">
-                                Baca Selengkapnya <i class="bi bi-arrow-right"></i>
-                            </a>
                         </div>
                     </div>
+                    <a href="{{ route('berita.show', $a->slug) }}" class="absolute inset-0"></a>
+                </div>
+                @endforeach
+
+                {{-- Berita 4 (Link ke semua berita) --}}
+                <div
+                    class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1">
+                    <div class="flex items-center gap-6">
+                        <div
+                            class="w-24 h-24 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-white italic font-black text-xs">
+                            More
+                        </div>
+                        <div class="space-y-1">
+                            <h4 class="text-base font-black text-white">Lihat Berita Lainnya</h4>
+                            <p class="text-white/60 text-[11px] italic">Temukan informasi kegiatan BPR NTB
+                                selengkapnya.</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('berita.index') }}" class="absolute inset-0"></a>
                 </div>
 
-                {{-- SIDE NEWS LIST (Kecil di Kanan) --}}
-                <div class="lg:col-span-5 flex flex-col gap-6">
-
-                    {{-- Berita 2 --}}
-                    <div
-                        class="group relative bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:-translate-y-1">
-                        <div class="flex items-center gap-6">
-                            <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
-                                <img src="{{ asset('images/berita.png') }}"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <div class="space-y-2">
-                                <span
-                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">UMKM
-                                    & Ekonomi</span>
-                                <h4
-                                    class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
-                                    Penyaluran Kredit Usaha Rakyat untuk UMKM Mataram</h4>
-                                <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Dukungan nyata
-                                    bagi pelaku usaha kecil di kota Mataram.</p>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute inset-0"></a>
-                    </div>
-
-                    {{-- Berita 3 --}}
-                    <div
-                        class="group relative bg-slate-50 rounded-[2.5rem] p-6 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl hover:-translate-y-1">
-                        <div class="flex items-center gap-6">
-                            <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
-                                <img src="{{ asset('images/berita.png') }}"
-                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                            </div>
-                            <div class="space-y-2">
-                                <span
-                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">Literasi
-                                    Keuangan</span>
-                                <h4
-                                    class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
-                                    Edukasi Literasi Keuangan Siswa Sekolah Dasar</h4>
-                                <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Mengenalkan
-                                    pentingnya menabung sejak dini kepada generasi muda.</p>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute inset-0"></a>
-                    </div>
-
-                    {{-- Berita 4 (Opsional - Jika ada data lebih) --}}
-                    <div
-                        class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1">
-                        <div class="flex items-center gap-6">
-                            <div
-                                class="w-24 h-24 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-white italic font-black text-xs">
-                                More
-                            </div>
-                            <div class="space-y-1">
-                                <h4 class="text-base font-black text-white">Lihat Berita Lainnya</h4>
-                                <p class="text-white/60 text-[11px] italic">Temukan informasi kegiatan BPR NTB
-                                    selengkapnya.</p>
-                            </div>
-                        </div>
-                        <a href="#" class="absolute inset-0"></a>
-                    </div>
-
-                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
     {{-- ================= PRESTASI SECTION (GRID TO SWIPE) ================= --}}
     {{-- py-20/py-28 dikurangi menjadi py-12 agar jarak dengan section Berita lebih rapat --}}

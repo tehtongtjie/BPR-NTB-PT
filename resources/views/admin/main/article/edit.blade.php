@@ -50,14 +50,36 @@
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
 
-        {{-- ================= KATEGORI ================= --}}
-        <div class="space-y-1.5">
-            <label class="text-sm font-medium text-slate-600">Kategori</label>
-            <input type="text" name="category"
-                   value="{{ old('category', $article->category) }}"
-                   class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
-                          focus:ring-4 focus:ring-[#00326B]/10">
-        </div>
+{{-- ================= KATEGORI ================= --}}
+<div class="space-y-1.5">
+    <label class="text-sm font-medium text-slate-600">Kategori</label>
+
+    <select name="category"
+            class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
+                   focus:ring-4 focus:ring-[#00326B]/10">
+
+        <option value="" disabled {{ old('category', $article->category) ? '' : 'selected' }}>
+            -- Pilih Kategori --
+        </option>
+
+        <option value="EKONOMI" {{ old('category', $article->category) == 'EKONOMI' ? 'selected' : '' }}>
+            EKONOMI
+        </option>
+
+        <option value="CSR" {{ old('category', $article->category) == 'CSR' ? 'selected' : '' }}>
+            CSR
+        </option>
+
+        <option value="INTERNAL" {{ old('category', $article->category) == 'INTERNAL' ? 'selected' : '' }}>
+            INTERNAL
+        </option>
+
+        <option value="PENGHARGAAN" {{ old('category', $article->category) == 'PENGHARGAAN' ? 'selected' : '' }}>
+            PENGHARGAAN
+        </option>
+    </select>
+</div>
+
 
         {{-- ================= PENULIS ================= --}}
         <div class="space-y-1.5">

@@ -49,6 +49,7 @@ Route::get('/test-navbar', fn() => view('users.test-navbar'));
 */
 // Tabungan
 Route::get('/tabungan/{slug}', [TabunganController::class, 'show'])->name('tabungan.show');
+
 Route::get('/produk/{slug}', [PromoPublicController::class, 'show'])
     ->name('produk.show');
 
