@@ -220,134 +220,171 @@
 
 
 
-    {{-- ================= SUKU BUNGA SECTION (PREMIUM BENTO STYLE) ================= --}}
-    <section class="relative py-12 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+{{-- ================= SUKU BUNGA SECTION (PREMIUM BENTO STYLE) ================= --}}
+<section class="relative py-12 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-            {{-- Header --}}
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
-                <div class="space-y-3">
-                    <div class="inline-flex items-center gap-3">
-                        <span class="h-[1px] w-12 bg-blue-600"></span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">Interest Rates
-                            Update</span>
-                    </div>
-                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Informasi <span
-                            class="text-blue-600 italic font-light">Suku Bunga</span></h2>
+        {{-- Header --}}
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+            <div class="space-y-3">
+                <div class="inline-flex items-center gap-3">
+                    <span class="h-[1px] w-12 bg-blue-600"></span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.4em] text-[#00326B]">
+                        Interest Rates Update
+                    </span>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-
-                {{-- LEFT PANEL: LPS RATE (FEATURED) --}}
-                <div class="lg:col-span-5 group relative">
-                    <div
-                        class="relative z-10 h-full min-h-[400px] p-10 flex flex-col justify-between overflow-hidden rounded-[3rem] bg-gradient-to-br from-blue-700 via-blue-800 to-[#00326B] shadow-2xl transition-all duration-500 hover:shadow-blue-900/20">
-
-                        {{-- Decorative Light Effect --}}
-                        <div
-                            class="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150">
-                        </div>
-
-                        <div class="relative z-20">
-                            <div
-                                class="inline-flex items-center space-x-2 bg-white/10 px-4 py-1.5 rounded-full border border-white/10 mb-8">
-                                <span class="relative flex h-2 w-2">
-                                    <span
-                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                                </span>
-                                <span class="text-[10px] font-black tracking-widest uppercase text-white">Update Jan
-                                    2026</span>
-                            </div>
-
-                            <p class="text-blue-100 text-[11px] font-black uppercase tracking-widest mb-2 opacity-80">
-                                Tingkat Bunga Penjaminan LPS</p>
-                            <h2 class="text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6">6.00<span
-                                    class="text-3xl text-blue-300">%</span></h2>
-
-                            <div
-                                class="inline-flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl backdrop-blur-md border border-white/10 transition-all group-hover:bg-white/10">
-                                <i class="bi bi-shield-check text-[#fbbf24] text-xl"></i>
-                                <p class="text-xs text-blue-50 font-medium leading-tight">
-                                    Dijamin LPS hingga <span
-                                        class="font-black text-white underline decoration-[#fbbf24] decoration-2 underline-offset-4">Rp
-                                        2 Miliar</span>
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="mt-8">
-                            <a href="https://apps.lps.go.id/BankPesertaLPSRate" target="_blank"
-                                class="flex items-center justify-center gap-3 bg-white text-[#00326B] py-4 rounded-2xl font-black text-xs uppercase tracking-widest transition-all hover:bg-[#fbbf24] hover:shadow-xl active:scale-95">
-                                <span>Verifikasi LPS Rate</span>
-                                <i class="bi bi-box-arrow-up-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- RIGHT PANEL: RINCIAN TABEL (BENTO CARDS) --}}
-                <div class="lg:col-span-7 flex flex-col gap-6" x-data="{ selected: 1 }">
-
-                    {{-- Card 1:     --}}
-                    <div
-                        class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-black">
-                                    01</div>
-                                <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">Suku Bunga Tabungan</h3>
-                            </div>
-                            <i class="bi bi-piggy-bank text-3xl text-blue-200"></i>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div
-                                class="bg-white p-5 rounded-3xl border border-slate-100 flex justify-between items-center group/item hover:border-blue-200 transition-colors">
-                                <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">Simbada</span>
-                                <span
-                                    class="text-xl font-black text-blue-600 group-hover/item:scale-110 transition-transform">5.00%</span>
-                            </div>
-                            <div
-                                class="bg-white p-5 rounded-3xl border border-slate-100 flex justify-between items-center group/item hover:border-blue-200 transition-colors">
-                                <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">TabunganKU</span>
-                                <span
-                                    class="text-xl font-black text-blue-600 group-hover/item:scale-110 transition-transform">3.00%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    {{-- Card 2: Deposito --}}
-                    <div
-                        class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100 transition-all duration-500 hover:bg-white hover:shadow-xl">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-4">
-                                <div
-                                    class="w-12 h-12 rounded-2xl bg-[#fbbf24] text-[#00326B] flex items-center justify-center font-black">
-                                    02</div>
-                                <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">Suku Bunga Deposito</h3>
-                            </div>
-                            <i class="bi bi-safe2 text-3xl text-amber-200"></i>
-                        </div>
-
-                        <div
-                            class="bg-white p-6 rounded-3xl border border-[#fbbf24]/20 flex justify-between items-center group/item relative overflow-hidden">
-                            <div class="absolute left-0 top-0 h-full w-1 bg-[#fbbf24]"></div>
-                            <div class="space-y-1">
-                                <span class="text-xs font-black text-[#fbbf24] uppercase tracking-widest">Penempatan
-                                    Terbaik</span>
-                                <h4 class="text-lg font-bold text-slate-800">Deposito Tenor 12 Bulan</h4>
-                            </div>
-                            <span class="text-3xl font-black text-[#00326B]">6.00%</span>
-                        </div>
-                    </div>
-
-                </div>
+                <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">
+                    Informasi <span class="text-blue-600 italic font-light">Suku Bunga</span>
+                </h2>
             </div>
         </div>
-    </section>
+
+        @if($activePeriod)
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+            {{-- LEFT PANEL: LPS --}}
+            <div class="lg:col-span-5 group relative">
+                <div
+                    class="relative z-10 h-full min-h-[400px] p-10 flex flex-col justify-between overflow-hidden
+                           rounded-[3rem] bg-gradient-to-br from-blue-700 via-blue-800 to-[#00326B]
+                           shadow-2xl transition-all duration-500">
+
+                    <div class="absolute -top-24 -right-24 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
+
+                    <div class="relative z-20">
+                        <div
+                            class="inline-flex items-center space-x-2 bg-white/10 px-4 py-1.5 rounded-full
+                                   border border-white/10 mb-8">
+                            <span class="relative flex h-2 w-2">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full
+                                           bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                            <span class="text-[10px] font-black tracking-widest uppercase text-white">
+                                {{ $activePeriod->title }}
+                            </span>
+                        </div>
+
+                        <p class="text-blue-100 text-[11px] font-black uppercase tracking-widest mb-2 opacity-80">
+                            Tingkat Bunga Penjaminan LPS
+                        </p>
+
+                        <h2 class="text-7xl lg:text-8xl font-black text-white tracking-tighter mb-6">
+                            {{ number_format(optional($activePeriod->lps)->rate, 2) }}
+                            <span class="text-3xl text-blue-300">%</span>
+                        </h2>
+
+                        <div
+                            class="inline-flex items-center gap-3 px-5 py-3 bg-white/5 rounded-2xl
+                                   backdrop-blur-md border border-white/10">
+                            <i class="bi bi-shield-check text-[#fbbf24] text-xl"></i>
+                            <p class="text-xs text-blue-50 font-medium leading-tight">
+                                Dijamin LPS hingga
+                                <span
+                                    class="font-black text-white underline decoration-[#fbbf24]
+                                           decoration-2 underline-offset-4">
+                                    Rp 2 Miliar
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+
+                    @if(optional($activePeriod->lps)->verification_url)
+                    <div class="mt-8">
+                        <a href="{{ $activePeriod->lps->verification_url }}" target="_blank"
+                           class="flex items-center justify-center gap-3 bg-white text-[#00326B]
+                                  py-4 rounded-2xl font-black text-xs uppercase tracking-widest
+                                  transition-all hover:bg-[#fbbf24]">
+                            <span>Verifikasi LPS Rate</span>
+                            <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                    </div>
+                    @endif
+                </div>
+            </div>
+
+            {{-- RIGHT PANEL --}}
+            <div class="lg:col-span-7 flex flex-col gap-6">
+
+                {{-- TABUNGAN --}}
+                <div
+                    class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100
+                           transition-all duration-500 hover:bg-white hover:shadow-xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-blue-600 text-white
+                                       flex items-center justify-center font-black">01</div>
+                            <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">
+                                Suku Bunga Tabungan
+                            </h3>
+                        </div>
+                        <i class="bi bi-piggy-bank text-3xl text-blue-200"></i>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        @foreach($activePeriod->tabungans as $tabungan)
+                        <div
+                            class="bg-white p-5 rounded-3xl border border-slate-100
+                                   flex justify-between items-center transition-colors">
+                            <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">
+                                {{ $tabungan->tabungan_type }}
+                            </span>
+                            <span class="text-xl font-black text-blue-600">
+                                {{ number_format($tabungan->rate, 2) }}%
+                            </span>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- DEPOSITO --}}
+                <div
+                    class="bg-slate-50 rounded-[2.5rem] p-8 border border-slate-100
+                           transition-all duration-500 hover:bg-white hover:shadow-xl">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-2xl bg-[#fbbf24] text-[#00326B]
+                                       flex items-center justify-center font-black">02</div>
+                            <h3 class="text-xl lg:text-2xl font-black text-[#00326B]">
+                                Suku Bunga Deposito
+                            </h3>
+                        </div>
+                        <i class="bi bi-safe2 text-3xl text-amber-200"></i>
+                    </div>
+
+                    @foreach($activePeriod->depositos as $dep)
+                    <div
+                        class="bg-white p-6 rounded-3xl border border-[#fbbf24]/20
+                               flex justify-between items-center relative overflow-hidden mb-4">
+                        <div class="absolute left-0 top-0 h-full w-1 bg-[#fbbf24]"></div>
+                        <div class="space-y-1">
+                            <span class="text-xs font-black text-[#fbbf24] uppercase tracking-widest">
+                                {{ $dep->label ?? 'Deposito' }}
+                            </span>
+                            <h4 class="text-lg font-bold text-slate-800">
+                                Tenor {{ $dep->tenor_month }} Bulan
+                            </h4>
+                        </div>
+                        <span class="text-3xl font-black text-[#00326B]">
+                            {{ number_format($dep->rate, 2) }}%
+                        </span>
+                    </div>
+                    @endforeach
+                </div>
+
+            </div>
+        </div>
+        @else
+            <p class="text-center text-slate-500">
+                Data suku bunga belum tersedia.
+            </p>
+        @endif
+    </div>
+</section>
+
 {{-- ================= BERITA TERKINI (PREMIUM BENTO STYLE) ================= --}}
 <section class="relative py-12 bg-white overflow-hidden">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">

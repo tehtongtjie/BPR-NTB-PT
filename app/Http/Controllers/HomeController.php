@@ -7,6 +7,7 @@ use App\Models\Promo;
 use App\Models\Banner;
 use App\Models\InterestRate;
 use App\Models\Article;
+use App\Models\InterestRatePeriod;
 
 class HomeController extends Controller
 {
@@ -24,12 +25,19 @@ class HomeController extends Controller
         ->orderBy('published_at', 'desc')
         ->take(4)
         ->get();
+        
+        $activePeriod = InterestRatePeriod::with(['tabungans','depositos','lps'])
+            ->where('is_active', true)
+            ->latest('year')
+            ->latest('month')
+            ->first();
 
         return view('pages.home', compact(
             'banners',
             'featured',
             'others',
-            'articles'
+            'articles',
+            'activePeriod'
         ));
     }
 }

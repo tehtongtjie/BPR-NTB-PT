@@ -1,7 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('title', 'Edit Suku Bunga')
-
+@php
+    use App\Models\InterestRatePeriod;
+    $totalPeriods = InterestRatePeriod::count();
+    $activePeriods = InterestRatePeriod::where('is_active', true)->count();
+@endphp
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
 
@@ -157,6 +161,33 @@
                 placeholder="URL Verifikasi LPS"
                 class="rounded-xl bg-slate-50 border px-4 py-2.5">
         </div>
+        
+        {{-- ================= STATUS AKTIF ================= --}}
+        <div class="flex items-center gap-3">
+            <input
+                type="checkbox"
+                name="is_active"
+                value="1"
+                id="is_active"
+                class="rounded border-slate-300 text-[#00326B] focus:ring-[#00326B]"
+                {{ old('is_active', $period->is_active) ? 'checked' : '' }}
+                data-active-count="{{ $activePeriods }}"
+                data-is-current-active="{{ $period->is_active ? 1 : 0 }}"
+            >
+
+            <label for="is_active" class="text-sm text-slate-600">
+                Jadikan periode aktif
+            </label>
+        </div>
+
+        <p id="active-warning"
+        class="hidden text-sm text-red-600 mt-1">
+        ⚠️ Minimal harus ada satu periode yang aktif.
+        </p>
+        @if($totalPeriods === 1)
+            {{-- hidden input supaya tetap terkirim --}}
+            <input type="hidden" name="is_active" value="1">
+        @endif
 
         {{-- ACTION --}}
         <div class="flex justify-end gap-3 pt-4">
@@ -224,6 +255,24 @@ function addDeposito() {
         </div>
     `);
     depositoIndex++;
+}
+const activeCheckbox = document.getElementById('is_active');
+const warning = document.getElementById('active-warning');
+
+if (activeCheckbox) {
+    activeCheckbox.addEventListener('change', function () {
+
+        const activeCount = Number(this.dataset.activeCount);
+        const isCurrentActive = Number(this.dataset.isCurrentActive);
+
+        // Jika ini periode aktif terakhir & mau dimatikan
+        if (activeCount === 1 && isCurrentActive === 1 && !this.checked) {
+            this.checked = true;
+            warning.classList.remove('hidden');
+        } else {
+            warning.classList.add('hidden');
+        }
+    });
 }
 </script>
 @endsection
