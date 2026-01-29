@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             PromoSeeder::class,
             ArticleSeeder::class,
             ManagementSeeder::class,
+            LelangSeeder::class,
 
             InterestRatePeriodSeeder::class,
             InterestRateTabunganSeeder::class,

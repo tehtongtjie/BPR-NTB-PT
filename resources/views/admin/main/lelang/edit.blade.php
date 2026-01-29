@@ -16,11 +16,12 @@
     </div>
 
     {{-- FORM --}}
-    <form action="{{ route('admin.main.lelang.edit', $lelang->id) }}"
+    <form action="{{ route('admin.main.lelang.update', $lelang->id) }}"
           method="POST"
           enctype="multipart/form-data"
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
+        @method('PUT')
 
         {{-- ================= JUDUL LELANG ================= --}}
         <div class="space-y-1.5">

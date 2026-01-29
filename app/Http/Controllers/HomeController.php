@@ -8,6 +8,7 @@ use App\Models\Banner;
 use App\Models\InterestRate;
 use App\Models\Article;
 use App\Models\InterestRatePeriod;
+use App\Models\Lelang;
 
 class HomeController extends Controller
 {
@@ -32,12 +33,18 @@ class HomeController extends Controller
             ->latest('month')
             ->first();
 
+        $lelangs = Lelang::where('is_published', true)
+        ->orderBy('deadline', 'asc')
+        ->limit(8)
+        ->get();
+
         return view('pages.home', compact(
             'banners',
             'featured',
             'others',
             'articles',
-            'activePeriod'
+            'activePeriod',
+            'lelangs'
         ));
     }
 }

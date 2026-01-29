@@ -555,115 +555,133 @@
         </div>
     </section>
 
-    {{-- ================= LELANG SECTION (OPTIMIZED GRID TO SWIPE) ================= --}}
-    <section class="relative py-12 bg-white overflow-hidden">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+{{-- ================= LELANG SECTION (OPTIMIZED GRID TO SWIPE) ================= --}}
+<section class="relative py-12 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
-            {{-- Header Section --}}
-            <div class="flex items-end justify-between mb-10">
-                <div class="max-w-2xl">
-                    <div class="inline-flex items-center gap-3 mb-3">
-                        <span class="h-[1px] w-10 bg-[#fbbf24]"></span>
-                        <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">Public
-                            Procurement</span>
-                    </div>
-                    <h2 class="text-3xl lg:text-5xl font-black text-[#00326B] leading-tight">
-                        Kesempatan Lelang <br><span class="italic font-light text-[#fbbf24]">Bersama BPR NTB</span>
-                    </h2>
+        {{-- Header --}}
+        <div class="flex items-end justify-between mb-10">
+            <div class="max-w-2xl">
+                <div class="inline-flex items-center gap-3 mb-3">
+                    <span class="h-[1px] w-10 bg-[#fbbf24]"></span>
+                    <span
+                        class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">
+                        Public Procurement
+                    </span>
                 </div>
 
-                {{-- Hint Swipe Mobile (Hanya muncul di HP) --}}
-                <div
-                    class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
-                    <span>Swipe</span> <i class="bi bi-arrow-right"></i>
-                </div>
+                <h2 class="text-3xl lg:text-5xl font-black text-[#00326B] leading-tight">
+                    Kesempatan Lelang <br>
+                    <span class="italic font-light text-[#fbbf24]">Bersama BPR NTB</span>
+                </h2>
             </div>
 
-            {{-- Container: Mobile Flex-Scroll | Desktop Grid --}}
             <div
-                class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 pb-4">
+                class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+                <span>Swipe</span> <i class="bi bi-arrow-right"></i>
+            </div>
+        </div>
 
-                {{-- Template Card (Ulangi untuk Item 1-4) --}}
-                @php
-                    $lelangItems = [
-                        [
-                            'tag' => 'Jasa & Konsultan',
-                            'color' => 'blue-600',
-                            'title' => 'Pengadaan Jasa Audit Tahun Buku 2025',
-                            'desc' => 'Mengundang KAP profesional untuk audit laporan keuangan.',
-                            'img' => asset('images/lelang-pengadaan.png'),
-                        ],
-                        [
-                            'tag' => 'Konstruksi',
-                            'color' => 'emerald-600',
-                            'title' => 'Renovasi Kantor Cabang Utama Mataram',
-                            'desc' => 'Peluang bagi kontraktor untuk peningkatan fasilitas.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1606761506140-59756b6c167b.webp',
-                        ],
-                        [
-                            'tag' => 'Teknologi',
-                            'color' => 'purple-600',
-                            'title' => 'Pengadaan Sistem Keamanan Jaringan',
-                            'desc' => 'Mencari vendor terkemuka untuk upgrade infrastruktur IT.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1579547621113-e4d0263f90e5.webp',
-                        ],
-                        [
-                            'tag' => 'Logistik',
-                            'color' => 'orange-600',
-                            'title' => 'Pengadaan Armada Kendaraan Operasional',
-                            'desc' => 'Tender untuk penyedia kendaraan dinas baru BPR NTB.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1560761005-59b48c77174e.webp',
-                        ],
-                    ];
-                @endphp
+        {{-- Cards --}}
+        <div
+            class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible
+                   snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 pb-4">
 
-                @foreach ($lelangItems as $item)
-                    <div class="flex-none w-[82%] sm:w-[48%] lg:w-auto snap-center group">
-                        <div
-                            class="relative flex flex-col h-full bg-white rounded-[2.5rem] shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 lg:hover:shadow-2xl lg:hover:shadow-blue-900/10 lg:hover:-translate-y-2">
+            @forelse ($lelangs as $lelang)
+                <div class="flex-none w-[82%] sm:w-[48%] lg:w-auto snap-center group">
+                    <div
+                        class="relative flex flex-col h-full bg-white rounded-[2.5rem]
+                               shadow-lg border border-slate-100 overflow-hidden
+                               transition-all duration-500
+                               lg:hover:shadow-2xl lg:hover:shadow-blue-900/10
+                               lg:hover:-translate-y-2">
 
-                            {{-- Image Wrapper dengan Aspect Ratio Tetap --}}
-                            <div class="aspect-[4/3] overflow-hidden">
-                                <img src="{{ $item['img'] }}"
-                                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                                    alt="{{ $item['title'] }}">
-                            </div>
+                        {{-- Banner --}}
+                        <div class="aspect-[4/3] overflow-hidden">
+                            <img
+                                src="{{ $lelang->banner
+                                        ? asset('storage/'.$lelang->banner)
+                                        : asset('images/lelang-pengadaan.png') }}"
+                                alt="{{ $lelang->title }}"
+                                class="w-full h-full object-cover
+                                       transition-transform duration-700
+                                       group-hover:scale-110">
+                        </div>
 
-                            {{-- Content --}}
-                            <div class="p-7 lg:p-8 flex flex-col flex-grow space-y-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-{{ $item['color'] }}">
-                                    {{ $item['tag'] }}
-                                </span>
-                                <h3 class="text-lg lg:text-xl font-black text-[#00326B] leading-tight min-h-[3rem]">
-                                    {{ $item['title'] }}
-                                </h3>
-                                <p class="text-slate-500 text-xs lg:text-sm italic line-clamp-2 leading-relaxed">
-                                    "{{ $item['desc'] }}"
+                        {{-- Content --}}
+                        <div class="p-7 lg:p-8 flex flex-col flex-grow space-y-3">
+
+                            {{-- Category --}}
+                            <span
+                                class="text-[9px] font-black uppercase tracking-widest
+                                       text-[#00326B]">
+                                {{ $lelang->category ?? 'LELANG' }}
+                            </span>
+
+                            {{-- Title --}}
+                            <h3
+                                class="text-lg lg:text-xl font-black text-[#00326B]
+                                       leading-tight min-h-[3rem]">
+                                {{ $lelang->title }}
+                            </h3>
+
+                            {{-- Short Desc --}}
+                            <p
+                                class="text-slate-500 text-xs lg:text-sm italic
+                                       line-clamp-2 leading-relaxed">
+                                "{{ $lelang->short_desc }}"
+                            </p>
+
+                            {{-- Deadline --}}
+                            @if ($lelang->deadline)
+                                <p class="text-[10px] text-slate-400 font-semibold">
+                                    Batas Akhir:
+                                    {{ $lelang->deadline->translatedFormat('d F Y') }}
                                 </p>
+                            @endif
 
-                                <div class="pt-4 mt-auto">
-                                    <a href="#"
-                                        class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
-                                        Lihat Detail <i
-                                            class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                                    </a>
-                                </div>
+                            {{-- CTA --}}
+                            <div class="pt-4 mt-auto">
+                                <a href="{{ route('lelang.show', $lelang->slug) }}"
+                                   class="inline-flex items-center gap-2
+                                          text-[10px] font-black uppercase
+                                          tracking-[0.2em] text-[#00326B]
+                                          group-hover:text-[#fbbf24]
+                                          transition-colors">
+                                    Lihat Detail
+                                    <i
+                                        class="bi bi-arrow-right
+                                               transition-transform
+                                               group-hover:translate-x-1"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            @empty
+                <p class="text-slate-500 text-sm">
+                    Belum ada lelang yang tersedia saat ini.
+                </p>
+            @endforelse
 
-            </div>
-
-            {{-- Footer Action --}}
-            <div class="text-center mt-12">
-                <a href="#"
-                    class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
-                    Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
-                </a>
-            </div>
         </div>
-    </section>
+
+        {{-- Footer --}}
+        <div class="text-center mt-12">
+            <a href="{{ route('lelang.index') }}"
+               class="inline-flex items-center justify-center
+                      px-10 py-4 rounded-2xl
+                      bg-[#00326B] text-white
+                      text-xs font-black uppercase tracking-[0.2em]
+                      shadow-xl transition-all duration-300
+                      hover:bg-[#fbbf24] hover:text-[#00326B]
+                      active:scale-95">
+                Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
 
     {{-- ================= KONTAK & TESTIMONI (PREMIUM BENTO STYLE) ================= --}}
     <section class="relative py-12 lg:py-20 bg-slate-50 overflow-hidden" id="kontak">
