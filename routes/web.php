@@ -32,6 +32,9 @@ use App\Http\Controllers\Admin\JaringanController;
 use App\Http\Controllers\WhistleBlowingController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Admin\PerusahaansController;
+use App\Http\Controllers\Admin\LaporansController;
+use App\Http\Controllers\Admin\PublikasiController;
+
 
 
 
@@ -213,7 +216,25 @@ Route::prefix('admin')->group(function () {
         Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
         Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
     });
-    // 5. ===== MAIN DASHBOARD & CONTENT =====
+
+    Route::prefix('publikasi')->name('admin.publikasi.')->group(function () {
+
+        Route::get('/', [PublikasiController::class, 'index'])->name('index');
+
+        // LAPORAN
+        Route::prefix('laporan')->name('laporan.')->group(function () {
+            Route::get('/', [LaporansController::class, 'index'])->name('index');
+            Route::get('/create', [LaporansController::class, 'create'])->name('create');
+            Route::post('/', [LaporansController::class, 'store'])->name('store');
+            Route::get('/{laporan}/edit', [LaporansController::class, 'edit'])->name('edit');
+            Route::put('/{laporan}', [LaporansController::class, 'update'])->name('update');
+            Route::delete('/{laporan}', [LaporansController::class, 'destroy'])->name('destroy');
+        });
+
+    });
+
+
+    // 6. ===== MAIN DASHBOARD & CONTENT =====
     Route::prefix('main')->name('admin.main.')->group(function () {
 
         Route::get('/', [MainController::class, 'index'])->name('index');
