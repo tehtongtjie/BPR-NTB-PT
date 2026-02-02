@@ -344,7 +344,8 @@
                     <h2 class="text-4xl lg:text-5xl font-black text-[#00326B]">Berita <span
                             class="text-blue-600 italic font-light">Terkini</span></h2>
                 </div>
-                <a href="#"
+                {{-- Link ke Index Berita --}}
+                <a href="{{ route('berita.index') }}"
                     class="hidden md:inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-blue-600 hover:text-[#00326B] transition-colors">
                     Semua Berita <i class="bi bi-arrow-right"></i>
                 </a>
@@ -371,7 +372,8 @@
                                 "Membangun sinergi untuk memperkuat ekonomi daerah NTB melalui inovasi perbankan
                                 berkelanjutan."
                             </p>
-                            <a href="#"
+                            {{-- Link ke Detail Berita Utama (Slug: rapat-koordinasi-tahunan) --}}
+                            <a href="{{ route('berita.show', 'rapat-koordinasi-2026') }}"
                                 class="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest hover:text-blue-300 transition-colors">
                                 Baca Selengkapnya <i class="bi bi-arrow-right"></i>
                             </a>
@@ -391,17 +393,18 @@
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="space-y-2">
-                                <span
-                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">UMKM
-                                    & Ekonomi</span>
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">UMKM &
+                                    Ekonomi</span>
                                 <h4
                                     class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
                                     Penyaluran Kredit Usaha Rakyat untuk UMKM Mataram</h4>
                                 <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Dukungan nyata
-                                    bagi pelaku usaha kecil di kota Mataram.</p>
+                                    bagi pelaku usaha kecil.</p>
                             </div>
                         </div>
-                        <a href="#" class="absolute inset-0"></a>
+                        {{-- Link ke Detail Berita 2 --}}
+                        <a href="{{ route('berita.show', 'penyaluran-kredit-usaha-rakyat') }}"
+                            class="absolute inset-0"></a>
                     </div>
 
                     {{-- Berita 3 --}}
@@ -413,34 +416,35 @@
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </div>
                             <div class="space-y-2">
-                                <span
-                                    class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-500 text-blue-600">Literasi
+                                <span class="text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">Literasi
                                     Keuangan</span>
                                 <h4
                                     class="text-base font-black text-[#00326B] leading-tight group-hover:text-blue-600 transition-colors">
                                     Edukasi Literasi Keuangan Siswa Sekolah Dasar</h4>
                                 <p class="text-slate-500 text-[11px] leading-relaxed italic line-clamp-1">Mengenalkan
-                                    pentingnya menabung sejak dini kepada generasi muda.</p>
+                                    pentingnya menabung sejak dini.</p>
                             </div>
                         </div>
-                        <a href="#" class="absolute inset-0"></a>
+                        {{-- Link ke Detail Berita 3 --}}
+                        <a href="{{ route('berita.show', 'edukasi-literasi-keuangan-siswa') }}"
+                            class="absolute inset-0"></a>
                     </div>
 
-                    {{-- Berita 4 (Opsional - Jika ada data lebih) --}}
+                    {{-- Tombol Lihat Berita Lainnya --}}
                     <div
                         class="group relative bg-[#00326B] rounded-[2.5rem] p-6 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/40 hover:-translate-y-1">
                         <div class="flex items-center gap-6">
                             <div
                                 class="w-24 h-24 shrink-0 rounded-2xl bg-white/10 flex items-center justify-center text-white italic font-black text-xs">
-                                More
-                            </div>
+                                More</div>
                             <div class="space-y-1">
                                 <h4 class="text-base font-black text-white">Lihat Berita Lainnya</h4>
                                 <p class="text-white/60 text-[11px] italic">Temukan informasi kegiatan BPR NTB
                                     selengkapnya.</p>
                             </div>
                         </div>
-                        <a href="#" class="absolute inset-0"></a>
+                        {{-- Link ke Index Berita --}}
+                        <a href="{{ route('berita.index') }}" class="absolute inset-0"></a>
                     </div>
 
                 </div>
@@ -599,7 +603,7 @@
                                 </p>
 
                                 <div class="pt-4 mt-auto">
-                                    <a href="#"
+                                    <a href="{{ route('lelang.show', 'lelang-renovasi-kantor-mataram') }}"
                                         class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
                                         Lihat Detail <i
                                             class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
