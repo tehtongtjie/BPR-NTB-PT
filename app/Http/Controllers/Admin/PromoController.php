@@ -154,7 +154,6 @@ class PromoController extends Controller
             $promo->update([
                 'title'       => $request->title,
                 'subtitle'    => $request->subtitle,    
-                'slug'        => Str::slug($request->title),
                 'short_desc'  => $request->short_desc,
                 'description' => $request->description,
                 'is_active'   => $request->is_active,

@@ -50,10 +50,10 @@
                             {{-- PREVIEW --}}
                             <td class="px-6 py-4">
                                 <img
-                                    src="{{ asset('storage/'.$banner->image) }}"
+                                    src="{{ asset('storage/' .$banner->image) }}"
                                     alt="Banner {{ $banner->id }}"
-                                    class="h-16 w-auto rounded-lg
-                                           border border-slate-200 object-cover"
+                                    class="h-20 w-auto rounded-lg
+                                        border border-slate-200 object-contain"
                                 >
                             </td>
 

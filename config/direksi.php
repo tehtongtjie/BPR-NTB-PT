@@ -5,8 +5,9 @@ return [
     [
         'name' => 'Hj. Denda Sucihartiani, SE',
         'slug' => 'denda-sucihartiani',
+        'type' => 'direksi',
         'position' => 'Direktur Bisnis',
-        'image' => 'images/perusahaan/denda-sucihartiani.png',
+        'image' => 'storage/app/images/perusahaan/denda-sucihartiani.png',
         'excerpt' => 'Direktur Bisnis dengan pengalaman panjang di sektor perbankan BPR.',
         'profile' => <<<TEXT
 Hj. Denda Sucihartiani merupakan lulusan S1 Ekonomi Pembangunan Universitas Al-Azhar Mataram. Beliau mengawali karier perbankannya di PD. BPR NTB sejak tahun 1987 dan telah mengabdikan diri selama kurang lebih 35 tahun di dunia perbankan.
@@ -23,7 +24,7 @@ TEXT
         'name' => 'Zulkifli Hamdani',
         'slug' => 'zulkifli-hamdani',
         'position' => 'Direktur Kepatuhan',
-        'image' => 'images/perusahaan/zulkifli-hamdani.png',
+        'image' => 'storage/app/images/perusahaan/zulkifli-hamdani.png',
         'excerpt' => 'Direktur Kepatuhan termuda dengan latar belakang manajemen dan SDM.',
         'profile' => <<<TEXT
 Zulkifli Hamdani merupakan lulusan S1 Ekonomi Manajemen Universitas Teknologi Yogyakarta pada tahun 2008. Putra kelahiran Pancor, Lombok Timur ini mengawali karier profesionalnya sebagai Kepala Administrasi dan Keuangan pada PT. Krida Dinamik Autonusa yang bergerak di bidang otomotif.

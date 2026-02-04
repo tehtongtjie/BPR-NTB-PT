@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Models\Promo;
 use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
@@ -57,5 +58,13 @@ class AppServiceProvider extends ServiceProvider
                 ['label' => 'Whistle Blowing System', 'route' => 'pengaduan.wbs', 'icon' => 'bi-shield-lock'],
             ],
         ]);
+        View::composer('components.sidebar-produk', function ($view) {
+            $view->with(
+                'sidebarPromos',
+                Promo::where('is_active', true)
+                    ->orderBy('title')
+                    ->get(['title', 'slug'])
+            );
+        });
     }
 }

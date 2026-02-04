@@ -44,29 +44,77 @@
 
             {{-- ================= FILTER & SEARCH ================= --}}
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
-                {{-- Search Bar --}}
-                <div class="relative w-full lg:w-1/3 group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                        <i class="bi bi-search text-slate-400 group-focus-within:text-[#00326B] transition-colors"></i>
-                    </div>
-                    <input type="text" id="searchKantor"
-                        class="block w-full pl-12 pr-5 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm focus:ring-2 focus:ring-[#00326B] focus:border-[#00326B] transition-all font-medium text-slate-700"
-                        placeholder="Cari nama kantor atau alamat...">
-                </div>
 
-                {{-- Filter Buttons --}}
+                {{-- ================= SEARCH BAR (SERVER SIDE) ================= --}}
+                <form method="GET"
+                    action="{{ url()->current() }}"
+                    class="relative w-full lg:w-1/3 group">
+
+                    {{-- ICON --}}
+                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+                        <i
+                            class="bi bi-search
+                                text-slate-400
+                                transition-colors
+                                group-focus-within:text-[#00326B]">
+                        </i>
+                    </div>
+
+                    {{-- INPUT --}}
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ request('q') }}"
+                        placeholder="Cari nama kantor atau alamat..."
+                        class="block w-full
+                            pl-12 pr-5 py-4
+                            bg-white
+                            border border-slate-200
+                            rounded-2xl
+                            shadow-sm
+                            font-medium text-slate-700
+                            transition-all
+
+                            focus:outline-none
+                            focus:ring-2 focus:ring-[#00326B]
+                            focus:border-[#00326B]"
+
+                        {{-- submit otomatis saat user selesai mengetik --}}
+                        onchange="this.form.submit()"
+                    >
+                </form>
+
+                {{-- ================= FILTER BUTTON ================= --}}
                 <div
-                    class="flex bg-white p-1.5 rounded-2xl shadow-sm border border-slate-100 self-start lg:self-center overflow-x-auto max-w-full">
-                    <button data-filter="all"
-                        class="filter-btn active px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Semua</button>
-                    <button data-filter="pusat"
-                        class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Pusat</button>
-                    <button data-filter="cabang"
-                        class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Cabang</button>
-                    <button data-filter="kas"
-                        class="filter-btn px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">Kas</button>
+                    class="flex bg-white p-1.5 rounded-2xl shadow-sm border border-slate-100
+                        self-start lg:self-center overflow-x-auto max-w-full">
+
+                    <a href="{{ url()->current() }}"
+                    class="filter-btn {{ request('tipe') ? '' : 'active' }}
+                            px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                        Semua
+                    </a>
+
+                    <a href="{{ url()->current() }}?tipe=pusat{{ request('q') ? '&q='.request('q') : '' }}"
+                    class="filter-btn {{ request('tipe') === 'pusat' ? 'active' : '' }}
+                            px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                        Pusat
+                    </a>
+
+                    <a href="{{ url()->current() }}?tipe=cabang{{ request('q') ? '&q='.request('q') : '' }}"
+                    class="filter-btn {{ request('tipe') === 'cabang' ? 'active' : '' }}
+                            px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                        Cabang
+                    </a>
+
+                    <a href="{{ url()->current() }}?tipe=kas{{ request('q') ? '&q='.request('q') : '' }}"
+                    class="filter-btn {{ request('tipe') === 'kas' ? 'active' : '' }}
+                            px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                        Kas
+                    </a>
                 </div>
             </div>
+
 
             {{-- ================= TABLE AREA ================= --}}
             <div
@@ -92,51 +140,59 @@
                             </tr>
                         </thead>
                         <tbody id="kantorTableBody" class="divide-y divide-slate-50">
-                            @forelse ($kantor as $item)
+                            @forelse ($kantors as $item)
                                 <tr class="kantor-row group hover:bg-slate-50/80 transition-colors"
-                                    data-type="{{ strtolower($item['tipe'] ?? 'cabang') }}">
+                                    data-type="{{ strtolower($item->tipe) }}">
 
+                                    {{-- NO --}}
                                     <td class="px-8 py-6 font-black text-[#00326B]">
-                                        {{ ($kantor->currentPage() - 1) * $kantor->perPage() + $loop->iteration }}
+                                        {{ ($kantors->currentPage() - 1) * $kantors->perPage() + $loop->iteration }}
                                     </td>
 
+                                    {{-- TIPE --}}
                                     <td class="px-8 py-6">
                                         <span
                                             class="inline-flex px-3 py-1 rounded-lg bg-blue-50 text-blue-700 text-[9px] font-black uppercase tracking-widest border border-blue-100">
-                                            {{ $item['tipe'] ?? 'Cabang' }}
+                                            {{ $item->tipe }}
                                         </span>
                                     </td>
 
+                                    {{-- NAMA --}}
                                     <td class="px-8 py-6">
-                                        <div class="font-black text-[#00326B] leading-tight">{{ $item['nama'] }}</div>
-                                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                                            {{ $item['kode'] ?? '' }}</div>
+                                        <div class="font-black text-[#00326B] leading-tight">
+                                            {{ $item->nama }}
+                                        </div>
                                     </td>
 
+                                    {{-- ALAMAT --}}
                                     <td class="px-8 py-6 max-w-xs lg:max-w-md">
                                         <div class="flex gap-2">
                                             <i class="bi bi-geo-alt-fill text-[#fbbf24] mt-1"></i>
                                             <div>
                                                 <p class="text-sm font-bold text-slate-600 leading-snug">
-                                                    {{ $item['alamat'] ?? '-' }}</p>
+                                                    {{ $item->alamat }}
+                                                </p>
                                                 <p class="text-xs font-medium text-slate-400 mt-1 uppercase tracking-wider">
-                                                    {{ $item['kota'] ?? 'NTB' }}</p>
+                                                    NTB
+                                                </p>
                                             </div>
                                         </div>
                                     </td>
 
+                                    {{-- TELEPON --}}
                                     <td class="px-8 py-6 text-center">
-                                        @if (!empty($item['telepon']))
-                                            <a href="tel:{{ $item['telepon'] }}"
+                                        @if ($item->telepon)
+                                            <a href="tel:{{ $item->telepon }}"
                                                 class="inline-flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-700 rounded-xl font-bold text-xs hover:bg-emerald-600 hover:text-white transition-all shadow-sm">
                                                 <i class="bi bi-telephone-fill"></i>
-                                                <span>{{ $item['telepon'] }}</span>
+                                                <span>{{ $item->telepon }}</span>
                                             </a>
                                         @else
                                             <span class="text-slate-300 italic text-xs">N/A</span>
                                         @endif
                                     </td>
 
+                                    {{-- AKSI --}}
                                     <td class="px-8 py-6 text-center">
                                         <button
                                             class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#00326B] text-white rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-blue-900/20 hover:scale-105 active:scale-95 transition-all"
@@ -275,4 +331,57 @@
             document.getElementById('mapModal').classList.add('hidden');
         }
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const searchInput = document.getElementById('searchKantor');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const rows = document.querySelectorAll('.kantor-row');
+
+        let activeFilter = 'all';
+
+        // =====================
+        // SEARCH HANDLER
+        // =====================
+        searchInput.addEventListener('input', applyFilter);
+
+        // =====================
+        // FILTER BUTTON HANDLER
+        // =====================
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+
+                // Active state
+                filterButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                activeFilter = btn.dataset.filter;
+                applyFilter();
+            });
+        });
+
+        // =====================
+        // CORE FILTER LOGIC
+        // =====================
+        function applyFilter() {
+            const keyword = searchInput.value.toLowerCase();
+
+            rows.forEach(row => {
+                const type = row.dataset.type;
+                const text = row.innerText.toLowerCase();
+
+                const matchSearch = text.includes(keyword);
+                const matchFilter = activeFilter === 'all' || type === activeFilter;
+
+                if (matchSearch && matchFilter) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+    });
+    </script>
+
 @endpush

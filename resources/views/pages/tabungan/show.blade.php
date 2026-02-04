@@ -15,13 +15,28 @@
             </div>
 
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                {{-- BREADCRUMB --}}
                 <nav class="flex mb-10 text-blue-300/60 text-xs tracking-widest uppercase font-bold">
                     <ol class="inline-flex items-center space-x-3">
-                        <li><a href="/" class="hover:text-white transition-colors text-blue-200">Beranda</a></li>
+                        <li>
+                            <a href="{{ url('/') }}" class="hover:text-white transition-colors text-blue-200">
+                                Beranda
+                            </a>
+                        </li>
                         <li class="text-blue-300/30">/</li>
-                        <li><span class="hover:text-white cursor-pointer text-blue-200">Produk</span></li>
+                        <li>
+                            <span class="hover:text-white cursor-pointer text-blue-200">
+                                Produk
+                            </span>
+                        </li>
                         <li class="text-blue-300/30">/</li>
-                        <li class="text-white">{{ $promo->title }}</li>
+                        <li>
+                            {{-- slug dipakai di URL --}}
+                            <a href="{{ route('tabungan.show', $promo->slug) }}"
+                               class="text-white hover:text-blue-200 transition">
+                                {{ $promo->title }}
+                            </a>
+                        </li>
                     </ol>
                 </nav>
 
@@ -45,7 +60,8 @@
                             "{{ $promo->subtitle }}"
                         </p>
                     </div>
-                    {{-- Quick Info Cards (Gaya Bento Pinjaman) --}}
+
+                    {{-- Quick Info Cards --}}
                     <div class="hidden lg:flex gap-4">
                         <div
                             class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-[2rem] text-center min-w-[150px] transition-all hover:-translate-y-2 hover:bg-white/10">
@@ -81,8 +97,9 @@
 
                         {{-- IMAGE --}}
                         <div class="aspect-[21/9] relative group overflow-hidden">
-                            <img src="{{ asset('storage/' . $promo->image) }}" alt="{{ $promo->title }}"
-                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <img src="{{ asset('storage/' .$promo->image) }}"
+                                 alt="{{ $promo->title }}"
+                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
 
@@ -94,11 +111,11 @@
                                     Informasi Produk
                                 </h3>
                                 <p class="text-gray-500 text-2xl leading-relaxed font-medium italic px-4">
-                                    "{{ $promo->description ?? $promo->short_desc }}"
+                                    "{{ $promo->description }}"
                                 </p>
                             </div>
 
-                            {{-- KEUNTUNGAN & FASILITAS --}}
+                            {{-- KEUNTUNGAN --}}
                             <div class="space-y-8">
                                 <h4 class="text-2xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
                                     <span class="w-1.5 h-8 bg-blue-600 rounded-full"></span>
@@ -123,9 +140,9 @@
 
                             {{-- SYARAT --}}
                             <div x-data="{ open: true }"
-                                class="mt-16 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
+                                 class="mt-16 bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
                                 <button @click="open = !open"
-                                    class="w-full p-8 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                                        class="w-full p-8 flex items-center justify-between hover:bg-gray-50 transition-colors">
                                     <div class="flex items-center gap-4">
                                         <div
                                             class="w-12 h-12 bg-[#fbbf24]/10 text-[#fbbf24] rounded-2xl flex items-center justify-center">
@@ -136,7 +153,7 @@
                                         </h3>
                                     </div>
                                     <i class="bi bi-chevron-down text-gray-400 transition-transform duration-500"
-                                        :class="open ? 'rotate-180' : ''"></i>
+                                       :class="open ? 'rotate-180' : ''"></i>
                                 </button>
 
                                 <div x-show="open" x-collapse>
@@ -168,6 +185,7 @@
             </div>
         </div>
     </main>
+
 
     <style>
         [x-cloak] {

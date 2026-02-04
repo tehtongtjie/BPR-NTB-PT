@@ -133,11 +133,11 @@
                         </div>
 
                         <div class="mt-12 space-y-4">
-                            <a href="{{ route('simulasi.permintaan', 'kredit') }}"
+                            <a href="{{ url('/simulasi/kredit/permintaan') }}"
                                 class="flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group">
                                 <i
                                     class="bi bi-send-fill transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                                Ajukan Pinjaman
+                                Ajukan Deposito
                             </a>
                             <p
                                 class="text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest leading-relaxed px-4">

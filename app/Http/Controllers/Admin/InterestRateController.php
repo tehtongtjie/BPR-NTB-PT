@@ -13,15 +13,11 @@ use Illuminate\Support\Facades\DB;
 class InterestRateController extends Controller
 {
     /**
-     * TAMPILKAN SUKU BUNGA (DASHBOARD)
+     * DASHBOARD
      */
     public function index()
     {
-        $periods = InterestRatePeriod::with([
-                'tabungans',
-                'depositos',
-                'lps'
-            ])
+        $periods = InterestRatePeriod::with(['tabungans','depositos','lps'])
             ->orderBy('year', 'desc')
             ->orderBy('month', 'desc')
             ->paginate(5);
@@ -30,7 +26,7 @@ class InterestRateController extends Controller
     }
 
     /**
-     * FORM CREATE SUKU BUNGA
+     * CREATE
      */
     public function create()
     {
@@ -38,82 +34,83 @@ class InterestRateController extends Controller
     }
 
     /**
-     * SIMPAN PERIOD + TABUNGAN + DEPOSITO + LPS
+     * STORE
      */
     public function store(Request $request)
     {
         $request->validate([
-            // ===== PERIOD =====
             'title'     => 'required|string|max:100',
             'month'     => 'required|integer|min:1|max:12',
             'year'      => 'required|integer|min:2000',
-            'is_active' => 'required|boolean',
+            'is_active' => 'sometimes|boolean',
 
-            // ===== TABUNGAN =====
-            'tabungans'               => 'nullable|array',
-            'tabungans.*.type'        => 'required|string|max:50',
-            'tabungans.*.rate'        => 'required|numeric|min:0',
+            // TABUNGAN (DINAMIS & AMAN)
+            'tabungans'             => 'nullable|array',
+            'tabungans.*.type'      => 'sometimes|required|string|max:50',
+            'tabungans.*.rate'      => 'sometimes|required|numeric|min:0',
 
-            // ===== DEPOSITO =====
-            'depositos'               => 'nullable|array',
-            'depositos.*.tenor'       => 'required|integer|min:1',
-            'depositos.*.rate'        => 'required|numeric|min:0',
-            'depositos.*.is_best'     => 'nullable|boolean',
-            'depositos.*.label'       => 'nullable|string|max:50',
+            // DEPOSITO
+            'depositos'             => 'nullable|array',
+            'depositos.*.tenor'     => 'sometimes|required|integer|min:1',
+            'depositos.*.rate'      => 'sometimes|required|numeric|min:0',
+            'depositos.*.label'     => 'nullable|string|max:50',
 
-            // ===== LPS =====
-            'lps_rate'               => 'required|numeric|min:0',
-            'lps_note'               => 'nullable|string|max:255',
-            'lps_verification_url'   => 'nullable|url',
+            // LPS
+            'lps_rate'              => 'required|numeric|min:0',
+            'lps_note'              => 'nullable|string|max:255',
+            'lps_verification_url'  => 'nullable|url',
         ]);
 
         DB::transaction(function () use ($request) {
 
-            // =====================
-            // SIMPAN PERIOD
-            // =====================
-            if ($request->is_active) {
-                InterestRatePeriod::where('is_active', true)->update(['is_active' => false]);
+            $isActive = $request->boolean('is_active');
+
+            if ($isActive) {
+                InterestRatePeriod::where('is_active', true)
+                    ->update(['is_active' => false]);
             }
 
             $period = InterestRatePeriod::create([
                 'title'     => $request->title,
                 'month'     => $request->month,
                 'year'      => $request->year,
-                'is_active' => $request->is_active,
+                'is_active' => $isActive,
             ]);
 
-            // =====================
-            // SIMPAN TABUNGAN
-            // =====================
-            if ($request->filled('tabungans')) {
-                foreach ($request->tabungans as $tabungan) {
+            /**
+             * ================= TABUNGAN
+             */
+            collect($request->tabungans ?? [])
+                ->filter(fn ($t) =>
+                    !empty($t['type']) && $t['rate'] !== null
+                )
+                ->each(function ($t) use ($period) {
                     InterestRateTabungan::create([
                         'interest_rate_period_id' => $period->id,
-                        'tabungan_type'           => $tabungan['type'],
-                        'rate'                    => $tabungan['rate'],
+                        'tabungan_type'           => $t['type'],
+                        'rate'                    => $t['rate'],
                     ]);
-                }
-            }
+                });
 
-            // =====================
-            // SIMPAN DEPOSITO
-            // =====================
-            if ($request->filled('depositos')) {
-                foreach ($request->depositos as $deposito) {
+            /**
+             * ================= DEPOSITO
+             */
+            collect($request->depositos ?? [])
+                ->filter(fn ($d) =>
+                    !empty($d['tenor']) && $d['rate'] !== null
+                )
+                ->each(function ($d) use ($period) {
                     InterestRateDeposito::create([
                         'interest_rate_period_id' => $period->id,
-                        'tenor_month'             => $deposito['tenor'],
-                        'rate'                    => $deposito['rate'],
-                        'is_best'                 => $deposito['is_best'] ?? false,
-                        'label'                   => $deposito['label'] ?? null,
+                        'tenor_month'             => $d['tenor'],
+                        'rate'                    => $d['rate'],
+                        'label'                   => $d['label'] ?? null,
                     ]);
-                }
-            }
+                });
 
-            // =====================
-            // SIMPAN LPS
-            // =====================
+            /**
+             * ================= LPS
+             */
             InterestRateLps::create([
                 'interest_rate_period_id' => $period->id,
                 'rate'                    => $request->lps_rate,
@@ -122,104 +119,100 @@ class InterestRateController extends Controller
             ]);
         });
 
-        return redirect()
-            ->route('admin.main.index')
+        return redirect()->route('admin.main.index')
             ->with('success', 'Suku bunga berhasil ditambahkan!');
     }
 
     /**
-     * FORM EDIT SUKU BUNGA
+     * EDIT
      */
     public function edit(InterestRatePeriod $period)
     {
-        $period->load([
-            'tabungans',
-            'depositos',
-            'lps',
-        ]);
-
+        $period->load(['tabungans','depositos','lps']);
         return view('admin.main.interest-rate.edit', compact('period'));
     }
 
-
     /**
-     * UPDATE PERIOD + DETAIL
+     * UPDATE (AMAN TOTAL)
      */
-    public function update(Request $request, InterestRatePeriod $interestRate)
+    public function update(Request $request, InterestRatePeriod $period)
     {
         $request->validate([
             'title'     => 'required|string|max:100',
             'month'     => 'required|integer|min:1|max:12',
             'year'      => 'required|integer|min:2000',
-            'is_active' => 'required|boolean',
+            'is_active' => 'sometimes|boolean',
 
-            'tabungans'               => 'nullable|array',
-            'tabungans.*.type'        => 'required|string|max:50',
-            'tabungans.*.rate'        => 'required|numeric|min:0',
+            'tabungans'             => 'nullable|array',
+            'tabungans.*.type'      => 'sometimes|required|string|max:50',
+            'tabungans.*.rate'      => 'sometimes|required|numeric|min:0',
 
-            'depositos'               => 'nullable|array',
-            'depositos.*.tenor'       => 'required|integer|min:1',
-            'depositos.*.rate'        => 'required|numeric|min:0',
-            'depositos.*.is_best'     => 'nullable|boolean',
-            'depositos.*.label'       => 'nullable|string|max:50',
+            'depositos'             => 'nullable|array',
+            'depositos.*.tenor'     => 'sometimes|required|integer|min:1',
+            'depositos.*.rate'      => 'sometimes|required|numeric|min:0',
+            'depositos.*.label'     => 'nullable|string|max:50',
 
-            'lps_rate'               => 'required|numeric|min:0',
-            'lps_note'               => 'nullable|string|max:255',
-            'lps_verification_url'   => 'nullable|url',
+            'lps_rate'              => 'required|numeric|min:0',
+            'lps_note'              => 'nullable|string|max:255',
+            'lps_verification_url'  => 'nullable|url',
         ]);
 
-        DB::transaction(function () use ($request, $interestRate) {
+        DB::transaction(function () use ($request, $period) {
 
-            if ($request->is_active) {
-                InterestRatePeriod::where('id', '!=', $interestRate->id)
+            $isActive = $request->boolean('is_active');
+
+            if ($isActive) {
+                InterestRatePeriod::where('id','!=',$period->id)
                     ->update(['is_active' => false]);
             }
 
-            // =====================
-            // UPDATE PERIOD
-            // =====================
-            $interestRate->update([
+            $period->update([
                 'title'     => $request->title,
                 'month'     => $request->month,
                 'year'      => $request->year,
-                'is_active' => $request->is_active,
+                'is_active' => $isActive,
             ]);
 
-            // =====================
-            // RESET TABUNGAN
-            // =====================
-            InterestRateTabungan::where('interest_rate_period_id', $interestRate->id)->delete();
-            if ($request->filled('tabungans')) {
-                foreach ($request->tabungans as $tabungan) {
+            /**
+             * ================= TABUNGAN (RESET TOTAL)
+             */
+            InterestRateTabungan::where('interest_rate_period_id',$period->id)->delete();
+
+            collect($request->tabungans ?? [])
+                ->filter(fn ($t) =>
+                    !empty($t['type']) && $t['rate'] !== null
+                )
+                ->each(function ($t) use ($period) {
                     InterestRateTabungan::create([
-                        'interest_rate_period_id' => $interestRate->id,
-                        'tabungan_type'           => $tabungan['type'],
-                        'rate'                    => $tabungan['rate'],
+                        'interest_rate_period_id' => $period->id,
+                        'tabungan_type'           => $t['type'],
+                        'rate'                    => $t['rate'],
                     ]);
-                }
-            }
+                });
 
-            // =====================
-            // RESET DEPOSITO
-            // =====================
-            InterestRateDeposito::where('interest_rate_period_id', $interestRate->id)->delete();
-            if ($request->filled('depositos')) {
-                foreach ($request->depositos as $deposito) {
+            /**
+             * ================= DEPOSITO (RESET TOTAL)
+             */
+            InterestRateDeposito::where('interest_rate_period_id',$period->id)->delete();
+
+            collect($request->depositos ?? [])
+                ->filter(fn ($d) =>
+                    !empty($d['tenor']) && $d['rate'] !== null
+                )
+                ->each(function ($d) use ($period) {
                     InterestRateDeposito::create([
-                        'interest_rate_period_id' => $interestRate->id,
-                        'tenor_month'             => $deposito['tenor'],
-                        'rate'                    => $deposito['rate'],
-                        'is_best'                 => $deposito['is_best'] ?? false,
-                        'label'                   => $deposito['label'] ?? null,
+                        'interest_rate_period_id' => $period->id,
+                        'tenor_month'             => $d['tenor'],
+                        'rate'                    => $d['rate'],
+                        'label'                   => $d['label'] ?? null,
                     ]);
-                }
-            }
+                });
 
-            // =====================
-            // UPDATE LPS
-            // =====================
+            /**
+             * ================= LPS
+             */
             InterestRateLps::updateOrCreate(
-                ['interest_rate_period_id' => $interestRate->id],
+                ['interest_rate_period_id' => $period->id],
                 [
                     'rate'             => $request->lps_rate,
                     'note'             => $request->lps_note,
@@ -228,22 +221,40 @@ class InterestRateController extends Controller
             );
         });
 
-        return redirect()
-            ->route('admin.main.index')
+        return redirect()->route('admin.main.index')
             ->with('success', 'Suku bunga berhasil diperbarui!');
     }
 
     /**
-     * HAPUS PERIOD + SEMUA DETAIL
+     * DELETE
      */
-    public function destroy(InterestRatePeriod $interestRate)
-    {
-        DB::transaction(function () use ($interestRate) {
-            $interestRate->delete();
-        });
+public function destroy(InterestRatePeriod $period)
+{
+    DB::transaction(function () use ($period) {
 
-        return redirect()
-            ->route('admin.main.index')
-            ->with('success', 'Suku bunga berhasil dihapus!');
-    }
+        $wasActive = $period->is_active;
+
+        $period->tabungans()->delete();
+        $period->depositos()->delete();
+        $period->lps()->delete();
+
+        $period->delete();
+
+        if ($wasActive) {
+            $next = InterestRatePeriod::where('is_active', false)
+                ->orderBy('year', 'desc')
+                ->orderBy('month', 'desc')
+                ->first();
+
+            if ($next) {
+                $next->update(['is_active' => true]);
+            }
+        }
+    });
+
+    return redirect()->route('admin.main.index')
+        ->with('success', 'Suku bunga berhasil dihapus.');
+}
+
+
 }

@@ -109,7 +109,7 @@
                         </div>
 
                         <div class="mt-12 space-y-4">
-                            <a href="{{ route('simulasi.permintaan', 'deposito') }}"
+                            <a href="{{ url('/simulasi/deposito/permintaan') }}"
                                 class="flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group">
                                 <i
                                     class="bi bi-send-fill transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
@@ -143,7 +143,3 @@
         }
     </style>
 @endsection
-
-@push('scripts')
-    @vite(['resources/js/pages/simulasi/deposito.js'])
-@endpush
