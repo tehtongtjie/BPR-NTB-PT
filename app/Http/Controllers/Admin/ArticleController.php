@@ -118,7 +118,7 @@ class ArticleController extends Controller
             // =====================
             $article->update([
                 'title'        => $request->title,
-                'slug'         => Str::slug($request->title),
+                // 'slug'         => Str::slug($request->title),
                 'category'     => $request->category,
                 'author'       => $request->author,
                 'excerpt'      => $request->excerpt,
