@@ -602,27 +602,27 @@
                                     "{{ $item['desc'] }}"
                                 </p>
 
-                                <div class="pt-4 mt-auto">
-                                    <a href="{{ route('lelang.show', 'lelang-renovasi-kantor-mataram') }}"
-                                        class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
-                                        Lihat Detail <i
-                                            class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                                    </a>
-                                </div>
+
+                                <a href="{{ route('lelang.show', 'lelang-renovasi-kantor-mataram') }}"
+                                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
+                                    Lihat Detail <i
+                                        class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
-                @endforeach
-
             </div>
+            @endforeach
 
-            {{-- Footer Action --}}
-            <div class="text-center mt-12">
-                <a href="#"
-                    class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
-                    Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
-                </a>
-            </div>
+        </div>
+
+        {{-- Footer Action --}}
+        <div class="text-center mt-12">
+            <a href="#"
+                class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
+                Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
+            </a>
+        </div>
         </div>
     </section>
 
