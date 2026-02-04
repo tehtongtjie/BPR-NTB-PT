@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PerusahaanController,
     JaringanKantorController,
     UmkmController,
+    RiplayController,
     BeritaController,
     GaleriController,
     LelangController,
@@ -105,6 +106,14 @@ Route::prefix('lelang')->name('lelang.')->group(function () {
 Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/', [BeritaController::class, 'index'])->name('index');
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
+});
+
+// Rute untuk Halaman Riplay
+Route::get('/riplay', [RiplayController::class, 'index'])->name('riplay.index');
+// Rute untuk Berita (Index & Detail)
+Route::prefix('berita')->group(function () {
+    Route::get('/', [BeritaController::class, 'index'])->name('berita.index');
+    Route::get('/{slug}', [BeritaController::class, 'show'])->name('berita.show');
 });
 
 // 3. DAFTAR GALERI

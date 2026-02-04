@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'Publikasi' => [
                 ['label' => 'Berita Terkini', 'route' => 'berita.index', 'icon' => 'bi-newspaper'],
                 ['label' => 'Galeri', 'route' => 'galeri.index', 'icon' => 'bi-images'],
+                ['label' => 'Riplay', 'route' => 'riplay.index', 'icon' => 'bi-file-earmark-text'],
                 ['label' => 'Pengumuman Lelang', 'route' => 'lelang.index', 'icon' => 'bi-megaphone'],
                 ['label' => 'Informasi Karier', 'route' => 'karir.index', 'icon' => 'bi-person-lines-fill'],
                 [
