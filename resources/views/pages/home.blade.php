@@ -517,112 +517,120 @@
     </section>
 
     {{-- ================= LELANG SECTION (OPTIMIZED GRID TO SWIPE) ================= --}}
-    <section class="relative py-12 bg-white overflow-hidden">
+    <section class="relative py-12 lg:py-24 bg-white overflow-hidden">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
 
             {{-- Header Section --}}
-            <div class="flex items-end justify-between mb-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
                 <div class="max-w-2xl">
                     <div class="inline-flex items-center gap-3 mb-3">
-                        <span class="h-[1px] w-10 bg-[#fbbf24]"></span>
+                        <span class="h-[2px] w-10 bg-[#fbbf24]"></span>
                         <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">Public
                             Procurement</span>
                     </div>
-                    <h2 class="text-3xl lg:text-5xl font-black text-[#00326B] leading-tight">
+                    <h2 class="text-4xl lg:text-5xl font-black text-[#00326B] leading-tight">
                         Kesempatan Lelang <br><span class="italic font-light text-[#fbbf24]">Bersama BPR NTB</span>
                     </h2>
                 </div>
 
                 {{-- Hint Swipe Mobile (Hanya muncul di HP) --}}
                 <div
-                    class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+                    class="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest lg:hidden animate-pulse">
                     <span>Swipe</span> <i class="bi bi-arrow-right"></i>
                 </div>
             </div>
 
             {{-- Container: Mobile Flex-Scroll | Desktop Grid --}}
             <div
-                class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 pb-4">
+                class="flex lg:grid lg:grid-cols-4 gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory hide-scrollbar -mx-6 px-6 lg:mx-0 lg:px-0 pb-8">
 
-                {{-- Template Card (Ulangi untuk Item 1-4) --}}
                 @php
                     $lelangItems = [
                         [
                             'tag' => 'Jasa & Konsultan',
-                            'color' => 'blue-600',
+                            'text_color' => 'text-blue-600',
                             'title' => 'Pengadaan Jasa Audit Tahun Buku 2025',
-                            'desc' => 'Mengundang KAP profesional untuk audit laporan keuangan.',
-                            'img' => asset('images/lelang-pengadaan.png'),
+                            'desc' => 'Mengundang KAP profesional untuk audit laporan keuangan konsolidasi.',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1454165833767-027ffea9e77b?auto=format&fit=crop&q=80&w=400',
                         ],
                         [
                             'tag' => 'Konstruksi',
-                            'color' => 'emerald-600',
+                            'text_color' => 'text-emerald-600',
                             'title' => 'Renovasi Kantor Cabang Utama Mataram',
-                            'desc' => 'Peluang bagi kontraktor untuk peningkatan fasilitas.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1606761506140-59756b6c167b.webp',
+                            'desc' => 'Peluang bagi kontraktor untuk peningkatan fasilitas layanan nasabah.',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1503387762-592dea58bd21?auto=format&fit=crop&q=80&w=400',
                         ],
                         [
                             'tag' => 'Teknologi',
-                            'color' => 'purple-600',
+                            'text_color' => 'text-purple-600',
                             'title' => 'Pengadaan Sistem Keamanan Jaringan',
-                            'desc' => 'Mencari vendor terkemuka untuk upgrade infrastruktur IT.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1579547621113-e4d0263f90e5.webp',
+                            'desc' => 'Mencari vendor terkemuka untuk upgrade infrastruktur IT perbankan.',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=400',
                         ],
                         [
                             'tag' => 'Logistik',
-                            'color' => 'orange-600',
+                            'text_color' => 'text-orange-600',
                             'title' => 'Pengadaan Armada Kendaraan Operasional',
-                            'desc' => 'Tender untuk penyedia kendaraan dinas baru BPR NTB.',
-                            'img' => 'https://img.daisyui.com/images/stock/photo-1560761005-59b48c77174e.webp',
+                            'desc' => 'Tender untuk penyedia kendaraan dinas operasional baru BPR NTB.',
+                            'img' =>
+                                'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&q=80&w=400',
                         ],
                     ];
                 @endphp
 
                 @foreach ($lelangItems as $item)
-                    <div class="flex-none w-[82%] sm:w-[48%] lg:w-auto snap-center group">
+                    <div class="flex-none w-[85%] sm:w-[45%] lg:w-auto snap-center group">
                         <div
-                            class="relative flex flex-col h-full bg-white rounded-[2.5rem] shadow-lg border border-slate-100 overflow-hidden transition-all duration-500 lg:hover:shadow-2xl lg:hover:shadow-blue-900/10 lg:hover:-translate-y-2">
+                            class="relative flex flex-col h-full bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden transition-all duration-500 lg:hover:shadow-2xl lg:hover:shadow-blue-900/10 lg:hover:-translate-y-2">
 
-                            {{-- Image Wrapper dengan Aspect Ratio Tetap --}}
-                            <div class="aspect-[4/3] overflow-hidden">
+                            {{-- Image Wrapper --}}
+                            <div class="aspect-[4/3] overflow-hidden relative">
                                 <img src="{{ $item['img'] }}"
                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                     alt="{{ $item['title'] }}">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                             </div>
 
                             {{-- Content --}}
-                            <div class="p-7 lg:p-8 flex flex-col flex-grow space-y-3">
-                                <span class="text-[9px] font-black uppercase tracking-widest text-{{ $item['color'] }}">
+                            <div class="p-8 flex flex-col flex-grow space-y-4">
+                                <span class="text-[10px] font-black uppercase tracking-widest {{ $item['text_color'] }}">
                                     {{ $item['tag'] }}
                                 </span>
-                                <h3 class="text-lg lg:text-xl font-black text-[#00326B] leading-tight min-h-[3rem]">
+
+                                <h3
+                                    class="text-xl font-black text-[#00326B] leading-tight min-h-[3.5rem] group-hover:text-blue-700 transition-colors">
                                     {{ $item['title'] }}
                                 </h3>
-                                <p class="text-slate-500 text-xs lg:text-sm italic line-clamp-2 leading-relaxed">
+
+                                <p class="text-slate-500 text-sm italic line-clamp-2 leading-relaxed opacity-80">
                                     "{{ $item['desc'] }}"
                                 </p>
 
-
-                                <a href="{{ route('lelang.show', 'lelang-renovasi-kantor-mataram') }}"
-                                    class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
-                                    Lihat Detail <i
-                                        class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                                </a>
+                                <div class="pt-4 mt-auto">
+                                    <a href="#"
+                                        class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] transition-all group-hover:gap-4">
+                                        Lihat Detail
+                                        <i class="bi bi-arrow-right text-lg text-[#fbbf24]"></i>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
+                @endforeach
+
             </div>
-            @endforeach
 
-        </div>
-
-        {{-- Footer Action --}}
-        <div class="text-center mt-12">
-            <a href="#"
-                class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
-                Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
-            </a>
-        </div>
+            {{-- Footer Action --}}
+            <div class="text-center mt-12">
+                <a href="#"
+                    class="inline-flex items-center justify-center px-10 py-5 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-2xl shadow-blue-900/20 transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95 group">
+                    Lihat Semua Lelang
+                    <i class="bi bi-arrow-right ml-3 transition-transform group-hover:translate-x-2"></i>
+                </a>
+            </div>
         </div>
     </section>
 
