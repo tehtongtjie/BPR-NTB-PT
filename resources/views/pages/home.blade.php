@@ -435,7 +435,7 @@
                         </div>
                     </div>
                 </div>
-
+            @endif
             {{-- SIDE NEWS LIST (Kecil di Kanan) --}}
             <div class="lg:col-span-5 flex flex-col gap-6">
 
@@ -579,8 +579,7 @@
             <div class="max-w-2xl">
                 <div class="inline-flex items-center gap-3 mb-3">
                     <span class="h-[1px] w-10 bg-[#fbbf24]"></span>
-                    <span
-                        class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">
+                    <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">
                         Public Procurement
                     </span>
                 </div>
@@ -591,8 +590,7 @@
                 </h2>
             </div>
 
-            <div
-                class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
+            <div class="lg:hidden flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-widest mb-2">
                 <span>Swipe</span> <i class="bi bi-arrow-right"></i>
             </div>
         </div>
@@ -615,68 +613,70 @@
                         <div class="aspect-[4/3] overflow-hidden">
                             <img
                                 src="{{ $lelang->banner
-                                        ? asset('storage/'.$lelang->banner)
-                                        : asset('images/lelang-pengadaan.png') }}"
+                                    ? asset('storage/'.$lelang->banner)
+                                    : asset('images/lelang-pengadaan.png') }}"
                                 alt="{{ $lelang->title }}"
-                                class="w-full h-full object-cover
-                                       transition-transform duration-700
-                                       group-hover:scale-110">
+                                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                         </div>
 
                         {{-- Content --}}
                         <div class="p-7 lg:p-8 flex flex-col flex-grow space-y-3">
 
-                            {{-- Category --}}
-                            <span
-                                class="text-[9px] font-black uppercase tracking-widest
-                                       text-[#00326B]">
+                            <span class="text-[9px] font-black uppercase tracking-widest text-[#00326B]">
                                 {{ $lelang->category ?? 'LELANG' }}
                             </span>
 
-                            {{-- Title --}}
-                            <h3
-                                class="text-lg lg:text-xl font-black text-[#00326B]
-                                       leading-tight min-h-[3rem]">
+                            <h3 class="text-lg lg:text-xl font-black text-[#00326B] leading-tight">
                                 {{ $lelang->title }}
                             </h3>
 
-                            {{-- Short Desc --}}
-                            <p
-                                class="text-slate-500 text-xs lg:text-sm italic
-                                       line-clamp-2 leading-relaxed">
+                            <p class="text-slate-500 text-xs lg:text-sm italic line-clamp-2">
                                 "{{ $lelang->short_desc }}"
                             </p>
 
-                            {{-- Deadline --}}
                             @if ($lelang->deadline)
                                 <p class="text-[10px] text-slate-400 font-semibold">
                                     Batas Akhir:
                                     {{ $lelang->deadline->translatedFormat('d F Y') }}
                                 </p>
+                            @endif
 
-                                <div class="pt-4 mt-auto">
-                                    <a href="#"
-                                        class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
-                                        Lihat Detail <i
-                                            class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
-                                    </a>
-                                </div>
+                            <div class="pt-4 mt-auto">
+                                <a href="#"
+                                   class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]
+                                          text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
+                                    Lihat Detail
+                                    <i class="bi bi-arrow-right transition-transform group-hover:translate-x-1"></i>
+                                </a>
                             </div>
+
                         </div>
                     </div>
-                @endforeach
+                </div>
+
+            @empty
+                <div class="w-full text-center py-12 text-slate-500 italic">
+                    Belum ada data lelang tersedia.
+                </div>
+            @endforelse
 
         </div>
 
-            {{-- Footer Action --}}
-            <div class="text-center mt-12">
-                <a href="#"
-                    class="inline-flex items-center justify-center px-10 py-4 rounded-2xl bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em] shadow-xl transition-all duration-300 hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
-                    Lihat Semua Lelang <i class="bi bi-arrow-right ml-3"></i>
-                </a>
-            </div>
+        {{-- Footer Action --}}
+        <div class="text-center mt-12">
+            <a href="#"
+               class="inline-flex items-center justify-center px-10 py-4 rounded-2xl
+                      bg-[#00326B] text-white text-xs font-black uppercase tracking-[0.2em]
+                      shadow-xl transition-all duration-300
+                      hover:bg-[#fbbf24] hover:text-[#00326B] active:scale-95">
+                Lihat Semua Lelang
+                <i class="bi bi-arrow-right ml-3"></i>
+            </a>
         </div>
-    </section>
+
+    </div>
+</section>
+
 
     {{-- ================= KONTAK & TESTIMONI (PREMIUM BENTO STYLE) ================= --}}
     <section class="relative py-12 lg:py-20 bg-slate-50 overflow-hidden" id="kontak">
