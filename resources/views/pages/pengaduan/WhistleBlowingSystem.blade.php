@@ -2,8 +2,6 @@
 
 @section('title', 'Whistle Blowing System - BPR NTB')
 
-@vite(['resources/css/app.css', 'resources/js/app.js'])
-
 @section('content')
     <main class="bg-[#F8FAFC] min-h-screen pt-32 lg:pt-44 pb-24 font-sans antialiased relative overflow-hidden">
         {{-- Elemen Dekoratif Latar Belakang --}}
@@ -13,6 +11,7 @@
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <div
                 class="bg-white rounded-[3rem] lg:rounded-[4rem] shadow-2xl shadow-blue-900/5 border border-gray-100 overflow-hidden relative">
+
                 {{-- Pattern Overlay --}}
                 <div class="absolute inset-0 opacity-[0.015] pointer-events-none"
                     style="background-image: url('https://www.transparenttextures.com/patterns/pinstriped-suit.png');">
@@ -30,76 +29,41 @@
                             Whistle Blowing System
                         </h1>
                         <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Saluran Pelaporan Pelanggaran
-                            PT. BPR NTB (Perseroda)</p>
+                            Langsung ke Direksi</p>
                     </div>
 
-                    {{-- ALERT SUCCESS --}}
-                    @if (session('success'))
-                        <div
-                            class="mb-10 p-6 bg-emerald-50 border border-emerald-100 rounded-[2rem] flex items-center gap-4 text-emerald-800 animate-fade-in">
-                            <i class="bi bi-check-circle-fill text-2xl"></i>
-                            <p class="font-bold text-sm">{{ session('success') }}</p>
-                        </div>
-                    @endif
-
-                    {{-- DESKRIPSI --}}
+                    {{-- DESKRIPSI SINGKAT --}}
                     <div class="bg-slate-50 rounded-[2.5rem] p-8 mb-12 border border-slate-100">
-                        <p class="text-slate-600 text-base lg:text-lg leading-relaxed font-medium">
-                            <strong class="text-[#00326B]">Whistle Blowing System (WBS)</strong> adalah sarana resmi untuk
-                            melaporkan dugaan pelanggaran hukum, etika, atau kecurangan (fraud) di lingkungan bank. Kami
-                            menjamin <span
-                                class="text-red-600 font-bold italic text-sm underline decoration-2 underline-offset-4">kerahasiaan
-                                penuh</span> atas identitas Anda.
+                        <p class="text-slate-600 text-base leading-relaxed font-medium italic text-center">
+                            "Setiap laporan yang Anda kirimkan akan diteruskan secara otomatis ke Telegram grup seluruh
+                            Jajaran Direksi secara rahasia."
                         </p>
                     </div>
 
                     {{-- FORM --}}
-                    <form method="POST" action="{{ route('pengaduan.wbs.store') }}" class="space-y-8">
-                        @csrf
-
+                    <div class="space-y-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {{-- Nama Pelapor --}}
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Nama Pelapor
                                     <span class="text-slate-400 font-medium">(Opsional)</span></label>
-                                <input type="text" name="nama"
+                                <input type="text" id="wbs_nama"
                                     class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
                                     placeholder="Anonim">
-                            </div>
-
-                            {{-- Email --}}
-                            <div class="space-y-2">
-                                <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Email
-                                    Korespondensi <span class="text-slate-400 font-medium">(Opsional)</span></label>
-                                <input type="email" name="email"
-                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
-                                    placeholder="email@anda.com">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {{-- No Telepon --}}
-                            <div class="space-y-2">
-                                <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">No. Telepon
-                                    <span class="text-slate-400 font-medium">(Opsional)</span></label>
-                                <input type="tel" name="no_telepon"
-                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
-                                    placeholder="+62 ...">
                             </div>
 
                             {{-- Kategori --}}
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Kategori
                                     Pelanggaran <span class="text-red-500">*</span></label>
-                                <select name="kategori"
-                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-bold text-slate-700 cursor-pointer"
-                                    required>
+                                <select id="wbs_kategori"
+                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-bold text-slate-700 cursor-pointer">
                                     <option value="" disabled selected>-- Pilih Kategori --</option>
-                                    <option value="fraud">Fraud / Kecurangan</option>
-                                    <option value="korupsi">Korupsi / Gratifikasi</option>
-                                    <option value="pelanggaran_etika">Pelanggaran Kode Etik</option>
-                                    <option value="penyalahgunaan_wewenang">Penyalahgunaan Wewenang</option>
-                                    <option value="lainnya">Lainnya</option>
+                                    <option value="Fraud / Kecurangan">Fraud / Kecurangan</option>
+                                    <option value="Korupsi / Gratifikasi">Korupsi / Gratifikasi</option>
+                                    <option value="Pelanggaran Kode Etik">Pelanggaran Kode Etik</option>
+                                    <option value="Penyalahgunaan Wewenang">Penyalahgunaan Wewenang</option>
+                                    <option value="Lainnya">Lainnya</option>
                                 </select>
                             </div>
                         </div>
@@ -109,86 +73,153 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Nama Terlapor
                                     <span class="text-red-500">*</span></label>
-                                <input type="text" name="nama-terlapor"
-                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
-                                    placeholder="Siapa yang dilaporkan?" required>
+                                <input type="text" id="wbs_terlapor"
+                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700"
+                                    placeholder="Siapa yang dilaporkan?">
                             </div>
 
                             {{-- Lokasi --}}
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Lokasi
                                     Kejadian <span class="text-red-500">*</span></label>
-                                <input type="text" name="Lokasi-Kejadian"
-                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
-                                    placeholder="Cabang / Unit Kerja" required>
+                                <input type="text" id="wbs_lokasi"
+                                    class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700"
+                                    placeholder="Cabang / Unit Kerja">
                             </div>
-                        </div>
-
-                        {{-- Waktu Kejadian --}}
-                        <div class="space-y-2">
-                            <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Waktu Kejadian
-                                <span class="text-red-500">*</span></label>
-                            <input type="datetime-local" name="waktu_kejadian"
-                                class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-bold text-slate-700"
-                                required>
                         </div>
 
                         {{-- Uraian --}}
                         <div class="space-y-2">
                             <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Uraian Laporan
                                 <span class="text-red-500">*</span></label>
-                            <textarea name="laporan" rows="6"
-                                class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-[2rem] focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-medium text-slate-700"
-                                placeholder="Ceritakan secara kronologis kejadian yang Anda ketahui..." required></textarea>
+                            <textarea id="wbs_laporan" rows="6"
+                                class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-[2rem] focus:ring-2 focus:ring-[#fbbf24] font-medium text-slate-700"
+                                placeholder="Ceritakan kronologis kejadian..."></textarea>
                         </div>
 
-                        {{-- Warning Box --}}
-                        <div class="p-6 bg-amber-50 rounded-[2rem] border border-amber-100 flex gap-4">
-                            <div
-                                class="flex-shrink-0 w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
-                                <i class="bi bi-exclamation-triangle-fill"></i>
-                            </div>
-                            <p class="text-[11px] text-amber-900/70 font-black leading-relaxed uppercase tracking-tight">
-                                Pastikan laporan Anda didasari dengan niat baik dan fakta yang sebenar-benarnya. Fitnah dan
-                                laporan palsu dapat berimplikasi pada sanksi hukum sesuai peraturan yang berlaku.
-                            </p>
+                        {{-- INPUT FOTO (DENGAN AKSES KAMERA) --}}
+                        <div class="space-y-2">
+                            <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Unggah Bukti Foto
+                                <span class="text-slate-400 font-medium">(Maks 2MB)</span></label>
+                            <input type="file" id="wbs_foto" accept="image/*" capture="environment"
+                                class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-[#00326B] file:text-white hover:file:bg-[#fbbf24] hover:file:text-[#00326B]">
                         </div>
 
-                        {{-- Submit --}}
+                        {{-- Tombol Kirim --}}
                         <div class="pt-4">
-                            <button type="submit"
-                                class="flex items-center justify-center gap-4 w-full bg-[#00326B] text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl shadow-blue-900/20 hover:bg-[#fbbf24] hover:text-[#00326B] transition-all transform active:scale-95 group">
-                                <i
-                                    class="bi bi-send-fill transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
+                            <button type="button" onclick="kirimWbsKeTelegram(this)"
+                                class="flex items-center justify-center gap-4 w-full bg-[#00326B] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl shadow-blue-900/20 hover:bg-[#fbbf24] hover:text-[#00326B] transition-all transform active:scale-95 group">
+                                <i class="bi bi-send-check-fill text-lg"></i>
                                 Kirim Laporan Rahasia
                             </button>
                         </div>
-                    </form>
-
+                    </div>
                 </div>
-            </div>
-
-            {{-- Footer Note --}}
-            <div class="mt-12 text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em]">
-                    Sistem ini diawasi secara independen oleh Satuan Kerja Audit Internal PT. BPR NTB (Perseroda)
-                </p>
             </div>
         </div>
     </main>
+
+    <script>
+        function kirimWbsKeTelegram(btn) {
+            const formData = new FormData();
+            const fotoInput = document.getElementById('wbs_foto');
+
+            const data = {
+                nama: document.getElementById('wbs_nama').value,
+                kategori: document.getElementById('wbs_kategori').value,
+                terlapor: document.getElementById('wbs_terlapor').value,
+                lokasi: document.getElementById('wbs_lokasi').value,
+                laporan: document.getElementById('wbs_laporan').value,
+            };
+
+            // Validasi Kosong
+            if (!data.kategori || !data.terlapor || !data.lokasi || !data.laporan) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Data Belum Lengkap',
+                    text: 'Mohon lengkapi semua data yang bertanda bintang (*)',
+                    confirmButtonColor: '#00326B'
+                });
+                return;
+            }
+
+            // Validasi Foto
+            if (fotoInput.files.length > 0) {
+                const file = fotoInput.files[0];
+                if (file.size > 2 * 1024 * 1024) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'File Terlalu Besar',
+                        text: 'Maksimal ukuran foto adalah 2MB',
+                    });
+                    return;
+                }
+                formData.append('foto', file);
+            }
+
+            formData.append('nama', data.nama);
+            formData.append('kategori', data.kategori);
+            formData.append('terlapor', data.terlapor);
+            formData.append('lokasi', data.lokasi);
+            formData.append('laporan', data.laporan);
+            formData.append('_token', "{{ csrf_token() }}");
+
+            // 1. Loading State - Lebih Elegan
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="bi bi-arrow-repeat animate-spin text-lg"></i>';
+
+            fetch("{{ route('pengaduan.wbs.store') }}", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        "Accept": "application/json"
+                    },
+                    body: formData
+                })
+                .then(async response => {
+                    const resData = await response.json();
+                    if (response.status === 429) throw new Error(
+                        'Terlalu banyak mencoba. Sistem mengunci akses Anda sementara demi keamanan.');
+                    if (!response.ok) throw new Error(resData.message || 'Gagal mengirim laporan');
+                    return resData;
+                })
+                .then(res => {
+                    // 2. Notifikasi Sukses Premium
+                    Swal.fire({
+                        title: '<span style="color: #00326B; font-family: sans-serif;">LAPORAN TERKIRIM</span>',
+                        html: '<p style="color: #64748b; font-weight: 500;">Terima kasih atas keberanian Anda. Laporan telah kami teruskan secara <b>End-to-End Encrypted</b> langsung ke jajaran Direksi.</p>',
+                        icon: 'success',
+                        iconColor: '#fbbf24',
+                        background: '#ffffff',
+                        showConfirmButton: true,
+                        confirmButtonText: 'SELESAI',
+                        confirmButtonColor: '#00326B',
+                        customClass: {
+                            popup: 'rounded-[2.5rem]',
+                            confirmButton: 'rounded-xl px-10 py-3 font-black tracking-widest text-xs'
+                        },
+                        backdrop: `rgba(0,50,107,0.4)`
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(err => {
+                    // 3. Notifikasi Error yang Informatif
+                    Swal.fire({
+                        title: '<span style="color: #991b1b;">TERJADI KENDALA</span>',
+                        text: err.message,
+                        icon: 'error',
+                        confirmButtonColor: '#991b1b',
+                        confirmButtonText: 'COBA LAGI',
+                        customClass: {
+                            popup: 'rounded-[2rem]',
+                            confirmButton: 'rounded-xl px-10 py-3 font-black text-xs'
+                        }
+                    });
+                    btn.disabled = false;
+                    btn.innerHTML = originalContent;
+                });
+        }
+    </script>
 @endsection
-
-<style>
-    /* Styling khusus untuk input date agar konsisten */
-    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-        filter: invert(16%) sepia(89%) saturate(1900%) hue-rotate(195deg) brightness(96%) contrast(101%);
-        cursor: pointer;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-        color: #94a3b8;
-        font-weight: 500;
-        font-style: italic;
-    }
-</style>

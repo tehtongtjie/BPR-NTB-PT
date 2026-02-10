@@ -15,7 +15,8 @@ use App\Http\Controllers\{
     LelangController,
     KarirController,
     RecommenderController,
-    LaporanController
+    LaporanController,
+    WhistleBlowingController
 };
 
 /*
@@ -143,9 +144,19 @@ Route::prefix('jaringan')->name('jaringan.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
+    // Menampilkan halaman Alur
     Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))->name('alur');
-    Route::get('/whistle-blowing-system', fn() => view('pages.pengaduan.whistleblowingsystem'))->name('wbs');
-    Route::post('/whistle-blowing-system', fn() => redirect()->route('pengaduan.wbs'))->name('wbs.store');
+
+    // Menampilkan halaman Form WBS (Menggunakan Controller agar lebih rapi)
+    Route::get('/whistle-blowing-system', [WhistleBlowingController::class, 'index'])->name('wbs');
+
+    // Memproses pengiriman data (Mengarah ke fungsi store di Controller)
+    Route::post('/whistle-blowing-system', [WhistleBlowingController::class, 'store'])->name('wbs.store');
+
+    // Tambahkan middleware throttle:3,1 di sini
+    Route::post('/whistle-blowing-system', [WhistleBlowingController::class, 'store'])
+        ->middleware('throttle:3,1')
+        ->name('wbs.store');
 });
 
 Route::get('/asisten-cerdas', [RecommenderController::class, 'index'])->name('recommender.index');
