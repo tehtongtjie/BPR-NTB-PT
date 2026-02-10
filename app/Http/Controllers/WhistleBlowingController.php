@@ -45,7 +45,7 @@ class WhistleBlowingController extends Controller
             . "━━━━━━━━━━━━━━━━━━━━\n"
             . "📝 *Isi Laporan:*\n" . $request->laporan . "\n"
             . "━━━━━━━━━━━━━━━━━━━━\n"
-            . "📅 _Waktu: " . now()->format('d M Y, H:i') . " WITA_";
+            . "📅 _Waktu: " . now()->setTimezone('Asia/Makassar')->format('d M Y, H:i') . " WITA_";
 
         try {
             if ($request->hasFile('foto')) {
