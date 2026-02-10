@@ -32,36 +32,73 @@
             <div class="lg:col-span-2 space-y-6">
                 <h4 class="text-xs font-black uppercase tracking-[0.2em] text-[#fbbf24]">Layanan Utama</h4>
                 <ul class="space-y-4">
-                    <li><a href="#"
+                    {{-- 1. Tabungan Simbada --}}
+                    {{-- Di rute kamu: Route::get('/tabungan/{slug}', ...)->name('tabungan.show') --}}
+                    <li>
+                        <a href="{{ route('tabungan.show', 'simbada') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
                             <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Tabungan Simbada
-                        </a></li>
-                    <li><a href="#"
+                        </a>
+                    </li>
+
+                    {{-- 2. Deposito Berjangka --}}
+                    {{-- Di rute kamu: Route::prefix('deposito')->name('deposito.')... Route::get('/{slug}', ...)->name('show') --}}
+                    <li>
+                        <a href="{{ route('deposito.show', 'deposito-berjangka') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
                             <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Deposito Berjangka
-                        </a></li>
-                    <li><a href="#"
+                        </a>
+                    </li>
+
+                    {{-- 3. Kredit Usaha (Menggunakan PinjamanController) --}}
+                    {{-- Di rute kamu: Route::prefix('pinjaman')->name('pinjaman.')... Route::get('/{slug}', ...)->name('show') --}}
+                    <li>
+                        <a href="{{ route('pinjaman.show', 'kredit-usaha') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
                             <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Kredit Usaha
-                        </a></li>
+                        </a>
+                    </li>
                 </ul>
             </div>
 
             <div class="lg:col-span-3 space-y-6">
                 <h4 class="text-xs font-black uppercase tracking-[0.2em] text-[#fbbf24]">Informasi Publik</h4>
                 <ul class="grid grid-cols-1 gap-4">
-                    <li><a href="#"
+                    {{-- 1. Laporan Tahunan --}}
+                    {{-- Mengarah ke LaporanController dengan tipe keuangan --}}
+                    <li>
+                        <a href="{{ route('laporan.keuangan') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-3 transition-all">
-                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Laporan Tahunan</a></li>
-                    <li><a href="#"
+                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Laporan Tahunan
+                        </a>
+                    </li>
+
+                    {{-- 2. Karir & Talent --}}
+                    {{-- Sesuai route: Route::get('/karir', ...)->name('karir.index') --}}
+                    <li>
+                        <a href="{{ route('karir.index') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-3 transition-all">
-                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Karir & Talent</a></li>
-                    <li><a href="#"
+                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Karir & Talent
+                        </a>
+                    </li>
+
+                    {{-- 3. Tata Kelola (GCG) --}}
+                    {{-- Sesuai route: Route::get('/tata-kelola', ...)->name('laporan.gcg') --}}
+                    <li>
+                        <a href="{{ route('laporan.gcg') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-3 transition-all">
-                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Tata Kelola (GCG)</a></li>
-                    <li><a href="#"
+                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Tata Kelola (GCG)
+                        </a>
+                    </li>
+
+                    {{-- 4. Whistleblowing System --}}
+                    {{-- Sesuai route: Route::get('/whistle-blowing-system', ...)->name('pengaduan.wbs') --}}
+                    <li>
+                        <a href="{{ route('pengaduan.wbs') }}"
                             class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-3 transition-all">
-                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Whistleblowing System</a></li>
+                            <i class="bi bi-arrow-right-short text-[#fbbf24]"></i>Whistleblowing System
+                        </a>
+                    </li>
                 </ul>
             </div>
 

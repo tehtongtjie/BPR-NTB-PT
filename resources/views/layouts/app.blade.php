@@ -5,27 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'BPR NTB')</title>
+    {{-- 1. TITLE --}}
+    <title>@yield('title')</title>
 
+    {{-- Memberi tahu browser bahwa kita punya versi ukuran yang lebih besar --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logobpr.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logobpr.png') }}?v=1">
+
+    {{-- 3. ASSETS (Vite & CSS) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="icon" href="{{ asset('images/favicon.ico') }}">
-
+    {{-- Icons & Maps --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-
-    {{-- SweetAlert2 CSS & JS --}}
+    {{-- 4. SWEETALERT2 (Diletakkan di atas agar siap dipanggil kapan saja) --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- 5. SCRIPTS (AlpineJS & Flowbite) --}}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
-
 </head>
 
 <body class="bg-base-100 text-base-content antialiased">
