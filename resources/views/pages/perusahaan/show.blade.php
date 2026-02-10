@@ -280,21 +280,35 @@
                                             <div
                                                 class="group bg-white rounded-[3rem] p-6 lg:p-10 border border-slate-100 hover:shadow-2xl transition-all duration-500">
                                                 <div class="flex flex-col lg:flex-row gap-12 items-center">
-                                                    <div
-                                                        class="w-full lg:w-72 flex-shrink-0 relative overflow-hidden rounded-[2.5rem] aspect-[3/4] shadow-xl">
-                                                        {{-- Grayscale dihapus, gambar sekarang berwarna normal --}}
-                                                        <img src="{{ asset($member['photo'] ?? $member['image']) }}"
-                                                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
 
-                                                        {{-- Overlay gradient opsional, bisa dihapus jika ingin benar-benar polos --}}
-                                                        <div
-                                                            class="absolute inset-0 bg-gradient-to-t from-bpr-blue/20 to-transparent">
+                                                    {{-- GANTI FOTO DENGAN ICON PLACEHOLDER --}}
+                                                    <div
+                                                        class="w-full lg:w-64 flex-shrink-0 relative overflow-hidden rounded-[2.5rem] aspect-square shadow-inner bg-slate-50 flex items-center justify-center border-2 border-dashed border-slate-200 group-hover:bg-slate-100 transition-colors">
+                                                        <div class="text-center">
+                                                            {{-- Icon Figur --}}
+                                                            <i
+                                                                class="bi bi-person-badge text-6xl text-slate-300 mb-2 block group-hover:text-bpr-gold transition-colors"></i>
+                                                            {{-- Inisial Nama (Opsional) --}}
+                                                            <span
+                                                                class="text-2xl font-black text-slate-200 uppercase tracking-tighter">
+                                                                {{ collect(explode(' ', $member['name']))->map(function ($n) {return $n[0];})->take(2)->implode('') }}
+                                                            </span>
+                                                        </div>
+
+                                                        {{-- Decorative Badge --}}
+                                                        <div class="absolute top-4 right-4">
+                                                            <div
+                                                                class="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center">
+                                                                <i
+                                                                    class="bi bi-patch-check-fill text-blue-500 text-xs"></i>
+                                                            </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="flex-1 text-center lg:text-left">
                                                         <div class="mb-6">
-                                                            <h3 class="text-3xl lg:text-4xl font-black text-bpr-blue mb-2">
+                                                            <h3
+                                                                class="text-3xl lg:text-4xl font-black text-bpr-blue mb-2 tracking-tighter">
                                                                 {{ $member['name'] }}
                                                             </h3>
                                                             <span
@@ -309,9 +323,10 @@
                                                         </p>
 
                                                         <a href="{{ url('/perusahaan/' . $slug . '/' . $member['slug']) }}"
-                                                            class="inline-flex items-center gap-3 text-bpr-blue font-black uppercase text-[11px] tracking-widest hover:gap-6 transition-all">
+                                                            class="inline-flex items-center gap-3 text-bpr-blue font-black uppercase text-[11px] tracking-widest hover:gap-6 transition-all group/link">
                                                             Detailed Bio
-                                                            <i class="bi bi-arrow-right text-bpr-gold text-xl"></i>
+                                                            <i
+                                                                class="bi bi-arrow-right text-bpr-gold text-xl transition-transform group-hover/link:translate-x-1"></i>
                                                         </a>
                                                     </div>
                                                 </div>

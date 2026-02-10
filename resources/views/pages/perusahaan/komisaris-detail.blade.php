@@ -32,39 +32,66 @@
                 <div class="relative z-10 p-8 lg:p-16">
                     <div class="flex flex-col lg:flex-row gap-12 items-start">
 
-                        {{-- SISI KIRI: FOTO (Dibuat Kecil & Elegant) --}}
+                        {{-- SISI KIRI: ICON PLACEHOLDER (Menggantikan Foto) --}}
                         <div class="w-full lg:w-1/3 flex-shrink-0">
                             <div class="relative group">
-                                {{-- Bingkai Foto --}}
+                                {{-- Bingkai Ikon Premium --}}
                                 <div
-                                    class="relative rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white aspect-[3/4] max-w-[280px] mx-auto lg:mx-0">
-                                    <img src="{{ asset($data['photo'] ?? $data['image']) }}"
-                                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                        alt="{{ $data['name'] }}">
-                                    <div
-                                        class="absolute inset-0 bg-gradient-to-t from-[#00326B]/40 via-transparent to-transparent">
+                                    class="relative rounded-[3rem] overflow-hidden shadow-2xl border-8 border-white aspect-[3/4] max-w-[280px] mx-auto lg:mx-0 bg-gradient-to-br from-[#00326B] to-[#001D3D] flex flex-col items-center justify-center group-hover:rotate-1 transition-transform duration-700">
+
+                                    {{-- Decorative Pattern Overlay --}}
+                                    <div class="absolute inset-0 opacity-10 pointer-events-none"
+                                        style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 20px 20px;">
+                                    </div>
+
+                                    {{-- Content Section --}}
+                                    <div class="relative z-10 text-center">
+                                        {{-- Icon with Glass Effect --}}
+                                        <div
+                                            class="w-24 h-24 bg-white/10 backdrop-blur-xl rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border border-white/20 shadow-inner group-hover:scale-110 transition-all duration-500">
+                                            <i class="bi bi-person-vcard text-5xl text-white/90"></i>
+                                        </div>
+
+                                        {{-- Inisial Nama Dinamis --}}
+                                        <span class="block text-4xl font-black text-white/20 uppercase tracking-[0.3em]">
+                                            {{ collect(explode(' ', $data['name']))->map(fn($n) => $n[0])->take(2)->implode('') }}
+                                        </span>
+                                    </div>
+
+                                    {{-- Floating Status Badge --}}
+                                    <div class="absolute bottom-6 right-6">
+                                        <div
+                                            class="backdrop-blur-md bg-white/10 border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-xl">
+                                            <span class="w-2 h-2 rounded-full bg-[#fbbf24] animate-pulse"></span>
+                                            <span
+                                                class="text-[8px] font-black text-white uppercase tracking-widest">Executive</span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                {{-- Ornamen di belakang foto --}}
+                                {{-- Ornamen di belakang placeholder --}}
                                 <div
-                                    class="absolute -bottom-4 -right-4 w-32 h-32 bg-[#fbbf24]/20 rounded-full blur-2xl -z-10">
+                                    class="absolute -bottom-6 -right-6 w-32 h-32 bg-[#fbbf24]/20 rounded-full blur-3xl -z-10 group-hover:bg-[#fbbf24]/30 transition-colors">
                                 </div>
                             </div>
 
-                            {{-- Info Singkat di bawah foto --}}
-                            <div class="mt-8 text-center lg:text-left space-y-4">
+                            {{-- Info Singkat di bawah --}}
+                            <div class="mt-10 text-center lg:text-left space-y-5">
                                 <div
-                                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 text-[#00326B] text-[10px] font-black uppercase tracking-widest border border-blue-100 shadow-sm">
+                                    class="inline-flex items-center gap-3 px-5 py-2.5 rounded-2xl bg-slate-50 text-[#00326B] text-[10px] font-black uppercase tracking-widest border border-slate-100 shadow-sm">
+                                    <i class="bi bi-briefcase-fill text-[#fbbf24]"></i>
                                     {{ $data['position'] }}
                                 </div>
-                                <div class="flex justify-center lg:justify-start items-center gap-4 text-slate-400">
+
+                                <div class="flex justify-center lg:justify-start items-center gap-4">
                                     <div
-                                        class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-xl hover:bg-[#00326B] hover:text-white transition-all cursor-pointer">
+                                        class="w-12 h-12 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-xl text-slate-400 hover:bg-[#00326B] hover:text-white transition-all shadow-sm cursor-pointer">
                                         <i class="bi bi-linkedin"></i>
                                     </div>
-                                    <span class="text-[9px] font-bold uppercase tracking-widest">Connect on Professional
-                                        Network</span>
+                                    <div class="h-[1px] w-8 bg-slate-200"></div>
+                                    <span
+                                        class="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-none">Profile
+                                        Verified</span>
                                 </div>
                             </div>
                         </div>
