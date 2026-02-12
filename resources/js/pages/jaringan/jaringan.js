@@ -127,15 +127,17 @@ class JaringanKantor {
         );
     }
 
-    getDirections() {
-        if (!this.currentKantor) return;
-        const lat = this.currentKantor.latitude || this.currentKantor.lat;
-        const lng = this.currentKantor.longitude || this.currentKantor.lng;
-        window.open(
-            `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
-            "_blank",
-        );
-    }
+getDirections() {
+    if (!this.currentKantor) return;
+    const lat = this.currentKantor.latitude || this.currentKantor.lat;
+    const lng = this.currentKantor.longitude || this.currentKantor.lng;
+    
+    // URL ini otomatis memerintahkan Google Maps menggunakan lokasi perangkat saat ini sebagai titik start
+    window.open(
+        `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`,
+        "_blank",
+    );
+}
 
     shareLocation() {
         if (!this.currentKantor) return;
