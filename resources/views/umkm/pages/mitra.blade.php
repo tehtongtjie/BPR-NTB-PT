@@ -1,4 +1,6 @@
-@extends('layouts.app')
+@extends('umkm.layouts.app')
+
+@section('title', 'Mitra UMKM Hebat - PT. BPR NTB')
 
 @section('content')
     <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 bg-[#FDFDFD] overflow-hidden">
@@ -31,17 +33,24 @@
                 </p>
             </div>
 
-            {{-- Filter Kategori (Visual Enhancement) --}}
+            {{-- Filter Kategori --}}
             <div class="flex flex-wrap justify-center gap-4 mb-16">
                 <button
-                    class="px-8 py-3 rounded-full bg-[#00326B] text-white text-xs font-black uppercase tracking-widest shadow-xl shadow-blue-900/20 hover:scale-105 transition-all">Semua
-                    Produk</button>
+                    class="px-8 py-3 rounded-full bg-[#00326B] text-white text-xs font-black uppercase tracking-widest shadow-xl shadow-blue-900/20 hover:scale-105 transition-all">
+                    Semua Produk
+                </button>
                 <button
-                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">Kuliner</button>
+                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">
+                    Kuliner
+                </button>
                 <button
-                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">Kerajinan</button>
+                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">
+                    Kerajinan
+                </button>
                 <button
-                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">Fashion</button>
+                    class="px-8 py-3 rounded-full bg-white border border-slate-100 text-slate-400 text-xs font-black uppercase tracking-widest hover:bg-slate-50 hover:text-[#00326B] transition-all">
+                    Fashion
+                </button>
             </div>
 
             {{-- Grid UMKM --}}
@@ -50,19 +59,19 @@
                     <div
                         class="group relative flex flex-col h-full bg-white rounded-[3rem] shadow-2xl shadow-slate-200/60 border border-white overflow-hidden transition-all duration-700 hover:-translate-y-4">
 
-                        {{-- Bagian Gambar dengan Overlay Gradasi --}}
+                        {{-- Bagian Gambar --}}
                         <div class="relative aspect-[4/5] overflow-hidden">
                             <img src="{{ asset($umkm['foto']) }}"
                                 class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                                 alt="{{ $umkm['nama_usaha'] }}"
                                 onerror="this.src='https://via.placeholder.com/600x800?text=Karya+Lokal'">
 
-                            {{-- Overlay Gradasi saat Hover --}}
+                            {{-- Overlay Gradasi --}}
                             <div
                                 class="absolute inset-0 bg-gradient-to-t from-[#00326B]/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             </div>
 
-                            {{-- Badge Verifikasi Floating --}}
+                            {{-- Badge Verifikasi --}}
                             <div class="absolute top-6 left-6">
                                 <div
                                     class="backdrop-blur-xl bg-white/90 px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] text-[#00326B] shadow-2xl flex items-center gap-2 border border-white/50">
@@ -74,7 +83,7 @@
 
                         {{-- Bagian Konten --}}
                         <div class="p-10 flex flex-col flex-grow relative bg-white">
-                            {{-- Floating Icon Bagde --}}
+                            {{-- Floating Icon --}}
                             <div
                                 class="absolute -top-8 right-10 w-16 h-16 bg-[#fbbf24] rounded-2xl shadow-xl flex items-center justify-center text-[#00326B] group-hover:rotate-12 transition-transform duration-500 border-4 border-white">
                                 <i class="bi bi-shop-window text-2xl"></i>

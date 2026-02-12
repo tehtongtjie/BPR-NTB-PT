@@ -16,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
                 ['label' => 'Tabungan', 'route' => 'tabungan.show', 'param' => 'tabunganku', 'icon' => 'bi-wallet2'],
                 ['label' => 'Deposito', 'route' => 'deposito.index', 'icon' => 'bi-piggy-bank'],
                 ['label' => 'Pinjaman', 'route' => 'pinjaman.index', 'icon' => 'bi-cash-stack'],
-                ['label' => 'UMKM Mitra', 'route' => 'umkm.mitra', 'icon' => 'bi-shop'],
+                ['label' => 'Mitra UMKM', 'route' => 'umkm.mitra', 'icon' => 'bi-shop-window'],
                 [
                     'label' => 'Simulasi',
                     'icon' => 'bi-calculator',
