@@ -3,26 +3,18 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 
 class WhistleBlowingController extends Controller
 {
-    /**
-     * Menampilkan halaman form WBS.
-     */
     public function index()
     {
-        // Pastikan path folder 'pengaduan' sudah sesuai dengan di VS Code kamu
         return view('pages.pengaduan.WhistleBlowingSystem');
     }
 
-    /**
-     * Memproses pengiriman laporan dan foto ke Telegram.
-     */
     public function store(Request $request)
     {
-        // 1. Validasi Input (Server-side)
-        // Foto dibatasi maksimal 2048 KB (2MB)
+        // 1. Validasi Input
         $request->validate([
             'kategori' => 'required',
             'terlapor' => 'required',
@@ -31,58 +23,54 @@ class WhistleBlowingController extends Controller
             'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // 2. Konfigurasi Telegram (Gunakan variabel yang sudah kita validasi tadi)
-        $token  = "8562446265:AAEyeWn4KxUfIREc5ZQMDJlb547qL_2gLX0";
-        $chatID = "-1003814929066";
-
-        // 3. Susun Pesan Markdown
-        $pesan = "🚨 *LAPORAN WBS BARU*\n"
-            . "━━━━━━━━━━━━━━━━━━━━\n"
-            . "👤 *Pelapor:* " . ($request->nama ?: 'Anonim') . "\n"
-            . "📁 *Kategori:* " . $request->kategori . "\n"
-            . "👤 *Terlapor:* " . $request->terlapor . "\n"
-            . "📍 *Lokasi:* " . $request->lokasi . "\n"
-            . "━━━━━━━━━━━━━━━━━━━━\n"
-            . "📝 *Isi Laporan:*\n" . $request->laporan . "\n"
-            . "━━━━━━━━━━━━━━━━━━━━\n"
-            . "📅 _Waktu: " . now()->format('d M Y, H:i') . " WITA_";
+        // 2. Data Laporan
+        $data = [
+            'nama'     => $request->nama ?: 'Anonim',
+            'kategori' => $request->kategori,
+            'terlapor' => $request->terlapor,
+            'lokasi'   => $request->lokasi,
+            'laporan'  => $request->laporan,
+            'waktu'    => now()->setTimezone('Asia/Makassar')->format('d M Y, H:i') . " WITA",
+        ];
 
         try {
-            if ($request->hasFile('foto')) {
-                // KIRIM FOTO DENGAN CAPTION (Jika user mengunggah bukti)
-                $photo = $request->file('foto');
+            // 3. Kirim Email menggunakan Mail::send
+            Mail::send([], [], function ($message) use ($data, $request) {
+                // Email tujuan (Email Admin/Internal Audit BPR)
+                $message->to('lalurfqi@gmail.com')
+                    ->subject('🚨 LAPORAN WBS BARU - ' . $data['kategori'])
+                    ->html("
+                            <div style='font-family: sans-serif; line-height: 1.6;'>
+                                <h2>Laporan Whistle Blowing System</h2>
+                                <hr>
+                                <p><strong>Pelapor:</strong> {$data['nama']}</p>
+                                <p><strong>Kategori:</strong> {$data['kategori']}</p>
+                                <p><strong>Terlapor:</strong> {$data['terlapor']}</p>
+                                <p><strong>Lokasi Kejadian:</strong> {$data['lokasi']}</p>
+                                <br>
+                                <p><strong>Isi Laporan:</strong></p>
+                                <div style='background: #f4f4f4; padding: 15px; border-radius: 5px;'>
+                                    " . nl2br(e($data['laporan'])) . "
+                                </div>
+                                <br>
+                                <small>Laporan diterima pada: {$data['waktu']}</small>
+                            </div>
+                        ");
 
-                $response = Http::attach(
-                    'photo',
-                    file_get_contents($photo),
-                    $photo->getClientOriginalName()
-                )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
-                    'chat_id'    => $chatID,
-                    'caption'    => $pesan,
-                    'parse_mode' => 'Markdown'
-                ]);
-            } else {
-                // KIRIM PESAN TEKS SAJA (Jika tidak ada foto)
-                $response = Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
-                    'chat_id'    => $chatID,
-                    'text'       => $pesan,
-                    'parse_mode' => 'Markdown'
-                ]);
-            }
+                // Lampirkan foto jika ada
+                if ($request->hasFile('foto')) {
+                    $message->attach($request->file('foto')->getRealPath(), [
+                        'as' => 'Bukti_Laporan_' . time() . '.' . $request->file('foto')->getClientOriginalExtension(),
+                        'mime' => $request->file('foto')->getMimeType(),
+                    ]);
+                }
+            });
 
-            // Cek apakah pengiriman ke Telegram berhasil
-            if ($response->successful()) {
-                return response()->json(['status' => 'success']);
-            }
-
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Gagal mengirim ke Telegram: ' . $response->reason()
-            ], 500);
+            return response()->json(['status' => 'success']);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+                'message' => 'Gagal mengirim email: ' . $e->getMessage()
             ], 500);
         }
     }

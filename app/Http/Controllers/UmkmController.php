@@ -11,7 +11,8 @@ class UmkmController extends Controller
         $umkms = config('umkm.mitra');
         abort_if(!$umkms, 404);
 
-        return view('pages.umkm.mitra', compact('umkms'));
+        // SESUAIKAN: Jika file ada di resources/views/umkm/pages/mitra.blade.php
+        return view('umkm.pages.mitra', compact('umkms'));
     }
 
     public function show($slug)
@@ -25,6 +26,7 @@ class UmkmController extends Controller
         // Jika tidak ketemu, munculkan 404
         abort_if(!$umkm, 404);
 
-        return view('pages.umkm.show', compact('umkm'));
+        // SESUAIKAN: Jika file ada di resources/views/umkm/pages/show.blade.php
+        return view('umkm.pages.show', compact('umkm'));
     }
 }

@@ -135,11 +135,12 @@ Route::prefix('laporan')->name('laporan.')->group(function () {
     Route::get('/berkelanjutan', [LaporanController::class, 'index'])->defaults('tipe', 'berkelanjutan')->name('berkelanjutan');
 });
 
-// 6. UMKM MITRA
-Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
+// Ubah 'umkm-mitra' menjadi 'umkm' agar URL lebih pendek
+Route::prefix('umkm')->name('umkm.')->group(function () {
     Route::get('/', [UmkmController::class, 'index'])->name('mitra');
     Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
 });
+
 /*
 |--------------------------------------------------------------------------
 | PERUSAHAAN

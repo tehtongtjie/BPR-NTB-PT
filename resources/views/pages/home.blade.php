@@ -210,6 +210,9 @@
                                 Lihat seluruh tabungan BPR NTB.
                             </p>
                         </div>
+
+                        {{-- Cara terbaik menggunakan Nama Route dan Slug --}}
+                        <a href="{{ route('deposito.show', 'deposito-berjangka') }}" class="absolute inset-0"></a>
                     </div>
                 </a>
 
@@ -552,13 +555,13 @@
                             'title' => 'Predikat "Sangat Bagus"',
                             'img' => 'penghargaan-infobank.png',
                         ],
-                        ['tag' => 'Top Business', 'title' => 'TOP BPR Bintang 5', 'img' => 'penghargaan-top-bpr.png'],
+                        ['tag' => 'Top Business', 'title' => 'TOP BPR Bintang 5', 'img' => 'penghargaan-35miliar.png'],
                         [
                             'tag' => 'Innovation',
                             'title' => 'Digital Banking Excellence',
-                            'img' => 'digital-innovation.png',
+                            'img' => 'penghargaan-dibawah10m.png',
                         ],
-                        ['tag' => 'Social Impact', 'title' => 'Bakti NTB Terpuji', 'img' => 'csr-awards.png'],
+                        ['tag' => 'Social Impact', 'title' => 'Bakti NTB Terpuji', 'img' => 'penghargaan-excelent.png'],
                     ];
                 @endphp
 

@@ -29,25 +29,26 @@
                             Whistle Blowing System
                         </h1>
                         <p class="text-slate-400 font-bold uppercase tracking-widest text-xs">Saluran Pelaporan Pelanggaran
-                            Langsung ke Direksi</p>
+                            Resmi PT. BPR NTB</p>
                     </div>
 
                     {{-- DESKRIPSI SINGKAT --}}
                     <div class="bg-slate-50 rounded-[2.5rem] p-8 mb-12 border border-slate-100">
                         <p class="text-slate-600 text-base leading-relaxed font-medium italic text-center">
-                            "Setiap laporan yang Anda kirimkan akan diteruskan secara otomatis ke Telegram grup seluruh
-                            Jajaran Direksi secara rahasia."
+                            "Setiap laporan yang Anda kirimkan akan diteruskan secara otomatis ke email <b>Satuan Kerja
+                                Audit Internal (SKAI)</b> secara rahasia dan terenkripsi."
                         </p>
                     </div>
 
                     {{-- FORM --}}
-                    <div class="space-y-8">
+                    <form id="wbsForm" enctype="multipart/form-data" class="space-y-8">
+                        @csrf
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             {{-- Nama Pelapor --}}
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Nama Pelapor
                                     <span class="text-slate-400 font-medium">(Opsional)</span></label>
-                                <input type="text" id="wbs_nama"
+                                <input type="text" id="wbs_nama" name="nama"
                                     class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] focus:bg-white transition-all font-semibold text-slate-700"
                                     placeholder="Anonim">
                             </div>
@@ -56,7 +57,7 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Kategori
                                     Pelanggaran <span class="text-red-500">*</span></label>
-                                <select id="wbs_kategori"
+                                <select id="wbs_kategori" name="kategori" required
                                     class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-bold text-slate-700 cursor-pointer">
                                     <option value="" disabled selected>-- Pilih Kategori --</option>
                                     <option value="Fraud / Kecurangan">Fraud / Kecurangan</option>
@@ -73,7 +74,7 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Nama Terlapor
                                     <span class="text-red-500">*</span></label>
-                                <input type="text" id="wbs_terlapor"
+                                <input type="text" id="wbs_terlapor" name="terlapor" required
                                     class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700"
                                     placeholder="Siapa yang dilaporkan?">
                             </div>
@@ -82,7 +83,7 @@
                             <div class="space-y-2">
                                 <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Lokasi
                                     Kejadian <span class="text-red-500">*</span></label>
-                                <input type="text" id="wbs_lokasi"
+                                <input type="text" id="wbs_lokasi" name="lokasi" required
                                     class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700"
                                     placeholder="Cabang / Unit Kerja">
                             </div>
@@ -92,35 +93,35 @@
                         <div class="space-y-2">
                             <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Uraian Laporan
                                 <span class="text-red-500">*</span></label>
-                            <textarea id="wbs_laporan" rows="6"
+                            <textarea id="wbs_laporan" name="laporan" rows="6" required
                                 class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-[2rem] focus:ring-2 focus:ring-[#fbbf24] font-medium text-slate-700"
                                 placeholder="Ceritakan kronologis kejadian..."></textarea>
                         </div>
 
-                        {{-- INPUT FOTO (DENGAN AKSES KAMERA) --}}
+                        {{-- INPUT FOTO --}}
                         <div class="space-y-2">
                             <label class="text-sm font-black text-[#00326B] ml-1 uppercase tracking-wider">Unggah Bukti Foto
                                 <span class="text-slate-400 font-medium">(Maks 2MB)</span></label>
-                            <input type="file" id="wbs_foto" accept="image/*" capture="environment"
+                            <input type="file" id="wbs_foto" name="foto" accept="image/*"
                                 class="block w-full px-6 py-4 bg-[#F8FAFC] border-none rounded-2xl focus:ring-2 focus:ring-[#fbbf24] font-semibold text-slate-700 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-[#00326B] file:text-white hover:file:bg-[#fbbf24] hover:file:text-[#00326B]">
                         </div>
 
                         {{-- Tombol Kirim --}}
                         <div class="pt-4">
-                            <button type="button" onclick="kirimWbsKeTelegram(this)"
+                            <button type="button" onclick="kirimWbsKeEmail(this)"
                                 class="flex items-center justify-center gap-4 w-full bg-[#00326B] text-white py-6 rounded-2xl font-black uppercase text-xs tracking-[0.3em] shadow-xl shadow-blue-900/20 hover:bg-[#fbbf24] hover:text-[#00326B] transition-all transform active:scale-95 group">
-                                <i class="bi bi-send-check-fill text-lg"></i>
-                                Kirim Laporan Rahasia
+                                <i class="bi bi-envelope-check-fill text-lg"></i>
+                                Kirim Laporan via Email Aman
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
     </main>
 
     <script>
-        function kirimWbsKeTelegram(btn) {
+        function kirimWbsKeEmail(btn) {
             const formData = new FormData();
             const fotoInput = document.getElementById('wbs_foto');
 
@@ -164,10 +165,10 @@
             formData.append('laporan', data.laporan);
             formData.append('_token', "{{ csrf_token() }}");
 
-            // 1. Loading State - Lebih Elegan
+            // Loading State
             const originalContent = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = '<i class="bi bi-arrow-repeat animate-spin text-lg"></i>';
+            btn.innerHTML = '<i class="bi bi-arrow-repeat animate-spin text-lg"></i> MENGIRIM...';
 
             fetch("{{ route('pengaduan.wbs.store') }}", {
                     method: "POST",
@@ -179,43 +180,30 @@
                 })
                 .then(async response => {
                     const resData = await response.json();
-                    if (response.status === 429) throw new Error(
-                        'Terlalu banyak mencoba. Sistem mengunci akses Anda sementara demi keamanan.');
                     if (!response.ok) throw new Error(resData.message || 'Gagal mengirim laporan');
                     return resData;
                 })
                 .then(res => {
-                    // 2. Notifikasi Sukses Premium
                     Swal.fire({
-                        title: '<span style="color: #00326B; font-family: sans-serif;">LAPORAN TERKIRIM</span>',
-                        html: '<p style="color: #64748b; font-weight: 500;">Terima kasih atas keberanian Anda. Laporan telah kami teruskan secara <b>End-to-End Encrypted</b> langsung ke jajaran Direksi.</p>',
+                        title: '<span style="color: #00326B;">LAPORAN TERKIRIM</span>',
+                        html: '<p style="color: #64748b; font-weight: 500;">Laporan Anda telah berhasil dikirim ke sistem audit internal kami. Kami menjamin kerahasiaan identitas Anda.</p>',
                         icon: 'success',
                         iconColor: '#fbbf24',
-                        background: '#ffffff',
-                        showConfirmButton: true,
                         confirmButtonText: 'SELESAI',
                         confirmButtonColor: '#00326B',
                         customClass: {
-                            popup: 'rounded-[2.5rem]',
-                            confirmButton: 'rounded-xl px-10 py-3 font-black tracking-widest text-xs'
-                        },
-                        backdrop: `rgba(0,50,107,0.4)`
+                            popup: 'rounded-[2.5rem]'
+                        }
                     }).then(() => {
                         location.reload();
                     });
                 })
                 .catch(err => {
-                    // 3. Notifikasi Error yang Informatif
                     Swal.fire({
-                        title: '<span style="color: #991b1b;">TERJADI KENDALA</span>',
+                        title: 'GAGAL MENGIRIM',
                         text: err.message,
                         icon: 'error',
-                        confirmButtonColor: '#991b1b',
-                        confirmButtonText: 'COBA LAGI',
-                        customClass: {
-                            popup: 'rounded-[2rem]',
-                            confirmButton: 'rounded-xl px-10 py-3 font-black text-xs'
-                        }
+                        confirmButtonColor: '#00326B'
                     });
                     btn.disabled = false;
                     btn.innerHTML = originalContent;
