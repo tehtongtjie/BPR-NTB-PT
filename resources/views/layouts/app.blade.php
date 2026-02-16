@@ -17,6 +17,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
+    {{-- SweetAlert2 CSS & JS --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
@@ -69,7 +73,7 @@
         </a>
 
         {{-- 3. Tombol Email --}}
-        <a href="mailto:info@bprntb.co.id"
+        <a href="mailto:office@bprntb.co.id?subject=Pertanyaan Layanan BPR NTB"
             class="group relative flex items-center justify-center w-14 h-14 bg-white border border-slate-200 rounded-2xl shadow-xl hover:-translate-y-1 transition-all duration-300">
             <i class="bi bi-envelope-fill text-xl text-[#00326B]"></i>
             <span

@@ -19,7 +19,6 @@ class ManagementSeeder extends Seeder
                 'slug' => 'ria-prayuniarti',
                 'type' => 'komisaris',
                 'position' => 'Komisaris Independen',
-                'image' => 'images/perusahaan/ria-prayuniarti.png',
                 'excerpt' => 'Komisaris Independen dengan pengalaman panjang di sektor perbankan.',
                 'profile' => <<<TEXT
 Ria Prayuniarti merupakan lulusan S1 Sarjana Pertanian Universitas Mataram pada tahun 1995. Mengawali kariernya di LKP Mujur pada tahun 1997–1998 sebagai staf administrasi. Selanjutnya, pada tahun 1998–2006 beliau berkarier di PD BPR LKP Mujur dan secara periodik menduduki jabatan Kepala Bagian Pembukuan, Kepala Bagian Umum, dan Kepala Bagian Kredit.
@@ -37,7 +36,6 @@ TEXT
                 'slug' => 'syarif-mustaan',
                 'type' => 'komisaris',
                 'position' => 'Komisaris Independen',
-                'image' => 'images/perusahaan/syarif-mustaan.png',
                 'excerpt' => 'Komisaris Independen dengan latar belakang ekonomi dan pengawasan BPR.',
                 'profile' => <<<TEXT
 Syarif Mustaan merupakan lulusan S1 Sarjana Ekonomi dari Universitas Muhammadiyah Malang pada tahun 1991. Beliau juga telah menyelesaikan pendidikan Pascasarjana di Universitas Samawa (UNSA) NTB pada Program Studi Agro Bisnis dan meraih gelar Magister Sains (M.Si) pada tahun 2025.
@@ -60,7 +58,6 @@ TEXT
                 'slug' => 'denda-sucihartiani',
                 'type' => 'direksi',
                 'position' => 'Direktur Bisnis',
-                'image' => 'images/perusahaan/denda-sucihartiani.png',
                 'excerpt' => 'Direktur Bisnis dengan pengalaman panjang di sektor perbankan BPR.',
                 'profile' => <<<TEXT
 Hj. Denda Sucihartiani merupakan lulusan S1 Ekonomi Pembangunan Universitas Al-Azhar Mataram. Beliau mengawali karier perbankannya di PD. BPR NTB sejak tahun 1987 dan telah mengabdikan diri selama kurang lebih 35 tahun di dunia perbankan.
@@ -78,7 +75,6 @@ TEXT
                 'slug' => 'zulkifli-hamdani',
                 'type' => 'direksi',
                 'position' => 'Direktur Kepatuhan',
-                'image' => 'images/perusahaan/zulkifli-hamdani.png',
                 'excerpt' => 'Direktur Kepatuhan termuda dengan latar belakang manajemen dan SDM.',
                 'profile' => <<<TEXT
 Zulkifli Hamdani merupakan lulusan S1 Ekonomi Manajemen Universitas Teknologi Yogyakarta pada tahun 2008. Putra kelahiran Pancor, Lombok Timur ini mengawali karier profesionalnya sebagai Kepala Administrasi dan Keuangan pada PT. Krida Dinamik Autonusa yang bergerak di bidang otomotif.
@@ -99,7 +95,6 @@ TEXT
                     'name'       => $item['name'],
                     'type'       => $item['type'],
                     'position'   => $item['position'],
-                    'image'      => $item['image'] ?? null,
                     'excerpt'    => $item['excerpt'] ?? null,
                     'profile'    => $item['profile'] ?? null,
                     'order'      => $index + 1,

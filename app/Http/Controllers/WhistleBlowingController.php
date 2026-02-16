@@ -2,87 +2,88 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WhistleBlowing;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Crypt;
-use Illuminate\Support\Facades\Log;
-use Exception;
+use Illuminate\Support\Facades\Http;
 
 class WhistleBlowingController extends Controller
 {
     /**
-     * SISI USER: Menampilkan halaman Form WBS
+     * Menampilkan halaman form WBS.
      */
     public function index()
     {
+        // Pastikan path folder 'pengaduan' sudah sesuai dengan di VS Code kamu
         return view('pages.pengaduan.WhistleBlowingSystem');
     }
 
     /**
-     * SISI USER: Menyimpan laporan ke Database dengan Enkripsi
+     * Memproses pengiriman laporan dan foto ke Telegram.
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama'            => 'nullable|string|max:100',
-            'email'           => 'nullable|email|max:100',
-            'no_telepon'      => 'nullable|string|max:20',
-            'kategori'        => 'required|string',
-            'nama_terlapor'   => 'required|string|max:150',
-            'lokasi_kejadian' => 'required|string|max:150',
-            'waktu_kejadian'  => 'required',
-            'laporan'         => 'required|string|min:20',
+        // 1. Validasi Input (Server-side)
+        // Foto dibatasi maksimal 2048 KB (2MB)
+        $request->validate([
+            'kategori' => 'required',
+            'terlapor' => 'required',
+            'lokasi'   => 'required',
+            'laporan'  => 'required|min:10',
+            'foto'     => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
+        // 2. Konfigurasi Telegram (Gunakan variabel yang sudah kita validasi tadi)
+        $token  = "8562446265:AAEyeWn4KxUfIREc5ZQMDJlb547qL_2gLX0";
+        $chatID = "-1003814929066";
+
+        // 3. Susun Pesan Markdown
+        $pesan = "🚨 *LAPORAN WBS BARU*\n"
+            . "━━━━━━━━━━━━━━━━━━━━\n"
+            . "👤 *Pelapor:* " . ($request->nama ?: 'Anonim') . "\n"
+            . "📁 *Kategori:* " . $request->kategori . "\n"
+            . "👤 *Terlapor:* " . $request->terlapor . "\n"
+            . "📍 *Lokasi:* " . $request->lokasi . "\n"
+            . "━━━━━━━━━━━━━━━━━━━━\n"
+            . "📝 *Isi Laporan:*\n" . $request->laporan . "\n"
+            . "━━━━━━━━━━━━━━━━━━━━\n"
+            . "📅 _Waktu: " . now()->format('d M Y, H:i') . " WITA_";
+
         try {
-            // Enkripsi identitas agar IT Admin tidak bisa baca lewat DB
-            if ($request->filled('nama')) {
-                $validated['nama'] = Crypt::encryptString($request->nama);
+            if ($request->hasFile('foto')) {
+                // KIRIM FOTO DENGAN CAPTION (Jika user mengunggah bukti)
+                $photo = $request->file('foto');
+
+                $response = Http::attach(
+                    'photo',
+                    file_get_contents($photo),
+                    $photo->getClientOriginalName()
+                )->post("https://api.telegram.org/bot{$token}/sendPhoto", [
+                    'chat_id'    => $chatID,
+                    'caption'    => $pesan,
+                    'parse_mode' => 'Markdown'
+                ]);
+            } else {
+                // KIRIM PESAN TEKS SAJA (Jika tidak ada foto)
+                $response = Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
+                    'chat_id'    => $chatID,
+                    'text'       => $pesan,
+                    'parse_mode' => 'Markdown'
+                ]);
             }
-            if ($request->filled('email')) {
-                $validated['email'] = Crypt::encryptString($request->email);
+
+            // Cek apakah pengiriman ke Telegram berhasil
+            if ($response->successful()) {
+                return response()->json(['status' => 'success']);
             }
-            if ($request->filled('no_telepon')) {
-                $validated['no_telepon'] = Crypt::encryptString($request->no_telepon);
-            }
 
-            // Standarisasi format tanggal
-            $validated['waktu_kejadian'] = date('Y-m-d H:i:s', strtotime($request->waktu_kejadian));
-
-            WhistleBlowing::create($validated);
-
-            return redirect()
-                ->route('pengaduan.wbs')
-                ->with('success', 'Laporan berhasil dikirim. Identitas Anda telah dilindungi dengan enkripsi.');
-        } catch (Exception $e) {
-            Log::error('WBS Store Error: ' . $e->getMessage());
-            return back()->withInput()->with('error', 'Gagal mengirim laporan. Silakan coba lagi.');
-        }
-    }
-
-    /**
-     * SISI ADMIN: Menampilkan daftar laporan masuk
-     */
-    public function adminIndex()
-    {
-        // Mengambil data laporan terbaru
-        $reports = WhistleBlowing::orderBy('created_at', 'desc')->get();
-
-        // Pastikan path view sesuai folder: resources/views/admin/wbs/index.blade.php
-        return view('admin.wbs.index', compact('reports'));
-    }
-
-    /**
-     * SISI ADMIN: Menghapus laporan (Opsional)
-     */
-    public function destroy($id)
-    {
-        try {
-            $report = WhistleBlowing::findOrFail($id);
-            $report->delete();
-            return back()->with('success', 'Laporan berhasil dihapus.');
-        } catch (Exception $e) {
-            return back()->with('error', 'Gagal menghapus data.');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal mengirim ke Telegram: ' . $response->reason()
+            ], 500);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan sistem: ' . $e->getMessage()
+            ], 500);
         }
     }
 }

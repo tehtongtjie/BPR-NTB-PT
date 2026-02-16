@@ -41,7 +41,7 @@
 
                 <a href="/" class="transition-all duration-300 transform"
                     :class="scrolled ? 'scale-90' : 'scale-100'">
-                    <img src="{{ asset('images/logobpr.png') }}" class="h-30 w-auto" alt="BPR NTB">
+                    <img src="{{ asset('storage/images/logobpr.png') }}" class="h-30 w-auto" alt="BPR NTB">
                 </a>
 
                 <div class="hidden lg:flex items-center gap-1">

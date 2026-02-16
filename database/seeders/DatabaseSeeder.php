@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             InterestRateLpsSeeder::class,
             
             KantorSeeder::class,
+            LaporanSeeder::class,
         ]);
     }
 }
