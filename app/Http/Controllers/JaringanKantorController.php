@@ -47,7 +47,7 @@ class JaringanKantorController extends Controller
             'kas'    => Kantor::where('tipe', 'kas')->count(),
         ];
 
-        return view('pages.jaringan-kantor.index', [
+        return view('user.pages.jaringan-kantor.index', [
             'kantor'  => $kantor,
             'kantors' => $kantor,
             'stats'   => $stats,

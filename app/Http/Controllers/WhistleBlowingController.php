@@ -9,7 +9,7 @@ class WhistleBlowingController extends Controller
 {
     public function index()
     {
-        return view('pages.pengaduan.WhistleBlowingSystem');
+        return view('user.pages.pengaduan.WhistleBlowingSystem');
     }
 
     public function store(Request $request)

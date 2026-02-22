@@ -9,6 +9,6 @@ class RiplayController extends Controller
     public function index()
     {
         $documents = config('riplay.dokumen');
-        return view('pages.riplay.index', compact('documents'));
+        return view('user.pages.riplay.index', compact('documents'));
     }
 }

@@ -38,7 +38,7 @@ class HomeController extends Controller
         ->limit(8)
         ->get();
 
-        return view('pages.home', compact(
+        return view('user.pages.home', compact(
             'banners',
             'featured',
             'others',

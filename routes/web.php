@@ -85,9 +85,9 @@ Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
 });
 
 // Simulasi Pages
-Route::name('pages.simulasi.')->prefix('simulasi')->group(function () {
-    Route::get('/deposito', fn() => view('pages.simulasi.deposito'))->name('deposito');
-    Route::get('/kredit', fn() => view('pages.simulasi.kredit'))->name('kredit');
+Route::name('user.pages.simulasi.')->prefix('simulasi')->group(function () {
+    Route::get('/deposito', fn() => view('user.pages.simulasi.deposito'))->name('deposito');
+    Route::get('/kredit', fn() => view('user.pages.simulasi.kredit'))->name('kredit');
 
     // Pindahkan permintaan ke dalam group agar namanya konsisten
     Route::get('/{jenis}/permintaan', function ($jenis) {
@@ -177,7 +177,7 @@ Route::prefix('jaringan')->name('jaringan.')->group(function () {
 */
 Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
     // Menampilkan halaman Alur
-    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))->name('alur');
+    Route::get('/alur', fn() => view('user.pages.pengaduan.alur-pengaduan'))->name('alur');
 
     // Menampilkan halaman Form WBS (Menggunakan Controller agar lebih rapi)
     Route::get('/whistle-blowing-system', [WhistleBlowingController::class, 'index'])->name('wbs');

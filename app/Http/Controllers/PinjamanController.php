@@ -20,6 +20,6 @@ class PinjamanController extends Controller
             abort(404);
         }
 
-        return view('pages.pinjaman.show', compact('pinjaman'));
+        return view('user.pages.pinjaman.show', compact('pinjaman'));
     }
 }

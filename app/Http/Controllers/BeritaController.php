@@ -13,7 +13,7 @@ class BeritaController extends Controller
             ->orderBy('published_at', 'desc')
             ->get();
 
-        return view('pages.berita.index', compact('beritas'));
+        return view('user.pages.berita.index', compact('beritas'));
     }
 
     public function show($slug)
@@ -22,7 +22,7 @@ class BeritaController extends Controller
             ->where('is_published', true)
             ->firstOrFail();
 
-        return view('pages.berita.show', compact('article'));
+        return view('user.pages.berita.show', compact('article'));
     }
 }
  

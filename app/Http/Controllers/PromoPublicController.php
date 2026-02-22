@@ -13,6 +13,6 @@ class PromoPublicController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        return view('pages.tabungan-detail', compact('promo'));
+        return view('user.pages.tabungan-detail', compact('promo'));
     }
 }

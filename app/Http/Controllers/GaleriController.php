@@ -59,7 +59,7 @@ class GaleriController extends Controller
         // Ambil kategori unik untuk filter di halaman view
         $categories = collect($albums)->pluck('kategori')->unique();
 
-        return view('pages.galeri.index', compact('albums', 'categories'));
+        return view('user.pages.galeri.index', compact('albums', 'categories'));
     }
 
     /**
@@ -80,6 +80,6 @@ class GaleriController extends Controller
             ['url' => 'berita.png', 'caption' => 'Foto bersama jajaran direksi'],
         ];
 
-        return view('pages.galeri.show', compact('album', 'photos'));
+        return view('user.pages.galeri.show', compact('album', 'photos'));
     }
 }

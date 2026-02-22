@@ -41,6 +41,6 @@ class KarirController extends Controller
             ],
         ];
 
-        return view('pages.karir.index', compact('jobs'));
+        return view('user.pages.karir.index', compact('jobs'));
     }
 }

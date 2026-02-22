@@ -41,7 +41,7 @@ class LaporanController extends Controller
             'berkelanjutan'  => 'Laporan Berkelanjutan',
         ];
 
-        return view('pages.laporan.index', [
+        return view('user.pages.laporan.index', [
             'laporans' => $laporans,
             'tipe'     => $tipe,
             'title'    => $titles[$tipe] ?? 'Laporan Publikasi',

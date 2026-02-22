@@ -14,7 +14,7 @@ class LelangController extends Controller
             ->orderBy('deadline', 'asc')
             ->get();
 
-        return view('pages.lelang.index', compact('lelangs'));
+        return view('user.pages.lelang.index', compact('lelangs'));
     }
 
     public function show($slug)
@@ -24,7 +24,7 @@ class LelangController extends Controller
             ->where('is_published', true)
             ->firstOrFail();
 
-        return view('pages.lelang.show', compact('lelang'));
+        return view('user.pages.lelang.show', compact('lelang'));
     }
 
 }

@@ -28,7 +28,7 @@ class PerusahaanController extends Controller
                 ->orderBy('order')
                 ->get();
 
-            return view('pages.perusahaan.show', [
+            return view('user.pages.perusahaan.show', [
                 'slug'        => $slug,
                 'data'        => null,        // ⛔ tidak ada header
                 'managements' => $managements,
@@ -42,7 +42,7 @@ class PerusahaanController extends Controller
 
         abort_if(!$data, 404);
 
-        return view('pages.perusahaan.show', [
+        return view('user.pages.perusahaan.show', [
             'slug'        => $slug,
             'data'        => $data,         // ✅ ada header
             'managements' => collect(),     // kosong
@@ -60,7 +60,7 @@ class PerusahaanController extends Controller
             404
         );
 
-        return view('pages.perusahaan.direksi-detail', [
+        return view('user.pages.perusahaan.direksi-detail', [
             'slug'       => $slug,
             'management' => $management,
         ]);

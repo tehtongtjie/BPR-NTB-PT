@@ -22,8 +22,8 @@ class AppServiceProvider extends ServiceProvider
                     'label' => 'Simulasi',
                     'icon' => 'bi-calculator',
                     'children' => [
-                        ['label' => 'Simulasi Deposito', 'route' => 'pages.simulasi.deposito', 'icon' => 'bi-calculator'],
-                        ['label' => 'Simulasi Kredit', 'route' => 'pages.simulasi.kredit', 'icon' => 'bi-calculator-fill'],
+                        ['label' => 'Simulasi Deposito', 'route' => 'user.pages.simulasi.deposito', 'icon' => 'bi-calculator'],
+                        ['label' => 'Simulasi Kredit', 'route' => 'user.pages.simulasi.kredit', 'icon' => 'bi-calculator-fill'],
                     ],
                 ],
             ],
@@ -59,7 +59,7 @@ class AppServiceProvider extends ServiceProvider
                 ['label' => 'Whistle Blowing System', 'route' => 'pengaduan.wbs', 'icon' => 'bi-shield-lock'],
             ],
         ]);
-        View::composer('components.sidebar-produk', function ($view) {
+        View::composer('user.components.sidebar-produk', function ($view) {
             $view->with(
                 'sidebarPromos',
                 Promo::where('is_active', true)

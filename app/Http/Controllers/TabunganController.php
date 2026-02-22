@@ -14,6 +14,7 @@ class TabunganController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        return view('pages.tabungan.show', compact('promo'));
+        return view('user.pages.tabungan.show', compact('promo'));
+        
     }
 }

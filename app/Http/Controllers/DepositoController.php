@@ -20,6 +20,6 @@ class DepositoController extends Controller
             abort(404);
         }
 
-        return view('pages.deposito.show', compact('deposito'));
+        return view('user.pages.deposito.show', compact('deposito'));
     }
 }

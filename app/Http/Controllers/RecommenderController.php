@@ -12,6 +12,6 @@ class RecommenderController extends Controller
         $title = "Asisten Cerdas BPR NTB";
         $icon = "bi-magic";
 
-        return view('pages.recommender.index', compact('title', 'icon'));
+        return view('user.pages.recommender.index', compact('title', 'icon'));
     }
 }
