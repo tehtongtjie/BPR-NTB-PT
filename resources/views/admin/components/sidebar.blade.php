@@ -3,7 +3,7 @@
     {{-- BRAND SECTION --}}
     <div class="flex items-center gap-3 px-6 py-6 border-b border-slate-100 bg-slate-50/30">
         <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex-shrink-0">
-            <img src="{{ asset('images/logo-bpr-ntb.png') }}" alt="BPR NTB" class="h-7 w-auto">
+            <img src="{{ asset('storage/images/logobpr.png') }}" alt="BPR NTB" class="h-7 w-auto">
         </div>
         <div class="flex flex-col leading-tight overflow-hidden">
             <span class="font-black text-[#00326B] tracking-tight text-sm uppercase truncate">BPR NTB</span>
@@ -35,15 +35,15 @@
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Konten & Layanan</span>
         </div>
 
-        <a href="/admin/produk"
+        <a href="/admin/umkms"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
-            {{ request()->is('admin/produk*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
-            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/produk*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+            {{ request()->is('admin/umkms*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/umkms*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 7.5l-9 5.25L3 7.5m18 0l-9-5.25L3 7.5m18 0v9l-9 5.25M3 7.5v9l9 5.25m0-9v9" />
             </svg>
-            <span class="font-bold">Produk & Layanan</span>
+            <span class="font-bold">UMKM</span>
         </a>
 
         <a href="/admin/perusahaan"
@@ -92,33 +92,6 @@
                 <span class="font-bold">Message</span>
                 <span class="text-[9px] font-medium text-slate-400">
                     Pesan Masuk
-                </span>
-            </div>
-        </a>
-
-        {{-- LABEL: KEAMANAN --}}
-        <div class="px-4 mt-6 mb-2">
-            <span class="text-[10px] font-black text-red-500 uppercase tracking-[0.2em]">Security & Reports</span>
-        </div>
-
-        {{-- 2. Whistle Blowing System (WBS) --}}
-        <a href="{{ route('admin.wbs.index') }}"
-            class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
-    {{ request()->is('admin/wbs*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
-
-            {{-- Icon Shield/Keamanan --}}
-            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/wbs*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
-                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-            </svg>
-
-            {{-- Teks Menu --}}
-            <div class="flex flex-col leading-tight">
-                <span class="font-bold">Whistle Blowing</span>
-                <span
-                    class="text-[9px] font-medium {{ request()->is('admin/wbs*') ? 'text-blue-100' : 'text-slate-400 group-hover:text-[#00326B]' }}">
-                    Laporan Internal
                 </span>
             </div>
         </a>

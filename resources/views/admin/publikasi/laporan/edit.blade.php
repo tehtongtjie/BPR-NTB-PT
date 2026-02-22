@@ -26,6 +26,7 @@
     <form action="{{ route('admin.publikasi.laporan.update', $laporan->id) }}"
           method="POST"
           enctype="multipart/form-data"
+          x-data="{ tipe: '{{ old('tipe', $laporan->tipe) }}' }"
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
         @method('PUT')
@@ -35,54 +36,66 @@
             <label class="text-sm font-medium text-slate-600">
                 Tipe Laporan
             </label>
-            <select name="tipe" required
-                class="w-full rounded-xl bg-slate-50 border border-slate-200
-                       px-4 py-2.5 text-slate-700
-                       focus:bg-white focus:border-[#00326B]
-                       focus:ring-4 focus:ring-[#00326B]/10 transition">
-                <option value="keuangan" {{ old('tipe', $laporan->tipe) === 'keuangan' ? 'selected' : '' }}>
-                    Keuangan
-                </option>
-                <option value="tata-kelola" {{ old('tipe', $laporan->tipe) === 'tata-kelola' ? 'selected' : '' }}>
-                    Tata Kelola
-                </option>
-                <option value="berkelanjutan" {{ old('tipe', $laporan->tipe) === 'berkelanjutan' ? 'selected' : '' }}>
-                    Berkelanjutan
-                </option>
+
+            <select name="tipe"
+                    x-model="tipe"
+                    required
+                    class="w-full rounded-xl bg-slate-50 border border-slate-200
+                           px-4 py-2.5 text-slate-700
+                           focus:bg-white focus:border-[#00326B]
+                           focus:ring-4 focus:ring-[#00326B]/10 transition">
+
+                <option value="keuangan">Keuangan</option>
+                <option value="tata-kelola">Tata Kelola</option>
+                <option value="berkelanjutan">Berkelanjutan</option>
+
             </select>
         </div>
 
-        {{-- ================= JENIS ================= --}}
-        <div class="space-y-1.5">
+
+        {{-- ================= JENIS (HANYA UNTUK KEUANGAN) ================= --}}
+        <div class="space-y-1.5"
+             x-show="tipe === 'keuangan'"
+             x-transition>
+
             <label class="text-sm font-medium text-slate-600">
                 Jenis Laporan
             </label>
+
             <select name="jenis"
+                :required="tipe === 'keuangan'"
                 class="w-full rounded-xl bg-slate-50 border border-slate-200
                        px-4 py-2.5 text-slate-700
                        focus:bg-white focus:border-[#00326B]
                        focus:ring-4 focus:ring-[#00326B]/10 transition">
+
                 <option value="">-- Pilih Jenis --</option>
-                <option value="triwulan" {{ old('jenis', $laporan->jenis) === 'triwulan' ? 'selected' : '' }}>
+
+                <option value="triwulan"
+                    {{ old('jenis', $laporan->jenis) === 'triwulan' ? 'selected' : '' }}>
                     Triwulan
                 </option>
-                <option value="semester" {{ old('jenis', $laporan->jenis) === 'semester' ? 'selected' : '' }}>
+
+                <option value="semester"
+                    {{ old('jenis', $laporan->jenis) === 'semester' ? 'selected' : '' }}>
                     Semester
                 </option>
-                <option value="tahunan" {{ old('jenis', $laporan->jenis) === 'tahunan' ? 'selected' : '' }}>
+
+                <option value="tahunan"
+                    {{ old('jenis', $laporan->jenis) === 'tahunan' ? 'selected' : '' }}>
                     Tahunan
                 </option>
+
             </select>
-            <p class="text-xs text-slate-500">
-                Kosongkan jika tidak relevan (non-keuangan)
-            </p>
         </div>
+
 
         {{-- ================= TAHUN ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">
                 Tahun
             </label>
+
             <input type="number"
                 name="tahun"
                 value="{{ old('tahun', $laporan->tahun) }}"
@@ -93,11 +106,13 @@
                        focus:ring-4 focus:ring-[#00326B]/10 transition">
         </div>
 
+
         {{-- ================= JUDUL ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">
                 Judul Laporan
             </label>
+
             <input type="text"
                 name="judul"
                 value="{{ old('judul', $laporan->judul) }}"
@@ -107,6 +122,7 @@
                        focus:bg-white focus:border-[#00326B]
                        focus:ring-4 focus:ring-[#00326B]/10 transition">
         </div>
+
 
         {{-- ================= FILE PDF ================= --}}
         <div class="space-y-2">
@@ -149,6 +165,7 @@
             </p>
         </div>
 
+
         {{-- ================= ACTION ================= --}}
         <div class="flex justify-end gap-3 pt-4">
             <a href="{{ route('admin.publikasi.index') }}"
@@ -157,7 +174,7 @@
             </a>
 
             <button type="submit"
-                class="rounded-xl bg-[#00326B] px-8 py-2.5 text-white">
+                class="rounded-xl bg-[#00326B] px-8 py-2.5 text-white hover:bg-[#002855] transition">
                 Update Laporan
             </button>
         </div>

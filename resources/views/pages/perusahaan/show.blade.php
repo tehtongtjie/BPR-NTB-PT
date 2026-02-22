@@ -78,7 +78,7 @@
                             @if (isset($data['image']))
                                 <div
                                     class="relative rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden mb-12 group shadow-2xl border-4 border-white">
-                                    <img src="{{ asset($data['image']) }}"
+                                    <img src="{{ Storage::url($data['image']) }}"
                                         class="w-full h-72 lg:h-[500px] object-cover transition-transform duration-1000 group-hover:scale-105"
                                         alt="Header">
                                     <div
@@ -113,6 +113,9 @@
                                         class="inline-flex items-center gap-3 px-6 py-2 rounded-full bg-blue-50 text-bpr-blue text-[10px] font-black uppercase tracking-[0.4em] mb-6 border border-blue-100">
                                         <i class="bi bi-diagram-3-fill text-bpr-gold"></i> Structure
                                     </div>
+                                    <h1 class="text-4xl lg:text-7xl font-black text-bpr-blue tracking-tight mb-6">
+                                        {{ $slug === 'komisaris' ? 'Dewan Komisaris' : ($slug === 'direksi' ? 'Dewan Direksi' : ($slug === 'tata-kelola' ? 'Tata Kelola' : 'Budaya')) }}
+                                    </h1>
                                     <div class="flex justify-center items-center gap-3">
                                         <span class="w-16 h-[4px] bg-bpr-gold rounded-full"></span>
                                         <span class="w-2 h-2 bg-bpr-blue/20 rounded-full"></span>
@@ -269,102 +272,105 @@
                                                 PDF</a>
                                         </div>
                                     </div>
-                                @endif
 
-                                {{-- ================= KOMISARIS & DIREKSI ================= --}}
-                                @if (in_array($slug, ['komisaris', 'direksi']))
+                                    {{-- 5. KOMISARIS & DIREKSI --}}
+                                    @elseif ($slug === 'komisaris' || $slug === 'direksi')
+                                        <div class="grid grid-cols-1 gap-12">
 
-                                    <div class="text-center mb-16">
-                                        <div
-                                            class="inline-flex items-center gap-3 px-6 py-2 rounded-full
-                                                bg-blue-50 text-bpr-blue text-[10px]
-                                                font-black uppercase tracking-[0.4em]
-                                                mb-6 border border-blue-100">
-                                            <i class="bi bi-diagram-3-fill text-bpr-gold"></i>
+                                            @forelse ($managements as $member)
+                                                <div
+                                                    class="group bg-white rounded-[3rem] p-6 lg:p-10
+                                                        border border-slate-100 hover:shadow-2xl
+                                                        transition-all duration-500">
 
-                                        <div class="flex justify-center items-center gap-3">
-                                            <span class="w-16 h-[4px] bg-bpr-gold rounded-full"></span>
-                                            <span class="w-2 h-2 bg-bpr-blue/20 rounded-full"></span>
-                                        </div>
-                                    </div>
+                                                    <div class="flex flex-col lg:flex-row gap-12 items-center">
 
-                                    <div class="grid grid-cols-1 gap-12">
-
-                                        @forelse ($managements as $member)
-                                            <div
-                                                class="group bg-white rounded-[3rem] p-6 lg:p-10
-                                                    border border-slate-100
-                                                    hover:shadow-2xl transition-all duration-500">
-
-                                                <div class="flex flex-col lg:flex-row gap-12 items-center">
-
-                                                    {{-- FOTO --}}
-                                                    <div
-                                                        class="w-full lg:w-72 flex-shrink-0
-                                                            relative overflow-hidden
-                                                            rounded-[2.5rem] aspect-[3/4]
-                                                            shadow-xl">
-
-                                                        <img src="{{ asset('storage/' . $member->image) }}"
-                                                            alt="{{ $member->name }}"
-                                                            class="w-full h-full object-cover
-                                                                    transition-transform duration-700
-                                                                    group-hover:scale-105">
-
+                                                        {{-- ICON PLACEHOLDER --}}
                                                         <div
-                                                            class="absolute inset-0
-                                                                bg-gradient-to-t
-                                                                from-[#00326B]/30
-                                                                to-transparent">
+                                                            class="w-full lg:w-64 flex-shrink-0 relative
+                                                                overflow-hidden rounded-[2.5rem] aspect-square
+                                                                shadow-inner bg-slate-50 flex items-center justify-center
+                                                                border-2 border-dashed border-slate-200
+                                                                group-hover:bg-slate-100 transition-colors">
+
+                                                            <div class="text-center">
+                                                                {{-- Icon --}}
+                                                                <i
+                                                                    class="bi bi-person-badge text-6xl text-slate-300
+                                                                        mb-2 block group-hover:text-bpr-gold transition-colors">
+                                                                </i>
+
+                                                                {{-- Initial --}}
+                                                                <span
+                                                                    class="text-2xl font-black text-slate-200
+                                                                        uppercase tracking-tighter">
+                                                                    {{ collect(explode(' ', $member->name))
+                                                                        ->map(fn($n) => $n[0])
+                                                                        ->take(2)
+                                                                        ->implode('') }}
+                                                                </span>
+                                                            </div>
+
+                                                            {{-- Decorative Badge --}}
+                                                            <div class="absolute top-4 right-4">
+                                                                <div
+                                                                    class="w-8 h-8 rounded-full bg-white shadow-sm
+                                                                        flex items-center justify-center">
+                                                                    <i class="bi bi-patch-check-fill text-blue-500 text-xs"></i>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
 
-                                                    {{-- INFO --}}
-                                                    <div class="flex-1 text-center lg:text-left">
+                                                        {{-- INFO --}}
+                                                        <div class="flex-1 text-center lg:text-left">
+                                                            <div class="mb-6">
+                                                                <h3
+                                                                    class="text-3xl lg:text-4xl font-black
+                                                                        text-bpr-blue mb-2 tracking-tighter">
+                                                                    {{ $member->name }}
+                                                                </h3>
 
-                                                        <div class="mb-6">
-                                                            <h3
-                                                                class="text-3xl lg:text-4xl
-                                                                    font-black text-bpr-blue mb-2">
-                                                                {{ $member->name }}
-                                                            </h3>
+                                                                <span
+                                                                    class="inline-block px-5 py-2 rounded-xl
+                                                                        bg-bpr-gold text-bpr-blue
+                                                                        text-[10px] font-black uppercase
+                                                                        tracking-widest shadow-md">
+                                                                    {{ $member->position }}
+                                                                </span>
+                                                            </div>
 
-                                                            <span
-                                                                class="inline-block px-5 py-2
-                                                                    rounded-xl bg-bpr-gold
-                                                                    text-bpr-blue text-[10px]
-                                                                    font-black uppercase
-                                                                    tracking-widest shadow-md">
-                                                                {{ $member->position }}
-                                                            </span>
+                                                            <p
+                                                                class="text-slate-500 text-lg mb-8
+                                                                    line-clamp-3 italic font-medium leading-relaxed">
+                                                                {{ $member->excerpt }}
+                                                            </p>
+
+                                                            <a href="{{ url('/perusahaan/' . $slug . '/' . $member->slug) }}"
+                                                            class="inline-flex items-center gap-3
+                                                                    text-bpr-blue font-black uppercase
+                                                                    text-[11px] tracking-widest
+                                                                    hover:gap-6 transition-all group/link">
+                                                                Detailed Bio
+                                                                <i
+                                                                    class="bi bi-arrow-right text-bpr-gold text-xl
+                                                                        transition-transform
+                                                                        group-hover/link:translate-x-1">
+                                                                </i>
+                                                            </a>
                                                         </div>
-
-                                                        <p
-                                                            class="text-slate-500 text-lg mb-8
-                                                                line-clamp-3 italic font-medium
-                                                                leading-relaxed">
-                                                            {{ $member->excerpt }}
-                                                        </p>
-
-                                                        <a href="{{ route('perusahaan.detail', [$slug, $member->slug]) }}"
-                                                        class="inline-flex items-center gap-3
-                                                                text-bpr-blue font-black uppercase
-                                                                text-[11px] tracking-widest
-                                                                hover:gap-6 transition-all">
-                                                            Detail Profil
-                                                            <i class="bi bi-arrow-right text-bpr-gold text-xl"></i>
-                                                        </a>
 
                                                     </div>
                                                 </div>
-                                            </div>
-                                        @empty
-                                            <div class="text-center text-slate-400 text-lg">
-                                                Data {{ ucfirst($slug) }} belum tersedia
-                                            </div>
-                                        @endforelse
-                                    </div>
-                                @endif
+                                            @empty
+                                                <div class="text-center py-20 text-slate-400 font-bold">
+                                                    Data {{ ucfirst($slug) }} belum tersedia
+                                                </div>
+                                            @endforelse
+
+                                        </div>
+                                    @endif
+
+
                             </div>
                         </div>
                     </div>

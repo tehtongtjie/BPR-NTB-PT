@@ -5,23 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>@yield('title', 'BPR NTB')</title>
+    {{-- 1. TITLE --}}
+    <title>@yield('title')</title>
 
+    {{-- Memberi tahu browser bahwa kita punya versi ukuran yang lebih besar --}}
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logobpr.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logobpr.png') }}?v=1">
+
+    {{-- 3. ASSETS (Vite & CSS) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link rel="icon" href="{{ asset('images/favicon.ico') }}">
-
+    {{-- Icons & Maps --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    {{-- 4. SWEETALERT2 (Diletakkan di atas agar siap dipanggil kapan saja) --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    {{-- 5. SCRIPTS (AlpineJS & Flowbite) --}}
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-
-
 </head>
 
 <body class="bg-base-100 text-base-content antialiased">
@@ -69,7 +74,7 @@
         </a>
 
         {{-- 3. Tombol Email --}}
-        <a href="mailto:info@bprntb.co.id"
+        <a href="mailto:office@bprntb.co.id?subject=Pertanyaan Layanan BPR NTB"
             class="group relative flex items-center justify-center w-14 h-14 bg-white border border-slate-200 rounded-2xl shadow-xl hover:-translate-y-1 transition-all duration-300">
             <i class="bi bi-envelope-fill text-xl text-[#00326B]"></i>
             <span
@@ -79,7 +84,7 @@
         </a>
 
         {{-- 4. Tombol WhatsApp --}}
-        <a href="https://wa.me/6281234567890" target="_blank"
+        <a href="https://wa.me/6281808882022" target="_blank"
             class="group relative flex items-center justify-center w-14 h-14 bg-emerald-500 rounded-2xl shadow-xl shadow-emerald-500/40 hover:bg-emerald-600 hover:-translate-y-1 transition-all duration-300 overflow-hidden">
 
             <div

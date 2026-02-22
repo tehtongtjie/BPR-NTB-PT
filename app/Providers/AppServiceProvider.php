@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
                 ['label' => 'Tabungan', 'route' => 'tabungan.show', 'param' => 'tabunganku', 'icon' => 'bi-wallet2'],
                 ['label' => 'Deposito', 'route' => 'deposito.index', 'icon' => 'bi-piggy-bank'],
                 ['label' => 'Pinjaman', 'route' => 'pinjaman.index', 'icon' => 'bi-cash-stack'],
-                ['label' => 'UMKM Mitra', 'route' => 'umkm.mitra', 'icon' => 'bi-shop'],
+                ['label' => 'Mitra UMKM', 'route' => 'umkm.mitra', 'icon' => 'bi-shop-window'],
                 [
                     'label' => 'Simulasi',
                     'icon' => 'bi-calculator',
@@ -38,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
             'Publikasi' => [
                 ['label' => 'Berita Terkini', 'route' => 'berita.index', 'icon' => 'bi-newspaper'],
                 ['label' => 'Galeri', 'route' => 'galeri.index', 'icon' => 'bi-images'],
+                ['label' => 'Riplay', 'route' => 'riplay.index', 'icon' => 'bi-file-earmark-text'],
                 ['label' => 'Pengumuman Lelang', 'route' => 'lelang.index', 'icon' => 'bi-megaphone'],
                 ['label' => 'Informasi Karier', 'route' => 'karir.index', 'icon' => 'bi-person-lines-fill'],
                 [

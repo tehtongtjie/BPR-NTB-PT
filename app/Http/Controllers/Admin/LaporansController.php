@@ -32,6 +32,11 @@ class LaporansController extends Controller
             'judul' => 'required|string|max:255',
             'file'  => 'required|mimes:pdf|max:10240', // 10MB
         ]);
+        if ($request->tipe === 'keuangan') {
+            $rules['jenis'] = 'required|in:triwulan,semester,tahunan';
+        }
+
+        $request->validate($rules);
 
         $filePath = $request->file('file')->store('laporan', 'public');
 
@@ -53,39 +58,48 @@ class LaporansController extends Controller
         return view('admin.publikasi.laporan.edit', compact('laporan'));
     }
 
-    public function update(Request $request, Laporan $laporan)
-    {
-        $request->validate([
-            'tipe'  => 'required|in:keuangan,tata-kelola,berkelanjutan',
-            'jenis' => 'nullable|in:triwulan,semester,tahunan',
-            'tahun' => 'required|digits:4',
-            'judul' => 'required|string|max:255',
-            'file'  => 'nullable|mimes:pdf|max:10240',
-        ]);
+public function update(Request $request, Laporan $laporan)
+{
+    // ================= BASE RULES =================
+    $rules = [
+        'tipe'  => 'required|in:keuangan,tata-kelola,berkelanjutan',
+        'tahun' => 'required|digits:4',
+        'judul' => 'required|string|max:255',
+        'file'  => 'nullable|mimes:pdf|max:10240',
+    ];
 
-        $data = $request->only([
-            'tipe',
-            'jenis',
-            'tahun',
-            'judul',
-        ]);
+    // ================= TAMBAHAN RULE JIKA KEUANGAN =================
+    if ($request->tipe === 'keuangan') {
+        $rules['jenis'] = 'required|in:triwulan,semester,tahunan';
+    }
 
-        // Jika upload file baru
-        if ($request->hasFile('file')) {
+    $validated = $request->validate($rules);
 
-            if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
-                Storage::disk('public')->delete($laporan->file);
-            }
+    // ================= DATA YANG DIUPDATE =================
+    $data = [
+        'tipe'  => $validated['tipe'],
+        'tahun' => $validated['tahun'],
+        'judul' => $validated['judul'],
+        'jenis' => $request->tipe === 'keuangan' ? $request->jenis : null,
+    ];
 
-            $data['file'] = $request->file('file')->store('laporan', 'public');
+    // ================= JIKA UPLOAD FILE BARU =================
+    if ($request->hasFile('file')) {
+
+        if ($laporan->file && Storage::disk('public')->exists($laporan->file)) {
+            Storage::disk('public')->delete($laporan->file);
         }
 
-        $laporan->update($data);
-
-        return redirect()
-            ->route('admin.publikasi.index')
-            ->with('success', 'Laporan berhasil diperbarui');
+        $data['file'] = $request->file('file')->store('laporan', 'public');
     }
+
+    $laporan->update($data);
+
+    return redirect()
+        ->route('admin.publikasi.index')
+        ->with('success', 'Laporan berhasil diperbarui');
+}
+
 
     public function destroy(Laporan $laporan)
     {

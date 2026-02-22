@@ -13,7 +13,6 @@ return new class extends Migration {
             // Umum
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('image')->nullable();
 
             /**
              * type:

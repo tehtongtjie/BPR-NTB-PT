@@ -9,6 +9,7 @@ use App\Http\Controllers\{
     PerusahaanController,
     JaringanKantorController,
     UmkmController,
+    RiplayController,
     BeritaController,
     GaleriController,
     LelangController,
@@ -16,6 +17,9 @@ use App\Http\Controllers\{
     RecommenderController,
     LaporanController
 };
+use App\Http\Controllers\WhistleBlowingController;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PromoPublicController;
 
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\crypt;
@@ -27,13 +31,11 @@ use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\AuctionController;
-use App\Http\Controllers\PromoPublicController;
 use App\Http\Controllers\Admin\JaringanController;
-use App\Http\Controllers\WhistleBlowingController;
-use App\Http\Controllers\MessageController;
 use App\Http\Controllers\Admin\PerusahaansController;
 use App\Http\Controllers\Admin\LaporansController;
 use App\Http\Controllers\Admin\PublikasiController;
+use App\Http\Controllers\Admin\UmkmsController;
 
 
 
@@ -43,8 +45,6 @@ use App\Http\Controllers\Admin\PublikasiController;
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
-
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/test-navbar', fn() => view('users.test-navbar'));
 
@@ -73,8 +73,15 @@ Route::prefix('pinjaman')->name('pinjaman.')->group(function () {
 
 // Halaman Daftar UMKM Mitra (Etalase)
 Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
-    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
-    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+
+    // Listing
+    Route::get('/', [UmkmController::class, 'mitra'])
+        ->name('mitra');
+
+    // Detail
+    Route::get('/{slug}', [UmkmController::class, 'show'])
+        ->name('mitra.detail');
+
 });
 
 // Simulasi Pages
@@ -107,6 +114,14 @@ Route::prefix('berita')->name('berita.')->group(function () {
     Route::get('/{slug}', [BeritaController::class, 'show'])->name('show');
 });
 
+// Rute untuk Halaman Riplay
+Route::get('/riplay', [RiplayController::class, 'index'])->name('riplay.index');
+// Rute untuk Berita (Index & Detail)
+Route::prefix('berita')->group(function () {
+    Route::get('/', [BeritaController::class, 'index'])->name('berita.index');
+    Route::get('/{slug}', [BeritaController::class, 'show'])->name('berita.show');
+});
+
 // 3. DAFTAR GALERI
 Route::prefix('galeri')->name('galeri.')->group(function () {
     Route::get('/', [GaleriController::class, 'index'])->name('index');
@@ -128,11 +143,12 @@ Route::prefix('laporan')->name('laporan.')->group(function () {
     Route::get('/berkelanjutan', [LaporanController::class, 'index'])->defaults('tipe', 'berkelanjutan')->name('berkelanjutan');
 });
 
-// 6. UMKM MITRA
-Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
+// Ubah 'umkm-mitra' menjadi 'umkm' agar URL lebih pendek
+Route::prefix('umkm')->name('umkm.')->group(function () {
     Route::get('/', [UmkmController::class, 'index'])->name('mitra');
     Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
 });
+
 /*
 |--------------------------------------------------------------------------
 | PERUSAHAAN
@@ -160,15 +176,18 @@ Route::prefix('jaringan')->name('jaringan.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
-    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))
-        ->name('alur');
+    // Menampilkan halaman Alur
+    Route::get('/alur', fn() => view('pages.pengaduan.alur-pengaduan'))->name('alur');
 
-    // Halaman Form
-    Route::get('/whistle-blowing-system', [WhistleBlowingController::class, 'index'])
-        ->name('wbs');
+    // Menampilkan halaman Form WBS (Menggunakan Controller agar lebih rapi)
+    Route::get('/whistle-blowing-system', [WhistleBlowingController::class, 'index'])->name('wbs');
 
-    // Proses Simpan (PASTIKAN NAMA RUTE ADALAH pengaduan.wbs.store)
+    // Memproses pengiriman data (Mengarah ke fungsi store di Controller)
+    Route::post('/whistle-blowing-system', [WhistleBlowingController::class, 'store'])->name('wbs.store');
+
+    // Tambahkan middleware throttle:3,1 di sini
     Route::post('/whistle-blowing-system', [WhistleBlowingController::class, 'store'])
+        ->middleware('throttle:3,1')
         ->name('wbs.store');
 });
 
@@ -189,14 +208,7 @@ Route::prefix('admin')->group(function () {
         Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
     });
 
-    // 2. ===== WHISTLE BLOWING SYSTEM (URL: /admin/wbs) =====
-    // Diletakkan di luar grup 'main' agar tidak nested/404
-    Route::prefix('wbs')->name('admin.wbs.')->group(function () {
-        Route::get('/', [WhistleBlowingController::class, 'adminIndex'])->name('index');
-        Route::delete('/{id}', [WhistleBlowingController::class, 'destroy'])->name('destroy');
-    });
-
-    // 3. ===== JARINGAN KANTOR =====
+    // 2. ===== JARINGAN KANTOR =====
     Route::prefix('jaringan')->name('jaringan.')->group(function () {
         Route::get('/', [JaringanController::class, 'index'])->name('index');
         Route::get('/create', [JaringanController::class, 'create'])->name('create');
@@ -207,7 +219,7 @@ Route::prefix('admin')->group(function () {
     });
 
 
-    // 4. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
+    // 3. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
     Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
         Route::get('/', [PerusahaansController::class, 'index'])->name('index');
         Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
@@ -234,7 +246,7 @@ Route::prefix('admin')->group(function () {
     });
 
 
-    // 6. ===== MAIN DASHBOARD & CONTENT =====
+    // 5. ===== MAIN DASHBOARD & CONTENT =====
     Route::prefix('main')->name('admin.main.')->group(function () {
 
         Route::get('/', [MainController::class, 'index'])->name('index');
@@ -288,6 +300,18 @@ Route::prefix('admin')->group(function () {
             Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
             Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
         });
+    });
+    // 6. ===== UMKM =====
+
+    Route::prefix('umkms')->name('umkms.')->group(function () {
+
+        Route::get('/', [UmkmsController::class, 'index'])->name('index');
+        Route::get('/create', [UmkmsController::class, 'create'])->name('create');
+        Route::post('/', [UmkmsController::class, 'store'])->name('store');
+        Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
+        Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
+        Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
+
     });
 });
 

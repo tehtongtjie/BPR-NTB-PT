@@ -80,40 +80,6 @@
                        focus:ring-4 focus:ring-[#00326B]/10 transition">
         </div>
 
-        {{-- ================= FOTO ================= --}}
-        <div class="space-y-2">
-            <label class="text-sm font-medium text-slate-600">
-                Foto Manajemen
-            </label>
-
-            {{-- FOTO LAMA --}}
-            @if ($management->image)
-                <div class="flex items-center gap-4">
-                    <img src="{{ asset('storage/' . $management->image) }}"
-                         class="h-24 w-24 rounded-xl object-cover border border-slate-200">
-                    <span class="text-xs text-slate-500">
-                        Foto saat ini
-                    </span>
-                </div>
-            @endif
-
-            {{-- UPLOAD BARU --}}
-            <input type="file"
-                name="image"
-                accept="image/*"
-                class="w-full rounded-xl bg-slate-50 border border-slate-200
-                       px-4 py-2.5 text-slate-700
-                       file:mr-4 file:rounded-lg
-                       file:border-0 file:bg-[#00326B]
-                       file:px-4 file:py-2
-                       file:text-sm file:text-white
-                       hover:file:bg-[#002855]
-                       focus:ring-4 focus:ring-[#00326B]/10 transition">
-
-            <p class="text-xs text-slate-500">
-                Kosongkan jika tidak ingin mengganti foto
-            </p>
-        </div>
 
         {{-- ================= RINGKASAN ================= --}}
         <div class="space-y-1.5">
@@ -133,12 +99,13 @@
             <label class="text-sm font-medium text-slate-600">
                 Profil Lengkap
             </label>
-            <textarea name="profile"
+            <textarea id="profile-editor"
+                name="profile"
                 rows="6"
                 class="w-full rounded-xl bg-slate-50 border border-slate-200
-                       px-4 py-3 text-slate-700
-                       focus:bg-white focus:border-[#00326B]
-                       focus:ring-4 focus:ring-[#00326B]/10 transition resize-none">{{ old('profile', $management->profile) }}</textarea>
+                    px-4 py-3 text-slate-700
+                    focus:bg-white focus:border-[#00326B]
+                    focus:ring-4 focus:ring-[#00326B]/10 transition resize-none">{{ old('profile', $management->profile) }}</textarea>
         </div>
 
         {{-- ================= URUTAN & STATUS ================= --}}
@@ -189,3 +156,43 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/{{ env('TINYMCE_API_KEY') }}/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+
+<script>
+    tinymce.init({
+        selector: '#profile-editor',
+        height: 420,
+        menubar: true,
+
+        plugins: [
+            'advlist autolink lists link image charmap preview anchor',
+            'searchreplace visualblocks code fullscreen',
+            'insertdatetime media table help wordcount'
+        ],
+
+        toolbar:
+            'undo redo | blocks | ' +
+            'bold italic underline | ' +
+            'alignleft aligncenter alignright alignjustify | ' +
+            'bullist numlist outdent indent | ' +
+            'link image | code fullscreen',
+
+        setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave();
+            });
+        },
+
+        content_style: `
+            body {
+                font-family: Inter, system-ui, -apple-system, sans-serif;
+                font-size: 14px;
+            }
+        `
+    });
+</script>
+@endpush

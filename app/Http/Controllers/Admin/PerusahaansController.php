@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Management;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PerusahaansController extends Controller
@@ -54,25 +53,17 @@ class PerusahaansController extends Controller
             'name'      => 'required|string|max:150',
             'type'      => 'required|in:direksi,komisaris',
             'position'  => 'required|string|max:150',
-            'image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
             'excerpt'   => 'nullable|string|max:255',
             'profile'   => 'nullable|string',
             'order'     => 'nullable|integer',
             'is_active' => 'nullable|in:0,1',
         ]);
 
-        // ===== HANDLE IMAGE =====
-        if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')
-                ->store('managements', 'public');
-        }
-
         // ===== DATA TAMBAHAN =====
         $data['slug'] = Str::slug($data['name']) . '-' . uniqid();
         $data['order'] = $data['order'] ?? 0;
         $data['is_active'] = $request->input('is_active', 1);
 
-        // ===== SIMPAN KE DATABASE =====
         Management::create($data);
 
         return redirect()
@@ -97,23 +88,11 @@ class PerusahaansController extends Controller
             'name'      => 'required|string|max:150',
             'type'      => 'required|in:direksi,komisaris',
             'position'  => 'required|string|max:150',
-            'image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:8192',
             'excerpt'   => 'nullable|string|max:255',
             'profile'   => 'nullable|string',
             'order'     => 'nullable|integer',
             'is_active' => 'nullable|in:0,1',
         ]);
-
-        // ===== HANDLE IMAGE BARU =====
-        if ($request->hasFile('image')) {
-
-            if ($management->image && Storage::disk('public')->exists($management->image)) {
-                Storage::disk('public')->delete($management->image);
-            }
-
-            $data['image'] = $request->file('image')
-                ->store('management', 'public');
-        }
 
         // ===== DATA TAMBAHAN =====
         $data['slug'] = Str::slug($data['name']);
@@ -132,10 +111,6 @@ class PerusahaansController extends Controller
      */
     public function destroy(Management $management)
     {
-        if ($management->image && Storage::disk('public')->exists($management->image)) {
-            Storage::disk('public')->delete($management->image);
-        }
-
         $management->delete();
 
         return redirect()
