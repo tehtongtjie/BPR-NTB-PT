@@ -35,15 +35,15 @@
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Konten & Layanan</span>
         </div>
 
-        <a href="/admin/produk"
+        <a href="/admin/umkms"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
-            {{ request()->is('admin/produk*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
-            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/produk*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+            {{ request()->is('admin/umkms*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/umkms*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M21 7.5l-9 5.25L3 7.5m18 0l-9-5.25L3 7.5m18 0v9l-9 5.25M3 7.5v9l9 5.25m0-9v9" />
             </svg>
-            <span class="font-bold">Produk & Layanan</span>
+            <span class="font-bold">UMKM</span>
         </a>
 
         <a href="/admin/perusahaan"

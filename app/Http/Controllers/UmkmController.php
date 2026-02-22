@@ -2,31 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Umkm;
 use Illuminate\Http\Request;
 
 class UmkmController extends Controller
 {
-    public function index()
+    public function mitra()
     {
-        $umkms = config('umkm.mitra');
-        abort_if(!$umkms, 404);
+        $umkms = Umkm::with(['images', 'products'])
+            ->latest()
+            ->paginate(9);
 
-        // SESUAIKAN: Jika file ada di resources/views/umkm/pages/mitra.blade.php
         return view('umkm.pages.mitra', compact('umkms'));
     }
 
     public function show($slug)
     {
-        // Mengambil semua data dari config
-        $all_umkms = config('umkm.mitra');
+        $umkm = Umkm::with(['images', 'products'])
+            ->where('slug', $slug)
+            ->firstOrFail();
 
-        // Mencari mitra spesifik berdasarkan slug
-        $umkm = collect($all_umkms)->firstWhere('slug', $slug);
-
-        // Jika tidak ketemu, munculkan 404
-        abort_if(!$umkm, 404);
-
-        // SESUAIKAN: Jika file ada di resources/views/umkm/pages/show.blade.php
         return view('umkm.pages.show', compact('umkm'));
     }
 }

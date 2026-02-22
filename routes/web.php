@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\JaringanController;
 use App\Http\Controllers\Admin\PerusahaansController;
 use App\Http\Controllers\Admin\LaporansController;
 use App\Http\Controllers\Admin\PublikasiController;
+use App\Http\Controllers\Admin\UmkmsController;
 
 
 
@@ -72,8 +73,15 @@ Route::prefix('pinjaman')->name('pinjaman.')->group(function () {
 
 // Halaman Daftar UMKM Mitra (Etalase)
 Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
-    Route::get('/', [UmkmController::class, 'index'])->name('mitra');
-    Route::get('/{slug}', [UmkmController::class, 'show'])->name('mitra.detail');
+
+    // Listing
+    Route::get('/', [UmkmController::class, 'mitra'])
+        ->name('mitra');
+
+    // Detail
+    Route::get('/{slug}', [UmkmController::class, 'show'])
+        ->name('mitra.detail');
+
 });
 
 // Simulasi Pages
@@ -292,6 +300,18 @@ Route::prefix('admin')->group(function () {
             Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
             Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
         });
+    });
+    // 6. ===== UMKM =====
+
+    Route::prefix('umkms')->name('umkms.')->group(function () {
+
+        Route::get('/', [UmkmsController::class, 'index'])->name('index');
+        Route::get('/create', [UmkmsController::class, 'create'])->name('create');
+        Route::post('/', [UmkmsController::class, 'store'])->name('store');
+        Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
+        Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
+        Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
+
     });
 });
 

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             
             KantorSeeder::class,
             LaporanSeeder::class,
+            UmkmSeeder::class,
         ]);
     }
 }
