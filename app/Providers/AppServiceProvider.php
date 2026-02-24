@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Promo;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -12,6 +13,20 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // Gate Otorisasi Admin
+        // Kita tambahkan pengecekan apakah $user ada untuk mencegah error di halaman publik
+        Gate::define('admin-it', function ($user) {
+            return $user && $user->role === 'it';
+        });
+
+        Gate::define('admin-sekper', function ($user) {
+            return $user && in_array($user->role, ['it', 'sekper']);
+        });
+
+        Gate::define('admin-bisnis', function ($user) {
+            return $user && in_array($user->role, ['it', 'bisnis']);
+        });
+        
         View::share('menus', [
             'Produk & Layanan' => [
                 ['label' => 'Tabungan', 'route' => 'tabungan.show', 'param' => 'tabunganku', 'icon' => 'bi-wallet2'],

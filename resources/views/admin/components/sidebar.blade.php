@@ -15,6 +15,7 @@
     <nav class="flex-1 flex flex-col gap-1 px-4 py-6 overflow-y-auto custom-scrollbar text-[13px]">
 
         {{-- LABEL: UTAMA --}}
+        @can('admin-sekper')
         <div class="px-4 mb-2">
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Utama</span>
         </div>
@@ -29,12 +30,17 @@
             </svg>
             <span class="font-bold">Dashboard</span>
         </a>
+        @endcan
+
+
 
         {{-- LABEL: MANAJEMEN --}}
         <div class="px-4 mt-6 mb-2">
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Konten & Layanan</span>
         </div>
 
+        {{-- MENU UMKM: IT & BISNIS --}}
+        @can('admin-bisnis')
         <a href="/admin/umkms"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
             {{ request()->is('admin/umkms*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
@@ -45,7 +51,10 @@
             </svg>
             <span class="font-bold">UMKM</span>
         </a>
+        @endcan
 
+        {{-- MENU SEKPER: IT & SEKPER --}}
+        @can('admin-sekper')
         <a href="/admin/perusahaan"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
             {{ request()->is('admin/perusahaan*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
@@ -78,6 +87,10 @@
             </svg>
             <span class="font-bold">Publikasi</span>
         </a>
+        @endcan
+
+        {{-- MENU MESSAGE: HANYA IT --}}
+        @can('admin-it')
         <a href="{{ route('admin.messages.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
             {{ request()->is('admin/messages*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
@@ -95,18 +108,27 @@
                 </span>
             </div>
         </a>
+        @endcan
 
+        {{-- LOGOUT (DI BAWAH) --}}
         {{-- LOGOUT (DI BAWAH) --}}
         <div class="mt-auto pt-10">
             <div class="my-4 border-t border-slate-100"></div>
-            <a href="/admin/logout" onclick="return confirm('Logout admin?')"
-                class="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-500 font-black uppercase text-[11px] tracking-widest hover:bg-red-50 transition-all duration-300">
+
+            <a href="javascript:void(0)"
+                onclick="confirmLogout()"
+                class="flex items-center gap-3 px-4 py-3 rounded-2xl text-red-500 font-black uppercase text-[11px] tracking-widest hover:bg-red-50 transition-all duration-300 cursor-pointer">
+
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3-3H9m0 0l3-3m-3 3l3 3" />
                 </svg>
                 <span>Keluar Panel</span>
             </a>
+
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                @csrf
+            </form>
         </div>
 
     </nav>
@@ -126,3 +148,36 @@
         border-radius: 10px;
     }
 </style>
+
+<script>
+function confirmLogout() {
+    Swal.fire({
+        title: 'Konfirmasi Keluar',
+        text: "Apakah Anda yakin ingin mengakhiri sesi admin ini?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#00326B', // Warna Biru BPR NTB
+        cancelButtonColor: '#616e7a', // Warna Slate 100
+        confirmButtonText: 'YA, KELUAR',
+        cancelButtonText: 'BATAL',
+        reverseButtons: true,
+        customClass: {
+            popup: 'rounded-[2rem]',
+            confirmButton: 'rounded-xl font-bold px-6 py-3',
+            cancelButton: 'rounded-xl font-bold px-6 py-3 text-slate-600'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Tampilkan loading sebentar sebelum submit
+            Swal.fire({
+                title: 'Logging out...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+            document.getElementById('logout-form').submit();
+        }
+    })
+}
+</script>

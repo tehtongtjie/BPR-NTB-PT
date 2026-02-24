@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('user.layouts.app')
 
 @section('title', 'Smart Advisor AI - BPR NTB')
 
@@ -63,7 +63,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         @foreach ([['id' => 'tabungan', 'icon' => 'piggy-bank', 'title' => 'Menabung', 'desc' => 'Simpanan aman & likuid'], ['id' => 'investasi', 'icon' => 'graph-up-arrow', 'title' => 'Investasi', 'desc' => 'Kembangkan aset optimal'], ['id' => 'pinjaman', 'icon' => 'lightning-charge', 'title' => 'Modal', 'desc' => 'Dukungan dana cepat']] as $item)
-                            <button onclick="nextStep(2, {tujuan: '{{ $item['id'] }}'})"
+                            <button onclick="nextStep(2, {tujuan: '{{ $item['id']}}'})"
                                 class="group relative p-10 rounded-[3.5rem] bg-white border border-slate-100 hover:border-indigo-600 hover:shadow-2xl hover:shadow-indigo-900/10 transition-all duration-500 text-center">
                                 <div
                                     class="w-20 h-20 bg-indigo-50 rounded-[2.2rem] flex items-center justify-center mx-auto mb-6 group-hover:bg-indigo-600 group-hover:text-white group-hover:rotate-6 transition-all duration-500">

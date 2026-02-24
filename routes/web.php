@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\{
     SimulasiController,
     TabunganController,
@@ -45,6 +46,7 @@ use App\Http\Controllers\Admin\UmkmsController;
 | HALAMAN UTAMA
 |--------------------------------------------------------------------------
 */
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/test-navbar', fn() => view('users.test-navbar'));
 
@@ -81,7 +83,6 @@ Route::prefix('umkm-mitra')->name('umkm.')->group(function () {
     // Detail
     Route::get('/{slug}', [UmkmController::class, 'show'])
         ->name('mitra.detail');
-
 });
 
 // Simulasi Pages
@@ -199,60 +200,264 @@ Route::post('/kirim-pesan', [MessageController::class, 'store'])
 | ADMIN PANEL (DASHBOARD + CRUD)
 |--------------------------------------------------------------------------
 */
-Route::prefix('admin')->group(function () {
+// Route::prefix('admin')->group(function () {
 
-    //1. ===== MESSAGE (CONTACT FORM) =====
-    Route::prefix('messages')->name('admin.messages.')->group(function () {
-        Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
-        Route::get('/{id}', [MessageController::class, 'show'])->name('show');
-        Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
+//     //1. ===== MESSAGE (CONTACT FORM) =====
+//     Route::prefix('messages')->name('admin.messages.')->group(function () {
+//         Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
+//         Route::get('/{id}', [MessageController::class, 'show'])->name('show');
+//         Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
+//     });
+
+//     // 2. ===== JARINGAN KANTOR =====
+//     Route::prefix('jaringan')->name('jaringan.')->group(function () {
+//         Route::get('/', [JaringanController::class, 'index'])->name('index');
+//         Route::get('/create', [JaringanController::class, 'create'])->name('create');
+//         Route::post('/', [JaringanController::class, 'store'])->name('store');
+//         Route::get('/{kantor}/edit', [JaringanController::class, 'edit'])->name('edit');
+//         Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
+//         Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
+//     });
+
+
+//     // 3. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
+//     Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
+//         Route::get('/', [PerusahaansController::class, 'index'])->name('index');
+//         Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
+//         Route::post('/', [PerusahaansController::class, 'store'])->name('store');
+//         Route::get('/{management}/edit', [PerusahaansController::class, 'edit'])->name('edit');
+//         Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
+//         Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
+//     });
+
+//     Route::prefix('publikasi')->name('admin.publikasi.')->group(function () {
+
+//         Route::get('/', [PublikasiController::class, 'index'])->name('index');
+
+//         // LAPORAN
+//         Route::prefix('laporan')->name('laporan.')->group(function () {
+//             Route::get('/', [LaporansController::class, 'index'])->name('index');
+//             Route::get('/create', [LaporansController::class, 'create'])->name('create');
+//             Route::post('/', [LaporansController::class, 'store'])->name('store');
+//             Route::get('/{laporan}/edit', [LaporansController::class, 'edit'])->name('edit');
+//             Route::put('/{laporan}', [LaporansController::class, 'update'])->name('update');
+//             Route::delete('/{laporan}', [LaporansController::class, 'destroy'])->name('destroy');
+//         });
+//     });
+
+
+//     // 5. ===== MAIN DASHBOARD & CONTENT =====
+// Route::prefix('main')->name('admin.main.')->group(function () {
+
+//     Route::get('/', [MainController::class, 'index'])->name('index');
+
+//     // PROMO
+//     Route::prefix('promo')->name('promo.')->group(function () {
+//         Route::get('/', [PromoController::class, 'index'])->name('index');
+//         Route::get('/create', [PromoController::class, 'create'])->name('create');
+//         Route::post('/', [PromoController::class, 'store'])->name('store');
+//         Route::get('/{promo}/edit', [PromoController::class, 'edit'])->name('edit');
+//         Route::put('/{promo}', [PromoController::class, 'update'])->name('update');
+//         Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
+//     });
+
+//     // BANNER
+//     Route::prefix('banner')->name('banner.')->group(function () {
+//         Route::get('/', [BannerController::class, 'index'])->name('index');
+//         Route::get('/create', [BannerController::class, 'create'])->name('create');
+//         Route::post('/', [BannerController::class, 'store'])->name('store');
+//         Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
+//         Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
+//         Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
+//     });
+
+//     // ARTICLE
+//     Route::prefix('article')->name('article.')->group(function () {
+//         Route::get('/', [ArticleController::class, 'index'])->name('index');
+//         Route::get('/create', [ArticleController::class, 'create'])->name('create');
+//         Route::post('/', [ArticleController::class, 'store'])->name('store');
+//         Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
+//         Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
+//         Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
+//     });
+
+//     // LELANG
+//     Route::prefix('lelang')->name('lelang.')->group(function () {
+//         Route::get('/', [AuctionController::class, 'index'])->name('index');
+//         Route::get('/create', [AuctionController::class, 'create'])->name('create');
+//         Route::post('/', [AuctionController::class, 'store'])->name('store');
+//         Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
+//         Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
+//         Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
+//     });
+
+//     // INTEREST RATE
+//     Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
+//         Route::get('/', [InterestRateController::class, 'index'])->name('index');
+//         Route::get('/create', [InterestRateController::class, 'create'])->name('create');
+//         Route::post('/', [InterestRateController::class, 'store'])->name('store');
+//         Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
+//         Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
+//         Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
+//     });
+// });
+//     // 6. ===== UMKM =====
+
+//     Route::prefix('umkms')->name('umkms.')->group(function () {
+
+//         Route::get('/', [UmkmsController::class, 'index'])->name('index');
+//         Route::get('/create', [UmkmsController::class, 'create'])->name('create');
+//         Route::post('/', [UmkmsController::class, 'store'])->name('store');
+//         Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
+//         Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
+//         Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
+//     });
+// });
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN PANEL (DASHBOARD + CRUD)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+
+    Route::get('/', function () {
+        $user = Auth::user();
+        $role = $user ? $user->role : 'guest';
+        return match ($role) {
+            'it', 'sekper' => redirect()->to('/admin/main'),
+            'bisnis'       => redirect()->to('/admin/umkms'),
+            default        => redirect()->to('/admin/main'),
+        };
     });
 
-    // 2. ===== JARINGAN KANTOR =====
-    Route::prefix('jaringan')->name('jaringan.')->group(function () {
-        Route::get('/', [JaringanController::class, 'index'])->name('index');
-        Route::get('/create', [JaringanController::class, 'create'])->name('create');
-        Route::post('/', [JaringanController::class, 'store'])->name('store');
-        Route::get('/{kantor}/edit', [JaringanController::class, 'edit'])->name('edit');
-        Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
-        Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
-    });
+    // 1. ===== AKSES DASHBOARD & KONTEN (IT & SEKPER) =====
+    // Grup ini untuk role yang diperbolehkan melihat statistik utama & data perusahaan
+    Route::middleware(['can:admin-sekper'])->group(function () {
 
+        // DASHBOARD UTAMA
+        Route::get('/main', [MainController::class, 'index'])->name('admin.main.index');
 
-    // 3. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
-    Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
-        Route::get('/', [PerusahaansController::class, 'index'])->name('index');
-        Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
-        Route::post('/', [PerusahaansController::class, 'store'])->name('store');
-        Route::get('/{management}/edit', [PerusahaansController::class, 'edit'])->name('edit');
-        Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
-        Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
-    });
-
-    Route::prefix('publikasi')->name('admin.publikasi.')->group(function () {
-
-        Route::get('/', [PublikasiController::class, 'index'])->name('index');
-
-        // LAPORAN
-        Route::prefix('laporan')->name('laporan.')->group(function () {
-            Route::get('/', [LaporansController::class, 'index'])->name('index');
-            Route::get('/create', [LaporansController::class, 'create'])->name('create');
-            Route::post('/', [LaporansController::class, 'store'])->name('store');
-            Route::get('/{laporan}/edit', [LaporansController::class, 'edit'])->name('edit');
-            Route::put('/{laporan}', [LaporansController::class, 'update'])->name('update');
-            Route::delete('/{laporan}', [LaporansController::class, 'destroy'])->name('destroy');
+        // JARINGAN KANTOR
+        Route::prefix('jaringan')->name('jaringan.')->group(function () {
+            Route::get('/', [JaringanController::class, 'index'])->name('index');
+            Route::get('/create', [JaringanController::class, 'create'])->name('create');
+            Route::post('/', [JaringanController::class, 'store'])->name('store');
+            Route::get('/{kantor}/edit', [JaringanController::class, 'edit'])->name('edit');
+            Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
+            Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
         });
 
+        // MANAGEMENT (DIREKSI & KOMISARIS)
+        Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
+            Route::get('/', [PerusahaansController::class, 'index'])->name('index');
+            Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
+            Route::post('/', [PerusahaansController::class, 'store'])->name('store');
+            Route::get('/{management}/edit', [PerusahaansController::class, 'edit'])->name('edit');
+            Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
+            Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
+        });
+
+        // PUBLIKASI & LAPORAN
+        Route::prefix('publikasi')->name('admin.publikasi.')->group(function () {
+            Route::get('/', [PublikasiController::class, 'index'])->name('index');
+            Route::prefix('laporan')->name('laporan.')->group(function () {
+                Route::get('/', [LaporansController::class, 'index'])->name('index');
+                Route::get('/create', [LaporansController::class, 'create'])->name('create');
+                Route::post('/', [LaporansController::class, 'store'])->name('store');
+                Route::get('/{laporan}/edit', [LaporansController::class, 'edit'])->name('edit');
+                Route::put('/{laporan}', [LaporansController::class, 'update'])->name('update');
+                Route::delete('/{laporan}', [LaporansController::class, 'destroy'])->name('destroy');
+            });
+        });
+
+        // MAIN CONTENT (PROMO, BANNER, ARTICLE, LELANG, INTEREST RATE)
+        Route::name('admin.main.')->group(function () {
+            Route::prefix('promo')->name('promo.')->group(function () {
+                Route::get('/', [PromoController::class, 'index'])->name('index');
+                Route::get('/create', [PromoController::class, 'create'])->name('create');
+                Route::post('/', [PromoController::class, 'store'])->name('store');
+                Route::get('/{promo}/edit', [PromoController::class, 'edit'])->name('edit');
+                Route::put('/{promo}', [PromoController::class, 'update'])->name('update');
+                Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
+            });
+
+            // BANNER
+            Route::prefix('banner')->name('banner.')->group(function () {
+                Route::get('/', [BannerController::class, 'index'])->name('index');
+                Route::get('/create', [BannerController::class, 'create'])->name('create');
+                Route::post('/', [BannerController::class, 'store'])->name('store');
+                Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
+                Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
+                Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
+            });
+
+            // ARTICLE
+            Route::prefix('article')->name('article.')->group(function () {
+                Route::get('/', [ArticleController::class, 'index'])->name('index');
+                Route::get('/create', [ArticleController::class, 'create'])->name('create');
+                Route::post('/', [ArticleController::class, 'store'])->name('store');
+                Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
+                Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
+                Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
+            });
+
+            // LELANG
+            Route::prefix('lelang')->name('lelang.')->group(function () {
+                Route::get('/', [AuctionController::class, 'index'])->name('index');
+                Route::get('/create', [AuctionController::class, 'create'])->name('create');
+                Route::post('/', [AuctionController::class, 'store'])->name('store');
+                Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
+                Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
+                Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
+            });
+
+            // INTEREST RATE
+            Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
+                Route::get('/', [InterestRateController::class, 'index'])->name('index');
+                Route::get('/create', [InterestRateController::class, 'create'])->name('create');
+                Route::post('/', [InterestRateController::class, 'store'])->name('store');
+                Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
+                Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
+                Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
+            });
+        });
     });
 
+    // 2. ===== KHUSUS IT ONLY (TEKNIS) =====
+    // Hanya IT yang bisa mengelola pesan masuk, banner utama, dan suku bunga
+    Route::middleware(['can:admin-it'])->group(function () {
+        // MESSAGES
+        Route::prefix('messages')->name('admin.messages.')->group(function () {
+            Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
+            Route::get('/{id}', [MessageController::class, 'show'])->name('show');
+            Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
+        });
+        Route::prefix('umkms')->name('umkms.')->group(function () {
+            Route::get('/', [UmkmsController::class, 'index'])->name('index');
+            Route::get('/create', [UmkmsController::class, 'create'])->name('create');
+            Route::post('/', [UmkmsController::class, 'store'])->name('store');
+            Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
+            Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
+            Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
+        });
+    });
 
-    // 5. ===== MAIN DASHBOARD & CONTENT =====
-    Route::prefix('main')->name('admin.main.')->group(function () {
+    // 3. ===== AKSES BISNIS & IT =====
+    // Bisnis hanya fokus pada UMKM dan Promo
+    Route::middleware(['can:admin-bisnis'])->group(function () {
+        Route::prefix('umkms')->name('umkms.')->group(function () {
+            Route::get('/', [UmkmsController::class, 'index'])->name('index');
+            Route::get('/create', [UmkmsController::class, 'create'])->name('create');
+            Route::post('/', [UmkmsController::class, 'store'])->name('store');
+            Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
+            Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
+            Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
+        });
 
-        Route::get('/', [MainController::class, 'index'])->name('index');
-
-        // PROMO
-        Route::prefix('promo')->name('promo.')->group(function () {
+        Route::prefix('main/promo')->name('admin.main.promo.')->group(function () {
             Route::get('/', [PromoController::class, 'index'])->name('index');
             Route::get('/create', [PromoController::class, 'create'])->name('create');
             Route::post('/', [PromoController::class, 'store'])->name('store');
@@ -260,58 +465,6 @@ Route::prefix('admin')->group(function () {
             Route::put('/{promo}', [PromoController::class, 'update'])->name('update');
             Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
         });
-
-        // BANNER
-        Route::prefix('banner')->name('banner.')->group(function () {
-            Route::get('/', [BannerController::class, 'index'])->name('index');
-            Route::get('/create', [BannerController::class, 'create'])->name('create');
-            Route::post('/', [BannerController::class, 'store'])->name('store');
-            Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
-            Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
-            Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
-        });
-
-        // ARTICLE
-        Route::prefix('article')->name('article.')->group(function () {
-            Route::get('/', [ArticleController::class, 'index'])->name('index');
-            Route::get('/create', [ArticleController::class, 'create'])->name('create');
-            Route::post('/', [ArticleController::class, 'store'])->name('store');
-            Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
-            Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
-            Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
-        });
-
-        // LELANG
-        Route::prefix('lelang')->name('lelang.')->group(function () {
-            Route::get('/', [AuctionController::class, 'index'])->name('index');
-            Route::get('/create', [AuctionController::class, 'create'])->name('create');
-            Route::post('/', [AuctionController::class, 'store'])->name('store');
-            Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
-            Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
-            Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
-        });
-
-        // INTEREST RATE
-        Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
-            Route::get('/', [InterestRateController::class, 'index'])->name('index');
-            Route::get('/create', [InterestRateController::class, 'create'])->name('create');
-            Route::post('/', [InterestRateController::class, 'store'])->name('store');
-            Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
-            Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
-            Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
-        });
-    });
-    // 6. ===== UMKM =====
-
-    Route::prefix('umkms')->name('umkms.')->group(function () {
-
-        Route::get('/', [UmkmsController::class, 'index'])->name('index');
-        Route::get('/create', [UmkmsController::class, 'create'])->name('create');
-        Route::post('/', [UmkmsController::class, 'store'])->name('store');
-        Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
-        Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
-        Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
-
     });
 });
 
@@ -319,7 +472,10 @@ Route::prefix('admin')->group(function () {
 Route::post('/admin/{token}', [AdminAuthController::class, 'login'])
     ->name('admin.auth.login');
 
-
+Route::post('/logout', function () {
+    Auth::guard('web')->logout(); // Pastikan guardnya sama dengan saat login
+    return redirect('/login');
+})->name('logout');
 
 // Path admin secured access
 Route::get('/admin/{pathToken?}', function (Request $request, $pathToken = null) {

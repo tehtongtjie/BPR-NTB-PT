@@ -3,90 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | BPR</title>
-
-    <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="{{ asset('css/global.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/background.css') }}" rel="stylesheet">
+    <title>Admin Login | BPR Asset</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
 </head>
-<body class="bg-light">
+<body class="bg-slate-50 text-slate-900">
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="card border-0 shadow-sm rounded-4 w-100" style="max-width: 480px;">
-        <div class="card-body p-4 position-relative">
+<div class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold tracking-tight text-slate-800">Admin Login BPR</h2>
+            <p class="text-slate-500 mt-2">Sistem Pengelolaan Asset</p>
+        </div>
 
-            <!-- Title -->
-            <h2 class="text-center mb-4 mt-4 fw-semibold">
-                Admin Login BPR
-            </h2>
-
-            <!-- Error global -->
-            @if(session('error'))
-                <div class="alert alert-danger">
-                    {{ session('error') }}
+        <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100">
+            @if ($errors->any())
+                <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm">
+                    <ul class="list-disc list-inside">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
                 </div>
             @endif
 
-            <!-- Login Form -->
-            <form method="POST" action="{{ url()->current() }}">
+            <form method="POST" action="{{ route('login') }}" class="space-y-5">
                 @csrf
 
-                <div class="mb-3">
-                    <label class="form-label">username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        class="form-control @error('username') is-invalid @enderror"
-                        value="{{ old('username') }}"
-                        required
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        value="{{ old('username') }}" 
+                        required 
                         autofocus
+                        class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                        placeholder="Masukkan username anda"
                     >
-                    @error('username')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        class="form-control @error('password') is-invalid @enderror"
-                        required
-                    >
-                    @error('password')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1.5 ml-1">Password</label>
+                    <div class="relative group">
+                        <input 
+                            id="password"
+                            type="password" 
+                            name="password" 
+                            required 
+                            class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all duration-200"
+                            placeholder="••••••••"
+                        >
+                        <button 
+                            type="button"
+                            onclick="togglePassword()"
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                        >
+                            <i id="eye-icon" data-lucide="eye" class="w-5 h-5"></i>
+                        </button>
+                    </div>
                 </div>
 
-                <div class="mb-3 form-check">
-                    <input class="form-check-input" type="checkbox" name="remember" id="remember">
-                    <label class="form-check-label" for="remember">
-                        Ingat saya
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center cursor-pointer group">
+                        <input type="checkbox" name="remember" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                        <span class="ml-2 text-sm text-slate-600 group-hover:text-slate-800 transition-colors">Ingat saya</span>
                     </label>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 rounded-pill">
-                    Login Admin
+                <button 
+                    type="submit" 
+                    class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 rounded-xl shadow-lg shadow-slate-200 transition-all duration-200 transform active:scale-[0.98]"
+                >
+                    Masuk ke Dashboard
                 </button>
             </form>
-
         </div>
+
+        <p class="text-center mt-8 text-sm text-slate-400">
+            &copy; {{ date('Y') }} BPR Asset Management. All rights reserved.
+        </p>
     </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Inisialisasi Lucide Icons
+    lucide.createIcons();
 
-<!-- Custom JS -->
-<script src="{{ asset('js/login.js') }}"></script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const eyeIcon = document.getElementById('eye-icon');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            eyeIcon.setAttribute('data-lucide', 'eye-off');
+        } else {
+            passwordInput.type = 'password';
+            eyeIcon.setAttribute('data-lucide', 'eye');
+        }
+        
+        // Render ulang icon setelah atribut berubah
+        lucide.createIcons();
+    }
+</script>
 
 </body>
-</html>
+</html> 
