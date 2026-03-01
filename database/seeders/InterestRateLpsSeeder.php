@@ -20,7 +20,7 @@ class InterestRateLpsSeeder extends Seeder
             'interest_rate_period_id' => $period->id,
             'rate'                    => 6.00,
             'note'                    => 'Dijamin LPS hingga Rp 2 Miliar',
-            'verification_url'        => 'https://lps.go.id',
+            'verification_url'        => 'https://apps.lps.go.id/BankPesertaLPSRate',
         ]);
     }
 }

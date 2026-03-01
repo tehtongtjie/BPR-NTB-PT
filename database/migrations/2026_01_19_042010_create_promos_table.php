@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->string('image');
-            $table->string('slug')->unique();
+            $table->string('slug');
             $table->text('short_desc');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);

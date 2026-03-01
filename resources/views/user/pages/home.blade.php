@@ -195,27 +195,25 @@
                 @endforeach
 
                 {{-- CTA --}}
-                <a href="#"
-                   class="group relative bg-[#00326B] rounded-[2.5rem] p-6
-                          transition-all duration-500 hover:shadow-2xl hover:-translate-y-1">
-                    <div class="flex items-center gap-6">
-                        <div
-                            class="w-28 h-28 shrink-0 rounded-2xl bg-white/10
-                                   flex items-center justify-center text-[#fbbf24]">
-                            <i class="bi bi-grid-fill text-3xl"></i>
-                        </div>
-                        <div class="space-y-1">
-                            <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
-                            <p class="text-white/60 text-xs italic">
-                                Lihat seluruh tabungan BPR NTB.
-                            </p>
-                        </div>
-
-                        {{-- Cara terbaik menggunakan Nama Route dan Slug --}}
-                        <a href="{{ route('deposito.show', 'deposito-berjangka') }}" class="absolute inset-0"></a>
-                    </div>
-                </a>
-
+<a href="{{ route('tabungan.show', 'simbada') }}"
+   class="group relative bg-[#00326B] rounded-[2.5rem] p-6 
+          transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 block">
+    
+    <div class="flex items-center gap-6">
+        <div class="w-28 h-28 shrink-0 rounded-2xl bg-white/10 
+                    flex items-center justify-center text-[#fbbf24]">
+            <i class="bi bi-grid-fill text-3xl"></i>
+        </div>
+        
+        <div class="space-y-1">
+            <h4 class="text-xl font-black text-white">Produk Lainnya</h4>
+            <p class="text-white/60 text-xs italic">
+                Lihat detail tabungan BPR NTB lainnya.
+            </p>
+        </div>
+    </div>
+    {{-- BARIS DI BAWAH INI SUDAH DIHAPUS AGAR TIDAK DOUBLE LINK --}}
+</a>    
             </div>
         </div>
     </div>
@@ -658,7 +656,7 @@
                                 @endif
 
                                 <div class="pt-4 mt-auto">
-                                    <a href="#"
+                                    <a href="{{ route('lelang.show', $lelang->slug) }}"
                                     class="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em]
                                             text-[#00326B] group-hover:text-[#fbbf24] transition-colors">
                                         Lihat Detail
