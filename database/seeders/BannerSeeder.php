@@ -18,7 +18,7 @@ class BannerSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'image' => 'images/tabungan-hero.webp',
+                'image' => 'images/tabungan-hero.png',
                 'is_active' => true,
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
