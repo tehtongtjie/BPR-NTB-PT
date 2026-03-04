@@ -140,32 +140,27 @@
                                         </svg>
                                     </a>
 
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('admin.main.interest-rate.destroy', $period->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Hapus periode suku bunga ini?')">
-                                        @csrf
-                                        @method('DELETE')
+{{-- DELETE --}}
+<form id="delete-form-rate-{{ $period->id }}" 
+      action="{{ route('admin.main.interest-rate.destroy', $period->id) }}"
+      method="POST" 
+      class="inline">
+    @csrf
+    @method('DELETE')
 
-                                        <button type="submit"
-                                            class="inline-flex items-center justify-center
-                                                   rounded-lg border border-red-200
-                                                   bg-red-50 p-2 text-red-600
-                                                   hover:bg-red-100 transition">
-                                            <svg class="h-4 w-4" fill="none"
-                                                 stroke="currentColor" stroke-width="2"
-                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round"
-                                                      stroke-linejoin="round"
-                                                      d="M6 7.5h12M9 7.5V5.25
-                                                         A1.5 1.5 0 0110.5 3.75h3
-                                                         A1.5 1.5 0 0115 5.25V7.5
-                                                         m-7.5 0v11.25
-                                                         A1.5 1.5 0 009 20.25h6
-                                                         a1.5 1.5 0 001.5-1.5V7.5"/>
-                                            </svg>
-                                        </button>
-                                    </form>
+    <button type="button"
+            onclick="confirmDeleteRate('{{ $period->id }}')"
+            class="inline-flex items-center justify-center
+                   rounded-lg border border-red-200
+                   bg-red-50 p-2 text-red-600
+                   hover:bg-red-600 hover:text-white 
+                   hover:border-red-600 transition-all duration-200">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6 7.5h12M9 7.5V5.25A1.5 1.5 0 0110.5 3.75h3A1.5 1.5 0 0115 5.25V7.5m-7.5 0v11.25A1.5 1.5 0 009 20.25h6a1.5 1.5 0 001.5-1.5V7.5"/>
+        </svg>
+    </button>
+</form>
 
                                 </div>
                             </td>
@@ -192,3 +187,23 @@
     </div>
 
 </div>
+<script>
+function confirmDeleteRate(id) {
+    Swal.fire({
+        title: 'Hapus Suku Bunga?',
+        text: "Menghapus periode ini dapat mempengaruhi kalkulasi data terkait.",
+        icon: 'error', // Menggunakan ikon error agar lebih kontras/waspada
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        borderRadius: '1rem'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-rate-' + id).submit();
+        }
+    })
+}
+</script>

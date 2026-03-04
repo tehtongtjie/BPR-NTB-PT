@@ -96,19 +96,19 @@
                                     </button>
                                     --}}
 
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('admin.messages.destroy', $message->id) }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Yakin ingin menghapus pesan ini?')">
-                                        @csrf
-                                        @method('DELETE')
+                                        {{-- DELETE --}}
+                                        <form action="{{ route('admin.messages.destroy', $message->id) }}"
+                                            method="POST"
+                                            onsubmit="return confirm('Yakin ingin menghapus pesan ini?')">
+                                            @csrf
+                                            @method('DELETE')
 
-                                        <button type="submit"
-                                            class="p-3 bg-red-500 text-white rounded-2xl
-                                            hover:bg-red-600 transition-all duration-300 shadow-lg shadow-red-500/20">
-                                            <i class="bi bi-trash-fill"></i>
-                                        </button>
-                                    </form>
+                                            <button type="submit"
+                                                class="p-3 bg-red-500 text-white rounded-2xl
+                                                hover:bg-red-600 transition-all duration-300 shadow-lg shadow-red-500/20">
+                                                <i class="bi bi-trash-fill"></i>
+                                            </button>
+                                        </form>
 
                                 </div>
                             </td>

@@ -158,33 +158,28 @@
                                         </svg>
                                     </a>
 
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('umkms.destroy', $item->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Hapus UMKM ini?')">
-                                        @csrf
-                                        @method('DELETE')
+{{-- DELETE UMKM --}}
+<form id="delete-form-umkm-{{ $item->id }}" 
+      action="{{ route('umkms.destroy', $item->id) }}"
+      method="POST" 
+      class="inline">
+    @csrf
+    @method('DELETE')
 
-                                        <button type="submit"
-                                            class="inline-flex items-center justify-center
-                                                   rounded-lg border border-red-200
-                                                   bg-red-50 p-2 text-red-600
-                                                   hover:bg-red-100 transition">
-                                            <svg class="h-4 w-4" fill="none"
-                                                 stroke="currentColor" stroke-width="2"
-                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round"
-                                                      stroke-linejoin="round"
-                                                      d="M6 7.5h12M9 7.5V5.25
-                                                         A1.5 1.5 0 0110.5 3.75h3
-                                                         A1.5 1.5 0 0115 5.25V7.5
-                                                         m-7.5 0v11.25
-                                                         A1.5 1.5 0 009 20.25h6
-                                                         a1.5 1.5 0 001.5-1.5V7.5"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-
+    <button type="button"
+            {{-- PERBAIKAN DI SINI: Gunakan $item->nama_usaha --}}
+            onclick="confirmDeleteUmkm('{{ $item->id }}', '{{ addslashes($item->nama_usaha) }}')"
+            class="inline-flex items-center justify-center
+                   rounded-lg border border-red-200
+                   bg-red-50 p-2 text-red-600
+                   hover:bg-red-600 hover:text-white 
+                   hover:border-red-600 transition-all duration-200">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6 7.5h12M9 7.5V5.25A1.5 1.5 0 0110.5 3.75h3A1.5 1.5 0 0115 5.25V7.5m-7.5 0v11.25A1.5 1.5 0 009 20.25h6a1.5 1.5 0 001.5-1.5V7.5"/>
+        </svg>
+    </button>
+</form>
                                 </div>
                             </td>
 
@@ -209,3 +204,24 @@
     </div>
 
 </div>
+<script>
+function confirmDeleteUmkm(id, nama) {
+    Swal.fire({
+        title: 'Hapus Data UMKM?',
+        // Penting: Gunakan tanda backtick ( ` ) bukan kutip tunggal untuk baris di bawah ini
+        html: `Apakah Anda yakin ingin menghapus UMKM <br><strong>"${nama}"</strong>?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444',
+        cancelButtonColor: '#64748b',
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        borderRadius: '0.75rem'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById('delete-form-umkm-' + id).submit();
+        }
+    })
+}
+</script>

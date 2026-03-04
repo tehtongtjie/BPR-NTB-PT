@@ -7,13 +7,13 @@
         </h2>
 
         <a href="{{ route('admin.main.promo.create') }}"
-           class="inline-flex items-center gap-2 rounded-xl
+            class="inline-flex items-center gap-2 rounded-xl
                   bg-[#00326B] px-4 py-2 text-sm font-medium
                   text-white hover:bg-[#002855] transition">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"
-                 viewBox="0 0 24 24">
+                viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"/>
+                    d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             Tambah Promo
         </a>
@@ -49,108 +49,102 @@
 
                 <tbody class="divide-y divide-slate-100">
                     @forelse($promos as $promo)
-                        <tr class="hover:bg-slate-50 transition">
+                    <tr class="hover:bg-slate-50 transition">
 
-                            {{-- NO --}}
-                            <td class="px-6 py-4 text-slate-600">
-                                {{ $loop->iteration }}
-                            </td>
+                        {{-- NO --}}
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ $loop->iteration }}
+                        </td>
 
-                            {{-- GAMBAR --}}
-                            <td class="px-6 py-4">
-                                <img
-                                    src="{{ asset('storage/' .$promo->image) }}"
-                                    alt="{{ $promo->title }}"
-                                    class="h-14 w-24 rounded-lg border border-slate-200 object-cover"
-                                />
-                            </td>
+                        {{-- GAMBAR --}}
+                        <td class="px-6 py-4">
+                            <img
+                                src="{{ asset('storage/' .$promo->image) }}"
+                                alt="{{ $promo->title }}"
+                                class="h-14 w-24 rounded-lg border border-slate-200 object-cover" />
+                        </td>
 
-                            {{-- JUDUL --}}
-                            <td class="px-6 py-4 font-medium text-slate-800">
-                                {{ $promo->title }}
-                            </td>
+                        {{-- JUDUL --}}
+                        <td class="px-6 py-4 font-medium text-slate-800">
+                            {{ $promo->title }}
+                        </td>
 
-                            {{-- DESKRIPSI --}}
-                            <td class="px-6 py-4 text-slate-600">
-                                {{ Str::limit($promo->short_desc, 60) }}
-                            </td>
+                        {{-- DESKRIPSI --}}
+                        <td class="px-6 py-4 text-slate-600">
+                            {{ Str::limit($promo->short_desc, 60) }}
+                        </td>
 
-                            {{-- STATUS --}}
-                            <td class="px-6 py-4 text-center">
-                                @if($promo->is_active)
-                                    <span class="inline-flex items-center rounded-full
+                        {{-- STATUS --}}
+                        <td class="px-6 py-4 text-center">
+                            @if($promo->is_active)
+                            <span class="inline-flex items-center rounded-full
                                                  bg-emerald-50 px-3 py-1
                                                  text-xs font-medium text-emerald-700">
-                                        Aktif
-                                    </span>
-                                @else
-                                    <span class="inline-flex items-center rounded-full
+                                Aktif
+                            </span>
+                            @else
+                            <span class="inline-flex items-center rounded-full
                                                  bg-slate-100 px-3 py-1
                                                  text-xs font-medium text-slate-600">
-                                        Nonaktif
-                                    </span>
-                                @endif
-                            </td>
+                                Nonaktif
+                            </span>
+                            @endif
+                        </td>
 
-                            {{-- AKSI --}}
-                            <td class="px-6 py-4">
-                                <div class="flex justify-end gap-2">
+                        {{-- AKSI --}}
+                        <td class="px-6 py-4">
+                            <div class="flex justify-end gap-2">
 
-                                    {{-- EDIT --}}
-                                    <a href="{{ route('admin.main.promo.edit', $promo->id) }}"
-                                       class="inline-flex items-center justify-center
+                                {{-- EDIT --}}
+                                <a href="{{ route('admin.main.promo.edit', $promo->id) }}"
+                                    class="inline-flex items-center justify-center
                                               rounded-lg border border-yellow-200
                                               bg-yellow-50 p-2 text-yellow-700
                                               hover:bg-yellow-100 transition">
-                                        <svg class="h-4 w-4" fill="none"
-                                             stroke="currentColor" stroke-width="2"
-                                             viewBox="0 0 24 24">
-                                            <path stroke-linecap="round"
-                                                  stroke-linejoin="round"
-                                                  d="M16.862 4.487l1.687-1.687
+                                    <svg class="h-4 w-4" fill="none"
+                                        stroke="currentColor" stroke-width="2"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            d="M16.862 4.487l1.687-1.687
                                                      a1.875 1.875 0 112.652 2.652
                                                      L7.5 19.125H3.75v-3.75
-                                                     L16.862 4.487z"/>
+                                                     L16.862 4.487z" />
+                                    </svg>
+                                </a>
+
+                                {{-- DELETE --}}
+                                <form id="delete-form-promo-{{ $promo->id }}"
+                                    action="{{ route('admin.main.promo.destroy', $promo->id) }}"
+                                    method="POST"
+                                    class="inline">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button type="button"
+                                        onclick="confirmDeletePromo('{{ $promo->id }}', '{{ addslashes($promo->title) }}')"
+                                        class="inline-flex items-center justify-center
+                   rounded-lg border border-red-200
+                   bg-red-50 p-2 text-red-600
+                   hover:bg-red-600 hover:text-white 
+                   hover:border-red-600 transition-all duration-200"
+                                        title="Hapus Promo">
+                                        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M6 7.5h12M9 7.5V5.25A1.5 1.5 0 0110.5 3.75h3A1.5 1.5 0 0115 5.25V7.5m-7.5 0v11.25A1.5 1.5 0 009 20.25h6a1.5 1.5 0 001.5-1.5V7.5" />
                                         </svg>
-                                    </a>
-
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('admin.main.promo.destroy', $promo->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Hapus promo ini?')">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button type="submit"
-                                            class="inline-flex items-center justify-center
-                                                   rounded-lg border border-red-200
-                                                   bg-red-50 p-2 text-red-600
-                                                   hover:bg-red-100 transition">
-                                            <svg class="h-4 w-4" fill="none"
-                                                 stroke="currentColor" stroke-width="2"
-                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round"
-                                                      stroke-linejoin="round"
-                                                      d="M6 7.5h12M9 7.5V5.25
-                                                         A1.5 1.5 0 0110.5 3.75h3
-                                                         A1.5 1.5 0 0115 5.25V7.5
-                                                         m-7.5 0v11.25
-                                                         A1.5 1.5 0 009 20.25h6
-                                                         a1.5 1.5 0 001.5-1.5V7.5"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-
-                                </div>
-                            </td>
-                        </tr>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                     @empty
-                        <tr>
-                            <td colspan="6"
-                                class="px-6 py-14 text-center text-slate-500">
-                                Belum ada promo
-                            </td>
-                        </tr>
+                    <tr>
+                        <td colspan="6"
+                            class="px-6 py-14 text-center text-slate-500">
+                            Belum ada promo
+                        </td>
+                    </tr>
                     @endforelse
                 </tbody>
             </table>
@@ -158,11 +152,31 @@
 
         {{-- PAGINATION (jika paginate) --}}
         @if(method_exists($promos, 'links'))
-            <div class="border-t border-slate-200 px-6 py-4">
-                {{ $promos->links() }}
-            </div>
+        <div class="border-t border-slate-200 px-6 py-4">
+            {{ $promos->links() }}
+        </div>
         @endif
 
     </div>
 
 </div>
+<script>
+    function confirmDeletePromo(id, title) {
+        Swal.fire({
+            title: 'Hapus Promo?',
+            html: `Apakah Anda yakin ingin menghapus promo <br><strong>"${title}"</strong>?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Hapus!',
+            cancelButtonText: 'Batal',
+            reverseButtons: true,
+            borderRadius: '1rem'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-promo-' + id).submit();
+            }
+        })
+    }
+</script>

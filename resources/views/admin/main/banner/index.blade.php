@@ -79,33 +79,27 @@
                                         </svg>
                                     </a>
 
-                                    {{-- DELETE --}}
-                                    <form action="{{ route('admin.main.banner.destroy', $banner->id) }}"
-                                          method="POST"
-                                          onsubmit="return confirm('Hapus banner ini?')">
-                                        @csrf
-                                        @method('DELETE')
+{{-- DELETE --}}
+<form id="delete-form-banner-{{ $banner->id }}" 
+      action="{{ route('admin.main.banner.destroy', $banner->id) }}"
+      method="POST" 
+      class="inline">
+    @csrf
+    @method('DELETE')
 
-                                        <button type="submit"
-                                            class="inline-flex items-center justify-center
-                                                   rounded-lg border border-red-200
-                                                   bg-red-50 p-2 text-red-600
-                                                   hover:bg-red-100 transition">
-                                            <svg class="h-4 w-4" fill="none"
-                                                 stroke="currentColor" stroke-width="2"
-                                                 viewBox="0 0 24 24">
-                                                <path stroke-linecap="round"
-                                                      stroke-linejoin="round"
-                                                      d="M6 7.5h12M9 7.5V5.25
-                                                         A1.5 1.5 0 0110.5 3.75h3
-                                                         A1.5 1.5 0 0115 5.25V7.5
-                                                         m-7.5 0v11.25
-                                                         A1.5 1.5 0 009 20.25h6
-                                                         a1.5 1.5 0 001.5-1.5V7.5"/>
-                                            </svg>
-                                        </button>
-                                    </form>
-
+    <button type="button"
+            onclick="confirmDeleteBanner('{{ $banner->id }}')"
+            class="inline-flex items-center justify-center
+                   rounded-lg border border-red-200
+                   bg-red-50 p-2 text-red-600
+                   hover:bg-red-600 hover:text-white 
+                   hover:border-red-600 transition-all duration-200">
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M6 7.5h12M9 7.5V5.25A1.5 1.5 0 0110.5 3.75h3A1.5 1.5 0 0115 5.25V7.5m-7.5 0v11.25A1.5 1.5 0 009 20.25h6a1.5 1.5 0 001.5-1.5V7.5"/>
+        </svg>
+    </button>
+</form>
                                 </div>
                             </td>
                         </tr>
@@ -124,3 +118,24 @@
     </div>
 
 </div>
+<script>
+function confirmDeleteBanner(id) {
+    Swal.fire({
+        title: 'Hapus Banner?',
+        text: "Banner yang dihapus tidak dapat dipulihkan kembali.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#ef4444', // Merah (Tailwind Red 600)
+        cancelButtonColor: '#64748b',  // Abu-abu (Tailwind Slate 500)
+        confirmButtonText: 'Ya, Hapus!',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        borderRadius: '1rem'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Memanggil submit berdasarkan ID form yang unik
+            document.getElementById('delete-form-banner-' + id).submit();
+        }
+    })
+}
+</script>
