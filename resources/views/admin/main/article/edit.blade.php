@@ -14,7 +14,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.main.article.index') }}"
+        <a href="{{ route('admin.main.index') }}"
            class="text-sm text-slate-500 hover:text-slate-700 transition">
             ← Kembali
         </a>
