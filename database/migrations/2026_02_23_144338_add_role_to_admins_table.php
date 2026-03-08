@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::table('admins', function (Blueprint $table) {
             // Tambahkan kolom role setelah kolom password
             $table->enum('role', ['it', 'bisnis', 'sekper'])
-                ->default('bisnis')
+                ->default('it')
                 ->after('password');
         });
     }
