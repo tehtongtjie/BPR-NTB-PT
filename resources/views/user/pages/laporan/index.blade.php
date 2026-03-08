@@ -20,7 +20,7 @@
         <div class="bg-white rounded-[2.5rem] p-8 lg:p-10 shadow-xl shadow-blue-900/5
                     border border-slate-100 mb-12">
             <form action="{{ url()->current() }}" method="GET"
-                  class="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+                  class="grid grid-cols-1 md:grid-cols-5 gap-6 items-end">
 
                 {{-- FILTER JENIS (KHUSUS KEUANGAN) --}}
                 @if ($tipe === 'keuangan')
@@ -66,6 +66,22 @@
                             </option>
                         @endforeach
                     </select>
+                </div>
+
+                {{-- SEARCH --}}
+                <div>
+                    <label
+                        class="block text-[10px] font-black uppercase tracking-widest
+                               text-slate-400 mb-3 ml-2">
+                        Cari Laporan
+                    </label>
+                    <input type="text"
+                           name="search"
+                           value="{{ request('search', request('q')) }}"
+                           placeholder="Judul, tahun, jenis..."
+                           class="w-full bg-slate-50 border-none rounded-2xl
+                                  px-6 py-4 text-sm font-bold text-[#00326B]
+                                  focus:ring-2 focus:ring-blue-600 outline-none transition-all" />
                 </div>
 
                 {{-- SUBMIT --}}

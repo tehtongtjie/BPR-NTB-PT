@@ -24,6 +24,7 @@
 
         {{-- FILTER (OPSIONAL, TAMPILAN SIAP) --}}
         <form method="GET"
+              action="{{ route('admin.publikasi.laporan.index') }}"
               class="flex flex-wrap items-center gap-3 px-6 py-4 border-b border-slate-200">
 
             {{-- TIPE --}}
@@ -42,6 +43,22 @@
                 </option>
             </select>
 
+            {{-- JENIS --}} 
+            <select name="jenis"
+                class="rounded-lg border border-slate-300 px-3 py-2 text-sm
+                       focus:border-[#00326B] focus:ring-[#00326B]">
+                <option value="">Semua Jenis</option>
+                <option value="triwulan" {{ request('jenis') === 'triwulan' ? 'selected' : '' }}>
+                    Triwulan
+                </option>
+                <option value="semester" {{ request('jenis') === 'semester' ? 'selected' : '' }}>
+                    Semester
+                </option>
+                <option value="tahunan" {{ request('jenis') === 'tahunan' ? 'selected' : '' }}>
+                    Tahunan
+                </option>
+            </select>
+
             {{-- TAHUN --}}
             <input
                 type="text"
@@ -57,6 +74,12 @@
                        hover:bg-[#002855] transition">
                 Filter
             </button>
+
+            <a href="{{ url()->current() }}"
+               class="rounded-lg border border-slate-300 px-4 py-2 text-sm text-slate-600
+                      hover:bg-slate-50 transition">
+                Reset
+            </a>
         </form>
 
         {{-- TABLE --}}

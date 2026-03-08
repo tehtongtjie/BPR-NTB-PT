@@ -3,16 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Laporan;
+use Illuminate\Http\Request;
 
 class PublikasiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $laporans = Laporan::orderBy('tahun', 'desc')
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
-        return view('admin.publikasi.index', compact('laporans'));
+        // Satukan alur listing publikasi ke endpoint laporan agar filter/search konsisten.
+        return redirect()->route('admin.publikasi.laporan.index', $request->query());
     }
 }

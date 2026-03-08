@@ -9,17 +9,37 @@ class LaporanController extends Controller
 {
     public function index(Request $request, $tipe)
     {
-        // Base query
-        $query = Laporan::where('tipe', $tipe);
+        $allowedTipes = ['keuangan', 'tata-kelola', 'berkelanjutan'];
+        if (!in_array($tipe, $allowedTipes, true)) {
+            abort(404);
+        }
+
+        $query = Laporan::query()->where('tipe', $tipe);
+
+        $jenis = $request->query('jenis');
+        $tahun = $request->query('tahun');
+        $search = trim((string) ($request->query('search', $request->query('q', ''))));
 
         // Filter Jenis (khusus keuangan)
-        if ($tipe === 'keuangan' && $request->filled('jenis') && $request->jenis !== 'semua') {
-            $query->where('jenis', $request->jenis);
+        if ($tipe === 'keuangan' && $jenis && $jenis !== 'semua') {
+            $allowedJenis = ['triwulan', 'semester', 'tahunan'];
+            if (in_array($jenis, $allowedJenis, true)) {
+                $query->where('jenis', $jenis);
+            }
         }
 
         // Filter Tahun
-        if ($request->filled('tahun') && $request->tahun !== 'semua') {
-            $query->where('tahun', $request->tahun);
+        if ($tahun && $tahun !== 'semua' && ctype_digit((string) $tahun)) {
+            $query->where('tahun', (int) $tahun);
+        }
+
+        // Search judul laporan
+        if ($search !== '') {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('judul', 'like', '%' . $search . '%')
+                    ->orWhere('tahun', 'like', '%' . $search . '%')
+                    ->orWhere('jenis', 'like', '%' . $search . '%');
+            });
         }
 
         // Ambil data laporan
@@ -30,6 +50,7 @@ class LaporanController extends Controller
 
         // Ambil daftar tahun unik (dari DB)
         $years = Laporan::where('tipe', $tipe)
+            ->orderBy('tahun', 'desc')
             ->pluck('tahun')
             ->unique()
             ->sortDesc();

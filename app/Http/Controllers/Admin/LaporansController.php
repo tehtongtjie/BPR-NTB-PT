@@ -9,11 +9,31 @@ use Illuminate\Support\Facades\Storage;
 
 class LaporansController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $laporans = Laporan::orderBy('tahun', 'desc')
+        $query = Laporan::query();
+
+        $tipe = $request->query('tipe');
+        $jenis = $request->query('jenis');
+        $tahun = $request->query('tahun');
+
+        if ($tipe && in_array($tipe, ['keuangan', 'tata-kelola', 'berkelanjutan'], true)) {
+            $query->where('tipe', $tipe);
+        }
+
+        if ($jenis && in_array($jenis, ['triwulan', 'semester', 'tahunan'], true)) {
+            $query->where('jenis', $jenis);
+        }
+
+        if ($tahun && ctype_digit((string) $tahun)) {
+            $query->where('tahun', (int) $tahun);
+        }
+
+        $laporans = $query
+            ->orderBy('tahun', 'desc')
             ->orderBy('created_at', 'desc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.publikasi.index', compact('laporans'));
     }
@@ -25,31 +45,32 @@ class LaporansController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'tipe'  => 'required|in:keuangan,tata-kelola,berkelanjutan',
             'jenis' => 'nullable|in:triwulan,semester,tahunan',
             'tahun' => 'required|digits:4',
             'judul' => 'required|string|max:255',
             'file'  => 'required|mimes:pdf|max:10240', // 10MB
-        ]);
+        ];
+
         if ($request->tipe === 'keuangan') {
             $rules['jenis'] = 'required|in:triwulan,semester,tahunan';
         }
 
-        $request->validate($rules);
+        $validated = $request->validate($rules);
 
         $filePath = $request->file('file')->store('laporan', 'public');
 
         Laporan::create([
-            'tipe'  => $request->tipe,
-            'jenis' => $request->jenis,
-            'tahun' => $request->tahun,
-            'judul' => $request->judul,
+            'tipe'  => $validated['tipe'],
+            'jenis' => $validated['tipe'] === 'keuangan' ? $validated['jenis'] : null,
+            'tahun' => $validated['tahun'],
+            'judul' => $validated['judul'],
             'file'  => $filePath,
         ]);
 
         return redirect()
-            ->route('admin.publikasi.index')
+            ->route('admin.publikasi.laporan.index')
             ->with('success', 'Laporan berhasil ditambahkan');
     }
 
@@ -96,7 +117,7 @@ public function update(Request $request, Laporan $laporan)
     $laporan->update($data);
 
     return redirect()
-        ->route('admin.publikasi.index')
+        ->route('admin.publikasi.laporan.index')
         ->with('success', 'Laporan berhasil diperbarui');
 }
 
@@ -110,7 +131,7 @@ public function update(Request $request, Laporan $laporan)
         $laporan->delete();
 
         return redirect()
-            ->route('admin.publikasi.index')
+            ->route('admin.publikasi.laporan.index')
             ->with('success', 'Laporan berhasil dihapus');
     }
 }

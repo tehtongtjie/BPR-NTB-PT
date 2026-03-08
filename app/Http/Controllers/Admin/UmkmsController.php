@@ -15,9 +15,30 @@ class UmkmsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $umkms = Umkm::latest()->paginate(10);
+        $query = Umkm::query()->with('images');
+
+        $skala = $request->query('skala');
+        $search = trim((string) $request->query('search', $request->query('q', '')));
+
+        if ($skala && in_array($skala, ['Lokal', 'Nasional', 'Internasional'], true)) {
+            $query->where('skala', $skala);
+        }
+
+        if ($search !== '') {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('nama_usaha', 'like', '%' . $search . '%')
+                    ->orWhere('nama_pemilik', 'like', '%' . $search . '%')
+                    ->orWhere('bidang_usaha', 'like', '%' . $search . '%')
+                    ->orWhere('lokasi', 'like', '%' . $search . '%');
+            });
+        }
+
+        $umkms = $query
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
 
         return view('admin.umkms.index', compact('umkms'));
     }

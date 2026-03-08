@@ -15,15 +15,17 @@ class PerusahaansController extends Controller
     public function index(Request $request)
     {
         $query = Management::query();
+        $type = $request->query('type');
+        $search = trim((string) $request->query('q', $request->query('search', '')));
 
-        if ($request->filled('type')) {
-            $query->where('type', $request->type);
+        if ($type && in_array($type, ['direksi', 'komisaris'], true)) {
+            $query->where('type', $type);
         }
 
-        if ($request->filled('q')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('name', 'like', "%{$request->q}%")
-                  ->orWhere('position', 'like', "%{$request->q}%");
+        if ($search !== '') {
+            $query->where(function ($builder) use ($search) {
+                $builder->where('name', 'like', "%{$search}%")
+                  ->orWhere('position', 'like', "%{$search}%");
             });
         }
 
