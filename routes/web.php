@@ -23,7 +23,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PromoPublicController;
 
 use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\crypt;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\MainController;
@@ -321,6 +321,17 @@ Route::post('/kirim-pesan', [MessageController::class, 'store'])
 |--------------------------------------------------------------------------
 */
 
+// Gerbang login admin: hanya token yang valid yang boleh membuka halaman login.
+Route::get('/admin', function (Request $request) {
+    $token = (string) $request->query('token', '');
+
+    if (!hash_equals('abcd', $token)) {
+        abort(404);
+    }
+
+    return redirect()->to('/login?token=' . urlencode(Crypt::encryptString('abcd')));
+})->name('admin.gate');
+
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 
     Route::get('/', function () {
@@ -472,42 +483,9 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 Route::post('/admin/{token}', [AdminAuthController::class, 'login'])
     ->name('admin.auth.login');
 
-Route::post('/logout', function () {
+Route::post('/logout', function (Request $request) {
     Auth::guard('web')->logout(); // Pastikan guardnya sama dengan saat login
-    return redirect('/login');
+    return redirect()->to('/login?token=' . urlencode(Crypt::encryptString('abcd')));
 })->name('logout');
-
-// Path admin secured access
-Route::get('/admin/{pathToken?}', function (Request $request, $pathToken = null) {
-
-    if ($request->query('token')) {
-
-        $plainToken = $request->query('token');
-
-        if ($plainToken !== 'abcd') {
-            abort(404);
-        }
-        $encodedToken = Crypt::encryptString($plainToken);
-
-        return redirect('/admin/' . urlencode($encodedToken));
-    }
-
-    if ($pathToken) {
-        try {
-            $decoded = Crypt::decryptString($pathToken);
-
-            if ($decoded !== 'abcd') {
-                abort(404);
-            }
-        } catch (\Exception $e) {
-            abort(404);
-        }
-
-        // dibagian return view ini ganti jadi admin dashboard
-        return view('admin.auth.login');
-    }
-
-    abort(404);
-});
 
 Route::get('/asisten-cerdas', [RecommenderController::class, 'index'])->name('recommender.index');

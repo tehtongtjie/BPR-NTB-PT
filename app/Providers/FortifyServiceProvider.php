@@ -9,6 +9,7 @@ use App\Actions\Fortify\UpdateUserProfileInformation;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -37,8 +38,32 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::resetUserPasswordsUsing(ResetUserPassword::class);
         Fortify::redirectUserForTwoFactorAuthenticationUsing(RedirectIfTwoFactorAuthenticatable::class);
 
-        // Mengarahkan Fortify ke file login.blade.php kamu
-        Fortify::loginView(function () {
+        // Halaman login hanya boleh diakses jika token query valid.
+        Fortify::loginView(function (Request $request) {
+            $token = $request->query('token');
+            $validToken = 'abcd';
+
+            if (!$token) {
+                abort(404);
+            }
+
+            // Jika token masih plain text valid, redirect ke token terenkripsi.
+            if (hash_equals($validToken, $token)) {
+                return redirect()->route('login', [
+                    'token' => Crypt::encryptString($validToken),
+                ]);
+            }
+
+            try {
+                $decodedToken = Crypt::decryptString($token);
+            } catch (\Throwable $e) {
+                abort(404);
+            }
+
+            if (!hash_equals($validToken, $decodedToken)) {
+                abort(404);
+            }
+
             return view('admin.auth.login');
         });
 
