@@ -49,12 +49,23 @@
         </section>
 
         <div class="sticky top-20 lg:top-28 z-30 mb-12 lg:mb-16 px-4">
-            <div
-                class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
+            <div class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
                 <div class="flex items-center gap-1.5 lg:gap-2 overflow-x-auto hide-scrollbar px-1">
-                    @foreach (['Semua Berita', 'Ekonomi', 'CSR', 'Internal', 'Penghargaan'] as $cat)
-                        <a href="#"
-                            class="whitespace-nowrap px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest transition-all {{ $loop->first ? 'bg-[#00326B] text-white shadow-lg' : 'text-slate-400 hover:text-[#00326B] hover:bg-slate-50' }}">
+                    @php
+                        $filterCategories = collect($categories ?? [])->prepend('Semua Berita');
+                        $activeCategory = $category ?: 'Semua Berita';
+                    @endphp
+
+                    @foreach ($filterCategories as $cat)
+                        @php
+                            $isActive = $activeCategory === $cat;
+                            $url = $cat === 'Semua Berita'
+                                ? route('berita.index')
+                                : route('berita.index', ['category' => $cat]);
+                        @endphp
+
+                        <a href="{{ $url }}"
+                            class="whitespace-nowrap px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest transition-all {{ $isActive ? 'bg-[#00326B] text-white shadow-lg' : 'text-slate-400 hover:text-[#00326B] hover:bg-slate-50' }}">
                             {{ $cat }}
                         </a>
                     @endforeach
@@ -63,13 +74,19 @@
         </div>
 
         {{-- 3. FEATURED NEWS --}}
+        @php
+            $newsItems = collect($beritas->items());
+            $featured = $newsItems->first();
+            $others = $newsItems->slice(1);
+        @endphp
+
         <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-16 lg:mb-20">
-            @if (count($beritas) > 0)
+            @if ($featured)
                 <div
                     class="group relative bg-white rounded-[2.5rem] lg:rounded-[3.5rem] shadow-2xl shadow-blue-900/5 border border-white overflow-hidden transition-all duration-700">
                     <div class="flex flex-col lg:flex-row min-h-[400px] lg:min-h-[500px]">
                         <div class="lg:w-3/5 relative overflow-hidden">
-                            <img src="{{ asset('storage/' . $beritas[0]->thumbnail) }}"
+                            <img src="{{ public_image_url('storage/' . $featured->thumbnail) }}"
                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                                 alt="Featured News">
                             <div
@@ -85,14 +102,14 @@
                         </div>
                         <div class="lg:w-2/5 p-8 lg:p-16 flex flex-col justify-center bg-white">
                             <span
-                                class="text-blue-600 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $beritas[0]->category }}</span>
+                                class="text-blue-600 text-[9px] lg:text-[10px] font-black uppercase tracking-[0.3em] mb-4 block">{{ $featured->category }}</span>
                             <h2
                                 class="text-2xl lg:text-5xl font-black text-[#00326B] leading-[1.2] lg:leading-[1.1] tracking-tighter mb-6 lg:mb-8 group-hover:text-blue-600 transition-colors">
-                                {{ $beritas[0]->title }}
+                                {{ $featured->title }}
                             </h2>
                             <p
                                 class="text-slate-500 text-sm lg:text-lg leading-relaxed italic mb-8 border-l-4 border-slate-100 pl-4 lg:pl-6">
-                                "{{ Str::limit($beritas[0]->excerpt, 120) }}"
+                                "{{ \Illuminate\Support\Str::limit($featured->excerpt, 120) }}"
                             </p>
                             <div class="flex items-center justify-between mt-auto pt-6 lg:pt-8 border-t border-slate-50">
                                 <div class="flex items-center gap-3">
@@ -129,7 +146,7 @@
                     <div
                         class="group flex flex-col h-full bg-white rounded-[2rem] lg:rounded-[3rem] shadow-xl shadow-blue-900/5 border border-slate-50 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:-translate-y-3">
                         <div class="aspect-[4/3] overflow-hidden relative">
-                            <img src="{{ asset('storage/' . $b->thumbnail) }}"
+                            <img src="{{ public_image_url('storage/' . $b->thumbnail) }}"
                                 class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                             <div class="absolute bottom-4 left-4">
                                 <span
@@ -171,22 +188,7 @@
                 @endforelse
             </div>
 
-            {{-- 5. PAGINATION --}}
-            <div class="mt-16 lg:mt-24 flex justify-center">
-                <nav
-                    class="inline-flex gap-2 lg:gap-3 p-2 lg:p-3 bg-white rounded-2xl lg:rounded-3xl shadow-xl border border-slate-50">
-                    <a href="#"
-                        class="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center bg-slate-50 rounded-xl lg:rounded-2xl text-slate-400 hover:bg-[#fbbf24] hover:text-[#00326B] transition-all"><i
-                            class="bi bi-chevron-left"></i></a>
-                    <a href="#"
-                        class="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center bg-[#00326B] text-white rounded-xl lg:rounded-2xl font-black text-xs lg:text-sm shadow-lg">1</a>
-                    <a href="#"
-                        class="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center bg-slate-50 rounded-xl lg:rounded-2xl text-[#00326B] hover:bg-slate-100 transition-all font-black text-xs lg:text-sm">2</a>
-                    <a href="#"
-                        class="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center bg-slate-50 rounded-xl lg:rounded-2xl text-slate-400 hover:bg-[#fbbf24] hover:text-[#00326B] transition-all"><i
-                            class="bi bi-chevron-right"></i></a>
-                </nav>
-            </div>
+            @include('components.pagination-nav', ['paginator' => $beritas])
         </div>
     </main>
 

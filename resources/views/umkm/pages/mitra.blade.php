@@ -51,7 +51,7 @@
                         {{-- Bagian Gambar --}}
                         <div class="relative aspect-[4/5] overflow-hidden">
                             <img
-                                src="{{ $thumbnail ? asset('storage/' . $thumbnail->image_path) : 'https://via.placeholder.com/600x800?text=Karya+Lokal' }}"
+                                src="{{ $thumbnail ? public_image_url('storage/' . $thumbnail->image_path) : 'https://via.placeholder.com/600x800?text=Karya+Lokal' }}"
                                 class="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                                 alt="{{ $umkm->nama_usaha }}">
 

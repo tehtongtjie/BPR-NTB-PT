@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MessageController extends Controller
 {
@@ -17,6 +18,7 @@ class MessageController extends Controller
             'email'   => 'required|email',
             'phone'   => 'nullable|string|max:20',
             'message' => 'required|string',
+            'category' => ['required', Rule::in(array_keys(Message::categories()))],
         ]);
 
         Message::create([
@@ -24,6 +26,7 @@ class MessageController extends Controller
             'email'   => $request->email,
             'phone'   => $request->phone,
             'message' => $request->message,
+            'category' => $request->category,
             'status'  => 'baru',
         ]);
 
@@ -33,10 +36,23 @@ class MessageController extends Controller
     // ======================
     // ADMIN PANEL
     // ======================
-    public function adminIndex()
+    public function adminIndex(Request $request)
     {
-        $messages = Message::latest()->paginate(15);
-        return view('admin.messages.index', compact('messages'));
+        $categories = Message::categories();
+        $messages = Message::query();
+
+        if ($request->filled('category')) {
+            $messages->where('category', $request->category);
+        }
+
+        if ($request->filled('is_story')) {
+            $isStory = $request->is_story === '1';
+            $messages->where('is_story', $isStory);
+        }
+
+        $messages = $messages->latest()->paginate(10)->withQueryString();
+
+        return view('admin.messages.index', compact('messages', 'categories'));
     }
 
     public function show($id)
@@ -53,6 +69,23 @@ class MessageController extends Controller
     public function destroy($id)
     {
         Message::findOrFail($id)->delete();
-        return back()->with('success', 'Pesan dihapus');
+    
+        return redirect()->route('admin.messages.index')
+            ->with('success', 'Pesan dihapus');
+    }
+
+    public function bulkStory(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+            'ids.*' => 'exists:messages,id',
+            'is_story' => ['required', Rule::in(['0', '1'])],
+        ]);
+
+        $isStory = (bool) $request->is_story;
+
+        Message::whereIn('id', $request->ids)->update(['is_story' => $isStory]);
+
+        return redirect()->route('admin.messages.index')->with('success', 'Status Story berhasil diperbarui');
     }
 }

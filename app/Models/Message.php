@@ -11,6 +11,22 @@ class Message extends Model
         'email',
         'phone',
         'message',
+        'category',
+        'is_story',
         'status',
     ];
+
+    protected $casts = [
+        'is_story' => 'boolean',
+    ];
+
+    public static function categories(): array
+    {
+        return [
+            'nasabah_story' => 'Nasabah Story',
+            'pertanyaan' => 'Pertanyaan',
+            'saran' => 'Saran',
+            'umum' => 'Umum',
+        ];
+    }
 }

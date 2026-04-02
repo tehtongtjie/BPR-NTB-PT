@@ -39,7 +39,7 @@
 
             <div class="rounded-xl border border-slate-200
                         overflow-hidden bg-slate-50">
-                <img src="{{ asset('storage/'.$banner->image) }}"
+                <img src="{{ public_image_url('storage/' . $banner->image) }}"
                      alt="Banner {{ $banner->id }}"
                      class="w-full max-h-64 object-contain">
             </div>
@@ -100,5 +100,4 @@
     </form>
 </div>
 @endsection
-
 

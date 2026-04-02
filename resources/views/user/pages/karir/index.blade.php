@@ -3,6 +3,9 @@
 @section('title', 'Karier - BPR NTB')
 
 @section('content')
+    @php
+        use Illuminate\Support\Str;
+    @endphp
     <main class="bg-[#F8FAFC] min-h-screen pt-32 lg:pt-40 pb-24 font-sans antialiased">
 
         {{-- 1. HERO SECTION --}}
@@ -72,13 +75,12 @@
             <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
                 <div>
                     <span class="h-[1px] w-12 bg-[#fbbf24] inline-block mb-4"></span>
-                    <h2 class="text-3xl lg:text-4xl font-black text-[#00326B] tracking-tighter uppercase">Lowongan Aktif
-                    </h2>
+                    <h2 class="text-3xl lg:text-4xl font-black text-[#00326B] tracking-tighter uppercase">Lowongan Aktif</h2>
                 </div>
                 <div class="flex gap-4">
                     <div
                         class="px-4 py-2 bg-white rounded-xl border border-slate-100 text-[10px] font-black uppercase text-[#00326B]">
-                        Total: {{ count($jobs) }} Posisi
+                        Total: {{ $jobs->count() }} Posisi
                     </div>
                 </div>
             </div>
@@ -86,30 +88,72 @@
             <div class="grid grid-cols-1 gap-6">
                 @forelse($jobs as $job)
                     <div
-                        class="group relative bg-white rounded-[2.5rem] p-8 lg:p-10 shadow-xl shadow-blue-900/5 border border-slate-50 flex flex-col lg:flex-row lg:items-center justify-between gap-8 hover:shadow-2xl hover:border-blue-100 transition-all">
-                        <div class="flex-grow">
-                            <div class="flex flex-wrap gap-2 mb-4">
+                        class="group relative bg-white rounded-[2.5rem] p-8 lg:p-10 shadow-xl shadow-blue-900/5 border border-slate-50 flex flex-col gap-6 hover:shadow-2xl hover:border-blue-100 transition-all">
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            @if ($job->is_featured)
                                 <span
-                                    class="px-3 py-1 bg-blue-50 text-blue-600 text-[9px] font-black uppercase rounded-lg">{{ $job['divisi'] }}</span>
-                                <span
-                                    class="px-3 py-1 bg-slate-50 text-slate-400 text-[9px] font-black uppercase rounded-lg"><i
-                                        class="bi bi-geo-alt me-1"></i>{{ $job['lokasi'] }}</span>
-                            </div>
+                                    class="px-3 py-1 bg-amber-50 text-amber-600 text-[10px] font-black uppercase rounded-full tracking-[0.3em]">
+                                    Featured
+                                </span>
+                            @endif
+                            <span
+                                class="px-3 py-1 bg-blue-50 text-blue-600 text-[10px] font-black uppercase rounded-full tracking-[0.3em]">
+                                {{ $job->category }}
+                            </span>
+                            <span
+                                class="px-3 py-1 bg-slate-50 text-slate-500 text-[10px] font-black uppercase rounded-full tracking-[0.3em]">
+                                <i class="bi bi-geo-alt me-1"></i>{{ $job->location ?? 'Lokasi Fleksibel' }}
+                            </span>
+                        </div>
+                        <div>
                             <h3
                                 class="text-2xl lg:text-3xl font-black text-[#00326B] mb-4 tracking-tight group-hover:text-blue-600 transition-colors">
-                                {{ $job['posisi'] }}</h3>
-                            <p class="text-slate-500 text-sm italic max-w-xl line-clamp-2">"{{ $job['deskripsi'] }}"</p>
-                        </div>
-                        <div class="flex flex-col lg:items-end gap-6 min-w-[200px]">
-                            <div class="text-right hidden lg:block">
-                                <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Batas Waktu
+                                {{ $job->title }}
+                            </h3>
+                            <p class="text-slate-500 text-sm italic max-w-xl line-clamp-2">
+                                "{{ Str::limit(strip_tags($job->description), 140) }}"
+                            </p>
+                            @if ($job->requirements)
+                                <p class="text-[11px] italic text-slate-400 mt-4 line-clamp-3">
+                                    Persyaratan: {{ Str::limit(strip_tags($job->requirements), 150) }}
                                 </p>
-                                <p class="text-sm font-black text-red-500 uppercase">{{ $job['deadline'] }}</p>
+                            @endif
+                        </div>
+
+                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mt-6">
+                            <div class="text-right hidden lg:block">
+                                <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Batas Waktu</p>
+                                <p class="text-sm font-black text-red-500 uppercase">
+                                    {{ $job->deadline?->translatedFormat('d M Y') ?? 'TBA' }}
+                                </p>
                             </div>
-                            <a href="#"
-                                class="w-full lg:w-auto px-10 py-5 bg-[#00326B] text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest text-center hover:bg-[#fbbf24] hover:text-[#00326B] transition-all shadow-lg active:scale-95">
+                            <div class="text-right hidden lg:block">
+                                <p class="text-[9px] font-black text-slate-300 uppercase tracking-widest mb-1">Remunerasi</p>
+                                <p class="text-sm font-black text-slate-500 uppercase">
+                                    {{ $job->salary_range ?? 'Disesuaikan' }}
+                                </p>
+                            </div>
+                            @php
+                                $applyLink = $job->url_recruits
+                                    ? $job->url_recruits
+                                    : 'mailto:karir@bprntb.co.id?subject=Lamar%20' . urlencode($job->title);
+                            @endphp
+                            <a href="{{ $applyLink }}"
+                                class="w-full lg:w-auto px-10 py-5 bg-[#00326B] text-white rounded-[1.5rem] font-black text-[10px] uppercase tracking-widest text-center hover:bg-[#fbbf24] hover:text-[#00326B] transition-all shadow-lg active:scale-95"
+                                target="_blank" rel="noopener">
                                 Lamar Sekarang
                             </a>
+                        </div>
+
+                        <div class="flex flex-wrap items-center justify-between gap-3">
+                            <span
+                                class="px-3 py-1 rounded-full bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+                                {{ $job->status === 'active' ? 'TERBUKA' : strtoupper($job->status) }}
+                            </span>
+                            <span
+                                class="px-3 py-1 rounded-full bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+                                {{ $job->location ?? 'Fleksibel' }}
+                            </span>
                         </div>
                     </div>
                 @empty

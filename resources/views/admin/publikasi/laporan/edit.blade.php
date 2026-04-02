@@ -133,7 +133,7 @@
             {{-- FILE LAMA --}}
             @if ($laporan->file)
                 <div class="flex items-center gap-4">
-                    <a href="{{ asset('storage/' . $laporan->file) }}"
+                    <a href="{{ public_image_url('storage/' . $laporan->file) }}"
                        target="_blank"
                        class="inline-flex items-center gap-2
                               rounded-lg border border-slate-200
@@ -182,5 +182,4 @@
     </form>
 </div>
 @endsection
-
 

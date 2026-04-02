@@ -38,18 +38,19 @@
             </div>
         </section>
 
-        {{-- 2. CATEGORY FILTER --}}
-        <div class="sticky top-20 lg:top-28 z-30 mb-16 px-4">
-            <div
-                class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-2 rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
-                <div class="flex items-center gap-2 overflow-x-auto hide-scrollbar px-2">
-                    <a href="#"
-                        class="whitespace-nowrap px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest bg-[#00326B] text-white shadow-lg shadow-blue-900/20 transition-all">Semua
-                        Momen</a>
-                    @foreach ($categories as $cat)
-                        <a href="#"
-                            class="whitespace-nowrap px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-[#00326B] hover:bg-slate-50 transition-all">
-                            {{ $cat }}
+        {{-- 2. FILTER FOTO / VIDEO --}}
+        <div class="sticky top-20 lg:top-28 z-30 mb-12 lg:mb-16 px-4">
+            <div class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
+                <div class="flex items-center gap-1.5 lg:gap-2 overflow-x-auto hide-scrollbar px-1">
+                    @foreach ($types as $key => $value)
+                        @php
+                            $isActive = $typeKey === $key;
+                            $url = $key === 'foto' ? route('galeri.index') : route('galeri.index', ['type' => $key]);
+                        @endphp
+
+                        <a href="{{ $url }}"
+                            class="whitespace-nowrap px-4 lg:px-6 py-2.5 rounded-xl lg:rounded-2xl text-[9px] lg:text-[10px] font-black uppercase tracking-[0.2em] transition-all {{ $isActive ? 'bg-[#00326B] text-white shadow-lg' : 'text-slate-400 hover:text-[#00326B] hover:bg-slate-50' }}">
+                            {{ $value['label'] }}
                         </a>
                     @endforeach
                 </div>
@@ -58,38 +59,40 @@
 
         {{-- 3. GALLERY BENTO GRID --}}
         <section class="max-w-7xl mx-auto px-6 lg:px-8">
-            {{-- Grid 3 Kolom yang Konsisten --}}
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($albums as $album)
+                    @php
+                        $mediaIcon = $album['type'] === 'foto' ? 'bi-image' : 'bi-camera-video';
+                    @endphp
                     <div class="relative group">
                         <div
                             class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl shadow-blue-900/5 border border-slate-100 transition-all duration-700 hover:shadow-2xl hover:-translate-y-2 h-full flex flex-col">
 
                             {{-- Image Wrapper --}}
                             <div class="relative overflow-hidden aspect-square flex-shrink-0">
-                                <img src="{{ asset('images/' . $album['cover']) }}" alt="{{ $album['album'] }}"
+                                <img src="{{ public_image_url($album['cover']) }}" alt="{{ $album['title'] }}"
                                     class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
 
                                 {{-- Overlay Content --}}
                                 <div
                                     class="absolute inset-0 bg-gradient-to-t from-[#00326B] via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8">
                                     <p class="text-white/60 text-[10px] font-black uppercase tracking-widest mb-2">
-                                        {{ $album['tanggal'] }}
+                                        {{ $album['date'] }}
                                     </p>
                                     <h3 class="text-white text-xl font-black leading-tight mb-4 tracking-tight">
-                                        {{ $album['album'] }}
+                                        {{ $album['title'] }}
                                     </h3>
-                                    <a href="{{ route('galeri.show', $album['id']) }}"
+                                    <a href="{{ route('galeri.show', $album['slug']) }}"
                                         class="inline-flex items-center gap-2 text-[#fbbf24] text-[10px] font-black uppercase tracking-widest hover:text-white transition-colors">
-                                        Lihat Album <i class="bi bi-arrow-right"></i>
+                                        Lihat Detail <i class="bi bi-arrow-right"></i>
                                     </a>
                                 </div>
 
-                                {{-- Image Badge --}}
-                                <div class="absolute top-6 left-6">
+                                {{-- Type Icon --}}
+                                <div class="absolute top-6 right-6">
                                     <span
-                                        class="backdrop-blur-md bg-white/20 px-4 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-widest text-white border border-white/20">
-                                        {{ $album['jumlah_foto'] }} Photos
+                                        class="backdrop-blur-md bg-white/30 px-3 py-2 rounded-full text-[#00326B] text-base shadow-lg">
+                                        <i class="bi {{ $mediaIcon }}"></i>
                                     </span>
                                 </div>
                             </div>
@@ -99,12 +102,15 @@
                                 <div>
                                     <div class="flex items-center justify-between mb-3">
                                         <span
-                                            class="text-blue-600 text-[9px] font-black uppercase tracking-widest">{{ $album['kategori'] }}</span>
-                                        <i class="bi bi-images text-slate-200"></i>
+                                            class="text-blue-600 text-[9px] font-black uppercase tracking-widest">{{ $album['category'] ?? 'Umum' }}</span>
+                                        <span
+                                            class="text-[#00326B]/80 text-[9px] font-black uppercase tracking-[0.4em]">
+                                            {{ strtoupper($album['type']) }}
+                                        </span>
                                     </div>
                                     <h4
                                         class="text-[#00326B] font-black text-base leading-snug group-hover:text-blue-600 transition-colors">
-                                        {{ $album['album'] }}
+                                        {{ $album['title'] }}
                                     </h4>
                                 </div>
                             </div>
@@ -114,9 +120,12 @@
             </div>
 
         </section>
+
+        {{-- PAGINATION --}}
+        @include('components.pagination-nav', ['paginator' => $paginator])
+
         {{-- 4. tombol CTA --}}
-        <div
-            class="mt-24 bg-gradient-to-br from-[#ffc531] to-amber-500 rounded-[3rem] p-10 lg:p-16 text-center relative overflow-hidden shadow-2xl shadow-amber-500/20">
+        <div class="mt-24 bg-gradient-to-br from-[#ffc531] to-amber-500 rounded-[3rem] p-10 text-center mx-7 relative overflow-hidden shadow-2xl shadow-amber-500/20">
             <div
                 class="absolute top-0 left-0 w-64 h-64 bg-white/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2">
             </div>

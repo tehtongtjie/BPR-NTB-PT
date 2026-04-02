@@ -70,7 +70,10 @@
                 {{-- Main Visual & Deskripsi Card --}}
                 <div class="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
                     <div class="aspect-[21/9] relative group overflow-hidden hidden md:block">
-                        <img src="{{ asset('storage/' . $deposito['gambar']) }}" alt="{{ $deposito['nama'] }}">
+                        @php
+                            $depositoImage = str_replace('\\', '/', $deposito['gambar']);
+                        @endphp
+                        <img src="{{ asset($depositoImage) }}" alt="{{ $deposito['nama'] }}">
                             class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
                     </div>

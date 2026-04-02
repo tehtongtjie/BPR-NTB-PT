@@ -144,7 +144,7 @@
                                 <div class="flex justify-end gap-2">
 
                                     {{-- DOWNLOAD --}}
-                                    <a href="{{ asset('storage/' . $item->file) }}"
+                                    <a href="{{ public_image_url('storage/' . $item->file) }}"
                                        target="_blank"
                                        class="inline-flex items-center justify-center
                                               rounded-lg border border-sky-200

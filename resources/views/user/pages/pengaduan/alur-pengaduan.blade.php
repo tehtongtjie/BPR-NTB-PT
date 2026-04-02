@@ -46,7 +46,7 @@
                             class="absolute -inset-1 bg-gradient-to-r from-[#00326B] to-[#fbbf24] rounded-[2.5rem] blur opacity-20 group-hover:opacity-40 transition duration-1000">
                         </div>
                         <div class="relative bg-white p-4 rounded-[2.5rem] border border-gray-100 shadow-xl">
-                            <img src="{{ asset('storage/' . 'images/alur-pengaduan.png') }}" alt="Alur Pengaduan Nasabah"
+                            <img src="{{ public_image_url('storage/images/alur-pengaduan.png') }}" alt="Alur Pengaduan Nasabah"
                                 class="w-full h-auto rounded-[2rem]">
                         </div>
                     </div>

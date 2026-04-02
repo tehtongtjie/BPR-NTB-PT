@@ -4,33 +4,43 @@
 
 @section('content')
 
+@php
+    use Illuminate\Support\Str;
+@endphp
+
+    {{-- 1. HERO SECTION --}}
     {{-- 1. HERO SECTION --}}
     <section
-    x-data="{
-        activeSlide: 0,
-        slides: {{ $banners->count() }},
-        timer: null,
-        startAutoPlay() {
-            this.timer = setInterval(() => {
-                this.next();
-            }, 5000);
-        },
-        stopAutoPlay() {
-            if (this.timer) clearInterval(this.timer);
-        },
-        next() {
-            this.activeSlide = (this.activeSlide + 1) % this.slides;
-        },
-        prev() {
-            this.activeSlide = (this.activeSlide - 1 + this.slides) % this.slides;
-        }
-    }"
-    x-init="startAutoPlay()" @mouseenter="stopAutoPlay()" @mouseleave="startAutoPlay()"
-        class="relative w-full overflow-hidden pt-[120px] bg-white">
-
-        {{-- Aspect Ratio Container --}}
-        {{-- Menggunakan grid agar semua slide bertumpuk di titik yang sama tanpa merusak layout flow --}}
-            <div class="relative w-full grid grid-cols-1">
+        x-data="{
+            activeSlide: 0,
+            slides: {{ $banners->count() }},
+            timer: null,
+            startAutoPlay() {
+                this.timer = setInterval(() => {
+                    this.next();
+                }, 5000);
+            },
+            stopAutoPlay() {
+                if (this.timer) clearInterval(this.timer);
+            },
+            next() {
+                this.activeSlide = (this.activeSlide + 1) % this.slides;
+            },
+            prev() {
+                this.activeSlide = (this.activeSlide - 1 + this.slides) % this.slides;
+            }
+        }"
+        x-init="startAutoPlay()" 
+        @mouseenter="stopAutoPlay()" 
+        @mouseleave="startAutoPlay()"
+        class="relative w-full overflow-hidden pt-[120px] md:pt-[80px] lg:pt-[80px] bg-white">
+    
+        {{-- Banner Container --}}
+        {{-- Kita beri class 'relative' di sini sebagai jangkar (anchor) untuk tombol prev/next --}}
+        <div class="relative w-full overflow-hidden ">
+            
+            {{-- Aspect Ratio Container --}}
+            <div class="grid grid-cols-1 w-full">
                 @foreach ($banners as $index => $banner)
                     <div
                         x-show="activeSlide === {{ $index }}"
@@ -44,44 +54,45 @@
                         x-cloak
                     >   
                         <img
-                            src="{{ asset('storage/' .$banner->image) }}"
-                            class="w-full h-auto block"
+                            src="{{ public_image_url('storage/' . $banner->image) }}"
+                            class="w-full h-auto block object-cover"
+                            style="aspect-ratio: 16/9; min-height: 200px;" {{-- Tambahan agar konsisten di mobile --}}
                             alt="Banner {{ $index + 1 }}"
                             loading="{{ $index === 0 ? 'eager' : 'lazy' }}"
                         >
                     </div>
                 @endforeach
             </div>
-
+    
+            {{-- NAVIGATION BUTTONS (Sekarang relatif terhadap gambar) --}}
+            <button @click="prev()"
+                class="absolute top-1/2 -translate-y-1/2 left-2 md:left-4 z-30 flex items-center justify-center group focus:outline-none">
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/20 backdrop-blur-sm group-hover:bg-[#00326B] transition-all">
+                    <i class="bi bi-chevron-left text-white text-sm md:text-xl"></i>
+                </span>
+            </button>
+    
+            <button @click="next()"
+                class="absolute top-1/2 -translate-y-1/2 right-2 md:right-4 z-30 flex items-center justify-center group focus:outline-none">
+                <span
+                    class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/20 backdrop-blur-sm group-hover:bg-[#00326B] transition-all">
+                    <i class="bi bi-chevron-right text-white text-sm md:text-xl"></i>
+                </span>
+            </button>
+    
             {{-- INDICATORS --}}
-            <div class="absolute z-30 flex -translate-x-1/2 bottom-5 md:bottom-10 left-1/2 space-x-3">
-                <template x-for="index in slides" :key="index">
+            <div class="absolute z-30 flex -translate-x-1/2 bottom-3 md:bottom-8 left-1/2 space-x-2 md:space-x-3">
+                <template x-for="i in slides" :key="i">
                     <button
-                        @click="activeSlide = index - 1"
+                        @click="activeSlide = i - 1"
                         class="h-1 md:h-1.5 transition-all duration-300 rounded-full"
-                        :class="activeSlide === index - 1
-                            ? 'w-8 bg-[#fbbf24]'
-                            : 'w-2 bg-white/50 hover:bg-white'"
+                        :class="activeSlide === i - 1
+                            ? 'w-6 md:w-8 bg-[#fbbf24]'
+                            : 'w-1.5 md:w-2 bg-white/50 hover:bg-white'"
                     ></button>
                 </template>
             </div>
-
-            {{-- NAVIGATION BUTTONS --}}
-            <button @click="prev()"
-                class="absolute top-1/2 -translate-y-1/2 left-0 z-30 flex items-center justify-center px-4 group focus:outline-none">
-                <span
-                    class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/10 group-hover:bg-[#00326B] transition-all">
-                    <i class="bi bi-chevron-left text-white text-lg md:text-xl"></i>
-                </span>
-            </button>
-
-            <button @click="next()"
-                class="absolute top-1/2 -translate-y-1/2 right-0 z-30 flex items-center justify-center px-4 group focus:outline-none">
-                <span
-                    class="inline-flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full bg-black/10 group-hover:bg-[#00326B] transition-all">
-                    <i class="bi bi-chevron-right text-white text-lg md:text-xl"></i>
-                </span>
-            </button>
         </div>
     </section>
 
@@ -120,7 +131,7 @@
                                shadow-2xl border border-white">
 
                         <img
-                            src="{{ asset('storage/'.$featured->image) }}"
+                            src="{{ public_image_url('storage/' . $featured->image) }}"
                             class="absolute inset-0 w-full h-full object-cover
                                    transition-transform duration-1000 group-hover:scale-110"
                             alt="{{ $featured->title }}">
@@ -174,7 +185,7 @@
                                 class="w-28 h-28 shrink-0 rounded-2xl overflow-hidden
                                        bg-slate-50 border border-slate-100 shadow-inner">
                                 <img
-                                    src="{{ asset('storage/'.$promo->image) }}"
+                                    src="{{ public_image_url('storage/' . $promo->image) }}"
                                     class="w-full h-full object-contain p-2
                                            group-hover:scale-110 transition-transform duration-500">
                             </div>
@@ -420,7 +431,7 @@
                     <div
                         class="relative z-10 h-full min-h-[450px] overflow-hidden rounded-[3rem] shadow-2xl transition-all duration-700">
 
-                        <img src="{{ asset('storage/' . $featured->thumbnail) }}"
+                        <img src="{{ public_image_url('storage/' . $featured->thumbnail) }}"
                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                             alt="{{ $featured->title }}">
 
@@ -461,7 +472,7 @@
                         <div class="flex items-center gap-6">
 
                             <div class="w-24 h-24 shrink-0 rounded-2xl overflow-hidden shadow-sm">
-                                <img src="{{ asset('storage/' . $article->thumbnail) }}"
+                                <img src="{{ public_image_url('storage/' . $article->thumbnail) }}"
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                     alt="{{ $article->title }}">
                             </div>
@@ -627,7 +638,7 @@
                             <div class="aspect-[4/3] overflow-hidden">
                                 <img
                                     src="{{ $lelang->banner
-                                        ? asset('storage/'.$lelang->banner)
+                                        ? public_image_url('storage/' . $lelang->banner)
                                         : asset('images/lelang-pengadaan.png') }}"
                                     alt="{{ $lelang->title }}"
                                     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -691,161 +702,181 @@
         </div>
     </section>
 
-    {{-- ================= KONTAK & TESTIMONI (PREMIUM BENTO STYLE) ================= --}}
-    <section class="relative py-12 lg:py-20 bg-slate-50 overflow-hidden" id="kontak">
+    @php
+        $storySlider = $stories->map(function ($story) use ($messageCategories) {
+            return [
+                'id' => $story->id,
+                'name' => $story->name,
+                'category' => $messageCategories[$story->category] ?? 'Nasabah Story',
+                'message' => Str::limit($story->message, 280),
+                'date' => $story->created_at->translatedFormat('F Y'),
+                'initials' => Str::upper(Str::substr(preg_replace('/\s+/', '', $story->name), 0, 2)) ?: 'NS',
+            ];
+        })->toArray();
+    @endphp
+
+    {{-- ================= KONTAK & TESTIMONI (PREMIUM BENTO STYLE WITH ABSTRACT BG) ================= --}}
+    <section class="relative py-12 lg:py-24 bg-slate-50 overflow-hidden" id="kontak">
+        {{-- Decorative Global Glow (Optional, di luar container) --}}
+        <div class="absolute -top-48 -right-48 w-96 h-96 bg-blue-100 rounded-full blur-[150px] opacity-50 pointer-events-none"></div>
+        
         <div class="max-w-7xl mx-auto px-6 lg:px-8 relative">
-
-            {{-- Decorative Background Glow --}}
-            <div
-                class="absolute -bottom-24 -left-24 w-96 h-96 bg-blue-100 rounded-full blur-[100px] opacity-50 pointer-events-none">
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-
-                {{-- LEFT PANEL: TESTIMONI (Featured Card Style) --}}
-                <div class="lg:col-span-5 group relative">
-                    <div
-                        class="relative z-10 h-full min-h-[350px] p-8 lg:p-12 flex flex-col justify-between overflow-hidden rounded-[3rem] bg-gradient-to-br from-blue-700 via-blue-800 to-[#00326B] shadow-2xl transition-all duration-500 hover:shadow-blue-900/30">
-
-                        {{-- Icon Quote Dekoratif --}}
-                        <div
-                            class="absolute top-10 right-10 text-white/10 text-8xl lg:text-9xl font-black pointer-events-none">
-                            <i class="bi bi-chat-quote-fill"></i>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+    
+                {{-- LEFT PANEL: TESTIMONI (WITH ABSTRACT BG) --}}
+                <div class="lg:col-span-5 flex flex-col"
+                    x-data="{
+                        stories: {{ count($storySlider) > 0 ? json_encode($storySlider) : json_encode([[
+                            'message' => 'Layanan perbankan yang sangat memudahkan UMKM di NTB. Proses cepat dan tim sangat ramah dalam memberikan solusi finansial.',
+                            'name' => 'BPR NTB Sahabat',
+                            'initials' => 'BN',
+                            'category' => 'Nasabah Setia',
+                            'date' => date('d M Y')
+                        ]]) }},
+                        current: 0,
+                        init() {
+                            if (this.stories.length > 1) {
+                                setInterval(() => {
+                                    this.current = (this.current + 1) % this.stories.length;
+                                }, 6000);
+                            }
+                        }
+                    }">
+                    
+                    <div class="relative flex-1 group overflow-hidden rounded-[3rem] bg-[#00326B] shadow-2xl shadow-blue-900/30 flex flex-col transform transition-all duration-500 hover:shadow-blue-900/40 hover:-translate-y-1">
+                        
+                        {{-- ================= ABSTRACT BACKGROUND MOTIF ================= --}}
+                        {{-- 1. SVG Pattern (Tekstur Halus) --}}
+                        <div class="absolute inset-0 opacity-[0.04] pointer-events-none z-0">
+                            <svg width="100%" height="100%">
+                                <defs>
+                                    <pattern id="abstract-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
+                                        {{-- Contoh Motif Abstrak: Lingkaran & Garis Diagonal --}}
+                                        <circle cx="20" cy="20" r="1" fill="white"/>
+                                        <path d="M0 40 L40 0 M-10 10 L10 -10 M30 50 L50 30" stroke="white" stroke-width="0.5" fill="none"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="100%" height="100%" fill="url(#abstract-pattern)" />
+                            </svg>
                         </div>
-
-                        <div class="relative z-20">
-                            <div
-                                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-white/10 mb-8">
-                                <i class="bi bi-star-fill text-[#fbbf24] text-[10px]"></i>
-                                <span class="text-[10px] font-black tracking-widest uppercase text-white">Nasabah
-                                    Story</span>
+    
+                        {{-- 2. Soft Glow Blobs (Aksen Warna) --}}
+                        <div class="absolute -bottom-20 -left-20 w-60 h-60 bg-blue-500 rounded-full blur-[100px] opacity-30 pointer-events-none z-0"></div>
+                        <div class="absolute top-10 right-10 w-40 h-40 bg-indigo-400 rounded-full blur-[80px] opacity-20 pointer-events-none z-0"></div>
+                        {{-- ============================================================= --}}
+    
+                        <div class="relative h-full p-10 lg:p-14 flex flex-col z-10">
+                            
+                            {{-- TOP: HEADER CARD --}}
+                            <div class="mb-auto text-center lg:text-left relative z-10">
+                                <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm mb-4">
+                                    <span class="relative flex h-2 w-2">
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                                    </span>
+                                    <span class="text-[10px] font-black tracking-[0.2em] uppercase text-white/90">Nasabah Story</span>
+                                </div>
+                                <h3 class="text-2xl lg:text-3xl font-black text-white tracking-tight">Apa Kata <span class="text-amber-400 italic font-light">Mereka?</span></h3>
                             </div>
-
-                            <p class="text-lg lg:text-2xl font-light italic leading-relaxed text-blue-50 mb-10">
-                                "Proses lelangnya sangat transparan dan cepat. Timnya profesional, hasilnya melebihi
-                                ekspektasi saya. Terima kasih banyak BPR NTB!"
-                            </p>
-                        </div>
-
-                        {{-- Profil Nasabah --}}
-                        <div
-                            class="relative z-20 flex items-center gap-4 p-4 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-sm transition-all group-hover:bg-white/10">
-                            <div
-                                class="w-14 h-14 rounded-2xl bg-[#fbbf24] flex items-center justify-center text-[#00326B] font-black text-xl shadow-lg">
-                                NS
+    
+                            {{-- CENTER: MESSAGE (SLIDER) --}}
+                            <div class="relative py-12 flex-1 flex items-center justify-center z-10">
+                                <template x-for="(story, index) in stories" :key="index">
+                                    <div x-show="current === index"
+                                         x-transition:enter="transition ease-out duration-700"
+                                         x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                                         x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                                         x-transition:leave="transition ease-in duration-300 absolute"
+                                         x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                                         x-transition:leave-end="opacity-0 scale-95 -translate-y-4"
+                                         class="text-center w-full">
+                                        
+                                        <i class="bi bi-quote text-5xl text-amber-400/20 mb-3 block"></i>
+                                        <p class="text-xl lg:text-2xl font-medium leading-relaxed text-white italic"
+                                           x-text="`“${story.message}”`"></p>
+                                    </div>
+                                </template>
                             </div>
-                            <div>
-                                <h4 class="font-black text-white text-base">Ni Made Sari</h4>
-                                <p class="text-[10px] font-bold uppercase tracking-widest text-blue-300/80">Pengusaha UMKM
-                                    - Bali</p>
+    
+                            {{-- BOTTOM: FOOTER (SENDER INFO) --}}
+                            <div class="mt-auto border-t border-white/10 pt-8 relative z-10">
+                                <template x-for="(story, index) in stories" :key="index">
+                                    <div x-show="current === index" 
+                                         x-transition:enter="transition delay-300 duration-500"
+                                         x-transition:enter-start="opacity-0"
+                                         x-transition:enter-end="opacity-100"
+                                         class="flex items-center justify-center lg:justify-start gap-4">
+                                        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center text-amber-400 font-black text-lg border border-white/10 shadow-lg"
+                                             x-text="story.initials"></div>
+                                        <div class="text-left">
+                                            <h4 class="font-bold text-white text-base leading-none mb-1.5" x-text="story.name"></h4>
+                                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-200/50 flex items-center gap-1.5">
+                                                <i class="bi bi-bookmark-fill text-amber-400/60 text-[8px]"></i>
+                                                <span x-text="`${story.category} • ${story.date}`"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </template>
+    
+                                {{-- Pagination Dots --}}
+                                <div class="flex justify-center lg:justify-start gap-2.5 mt-7" x-show="stories.length > 1">
+                                    <template x-for="(story, index) in stories" :key="index">
+                                        <button @click="current = index" 
+                                            class="h-1 rounded-full transition-all duration-500 hover:bg-white/40"
+                                            :class="current === index ? 'w-10 bg-amber-400' : 'w-2 bg-white/20'"></button>
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                {{-- RIGHT PANEL: HUBUNGI KAMI (Clean Bento Form) --}}
-                <div class="lg:col-span-7 group relative">
-                    <div
-                        class="h-full p-8 lg:p-12 bg-white rounded-[3rem] shadow-xl border border-slate-100 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/5">
-                        <div class="mb-8 space-y-2">
-                            <div class="flex items-center gap-3">
-                                <span class="h-[1px] w-8 bg-blue-600"></span>
-                                <span class="text-[10px] font-black uppercase tracking-[0.3em] text-[#00326B]">Connect With
-                                    Us</span>
+    
+                {{-- RIGHT PANEL: CONTACT FORM (Tetap sama, hanya dirapikan sedikit) --}}
+                <div class="lg:col-span-7 flex flex-col">
+                    <div class="bg-white rounded-[3rem] p-10 lg:p-14 shadow-xl border border-slate-100 h-full flex flex-col transform transition-all duration-500 hover:border-slate-200">
+                        <div class="mb-10">
+                            <div class="flex items-center gap-3 mb-3">
+                                <span class="h-[2px] w-10 bg-blue-600 rounded-full"></span>
+                                <span class="text-[11px] font-black uppercase tracking-[0.4em] text-blue-900/40">Connect With Us</span>
                             </div>
-                            <h2 class="text-3xl lg:text-4xl font-black text-[#00326B]">Kirim <span
-                                    class="text-blue-600 italic font-light">Pesan</span></h2>
+                            <h2 class="text-3xl lg:text-4xl font-black text-[#00326B]">Kirim <span class="text-blue-600 font-light italic">Pesan</span></h2>
                         </div>
-
-                        <form action="{{ route('messages.store') }}" method="POST" class="space-y-5">
+    
+                        <form action="{{ route('messages.store') }}" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
                             @csrf
-
-                            {{-- ALERT SUCCESS --}}
-                            @if (session('success'))
-                                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm font-bold">
-                                    <i class="bi bi-check-circle-fill mr-2"></i>
-                                    {{ session('success') }}
-                                </div>
-                            @endif
-
-                            {{-- NAMA --}}
-                            <div class="relative group/input">
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value="{{ old('name') }}"
-                                    placeholder="Nama Lengkap"
-                                    required
-                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
-                                        focus:ring-2 focus:ring-blue-600 transition-all outline-none
-                                        text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
-                                @error('name')
-                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                                @enderror
+                            {{-- Form Inputs --}}
+                            <div class="md:col-span-2">
+                                <input type="text" name="name" placeholder="Nama Lengkap" required class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all outline-none font-medium">
                             </div>
-
-                            {{-- EMAIL & TELEPON --}}
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <div>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value="{{ old('email') }}"
-                                        placeholder="Alamat Email"
-                                        required
-                                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
-                                            focus:ring-2 focus:ring-blue-600 transition-all outline-none
-                                            text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
-                                    @error('email')
-                                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
-
-                                <div>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value="{{ old('phone') }}"
-                                        placeholder="Nomor Telepon"
-                                        class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
-                                            focus:ring-2 focus:ring-blue-600 transition-all outline-none
-                                            text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic">
-                                    @error('phone')
-                                        <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
+                            <div class="col-span-1">
+                                <input type="email" name="email" placeholder="Email" required class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all outline-none font-medium">
                             </div>
-
-                            {{-- PESAN --}}
-                            <div>
-                                <textarea
-                                    name="message"
-                                    rows="4"
-                                    required
-                                    placeholder="Apa yang bisa kami bantu?"
-                                    class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none
-                                        focus:ring-2 focus:ring-blue-600 transition-all outline-none
-                                        text-slate-800 font-medium placeholder:text-slate-400 placeholder:italic resize-none">{{ old('message') }}</textarea>
-                                @error('message')
-                                    <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
-                                @enderror
+                            <div class="col-span-1">
+                                <input type="tel" name="phone" placeholder="No. Telepon" class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all outline-none font-medium">
                             </div>
-
-                            {{-- SUBMIT --}}
-                            <button type="submit"
-                                class="group/btn w-full bg-[#00326B] text-white font-black py-5 rounded-2xl
-                                    shadow-xl shadow-blue-900/20 transition-all hover:bg-blue-700
-                                    active:scale-[0.98] flex items-center justify-center gap-3
-                                    uppercase tracking-[0.2em] text-xs">
-                                <span>Kirim Sekarang</span>
-                                <i class="bi bi-send-fill transition-transform
-                                        group-hover/btn:translate-x-2 group-hover/btn:-translate-y-1"></i>
-                            </button>
+                            <div class="md:col-span-2">
+                                <select name="category" required class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all outline-none font-medium appearance-none text-slate-500 focus:text-slate-800">
+                                    <option value="">Pilih Kategori Feedback</option>
+                                    @foreach ($messageCategories as $key => $label)
+                                        <option value="{{ $key }}">{{ $label }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <textarea name="message" rows="4" required placeholder="Apa yang bisa kami bantu?" class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition-all outline-none resize-none font-medium"></textarea>
+                            </div>
+                            <div class="md:col-span-2 mt-auto pt-5 relative">
+                                {{-- Soft Shadow Submit Button --}}
+                                <div class="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white to-transparent z-0"></div>
+                                <button type="submit" class="w-full relative z-10 bg-[#00326B] hover:bg-blue-700 text-white font-bold py-5 rounded-2xl shadow-xl shadow-blue-900/10 transition-all flex items-center justify-center gap-3 uppercase tracking-widest text-xs active:scale-[0.98]">
+                                    <span>Kirim Sekarang</span>
+                                    <i class="bi bi-send-fill group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+                                </button>
+                            </div>
                         </form>
-
                     </div>
                 </div>
-
+    
             </div>
         </div>
     </section>

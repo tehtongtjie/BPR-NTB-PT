@@ -149,7 +149,7 @@
             </label>
 
             @if($lelang->rks_file)
-                <a href="{{ asset('storage/'.$lelang->rks_file) }}"
+                <a href="{{ public_image_url('storage/' . $lelang->rks_file) }}"
                 target="_blank"
                 class="inline-flex items-center gap-2 text-sm text-blue-600 hover:underline">
                     📄 Lihat RKS Saat Ini
@@ -176,7 +176,7 @@
             </label>
 
             @if($lelang->banner)
-                <img src="{{ asset('storage/'.$lelang->banner) }}"
+                <img src="{{ public_image_url('storage/' . $lelang->banner) }}"
                      class="h-32 rounded-xl border object-cover mb-2">
             @endif
 
@@ -255,4 +255,3 @@ function removeRequirement(el) {
 }
 </script>
 @endsection
-

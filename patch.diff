@@ -1,0 +1,12 @@
+*** Begin Patch
+*** Update File: app/Http/Controllers/MessageController.php
+@@
+-        Message::whereIn('id', -
+--
+-        return back()-, 'Status Story berhasil diperbarui');
++        Message::whereIn('id', -
+++
++        return redirect()-, 'Status Story berhasil diperbarui');
+     }
+ }
+*** End Patch

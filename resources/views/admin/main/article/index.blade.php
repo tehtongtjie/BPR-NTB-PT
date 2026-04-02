@@ -54,7 +54,7 @@
                             <td class="px-6 py-4">
                                 <div class="flex gap-4 items-center">
                                     <img
-                                        src="{{ asset('storage/'.$article->thumbnail) }}"
+                                        src="{{ public_image_url('storage/' . $article->thumbnail) }}"
                                         alt="{{ $article->title }}"
                                         class="h-16 w-24 rounded-lg
                                                border border-slate-200 object-cover"

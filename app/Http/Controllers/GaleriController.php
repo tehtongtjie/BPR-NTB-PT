@@ -2,84 +2,61 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Galeri;
 use Illuminate\Http\Request;
 
 class GaleriController extends Controller
 {
-    /**
-     * Data Pusat Galeri (Dummy)
-     * Mengelompokkan foto dalam album/kategori
-     */
-    private function getGaleriData()
+    public function index(Request $request)
     {
-        return [
-            [
-                'id' => 1,
-                'album' => 'Kegiatan CSR 2026',
-                'kategori' => 'CSR',
-                'tanggal' => '15 Jan 2026',
-                'cover' => 'berita.png',
-                'jumlah_foto' => 12,
-                'deskripsi' => 'Dokumentasi penyaluran bantuan pendidikan untuk siswa berprestasi di Lombok Barat.'
+        $type = $request->query('type', 'foto');
+        $types = [
+            'foto' => [
+                'label' => 'Foto',
+                'type' => 'foto',
             ],
-            [
-                'id' => 2,
-                'album' => 'Peresmian Kantor Cabang',
-                'kategori' => 'Event',
-                'tanggal' => '10 Jan 2026',
-                'cover' => 'berita.png',
-                'jumlah_foto' => 8,
-                'deskripsi' => 'Momen peresmian wajah baru Kantor Cabang Utama Mataram dengan fasilitas digital.'
-            ],
-            [
-                'id' => 3,
-                'album' => 'Layanan Mobil Kas Keliling',
-                'kategori' => 'Layanan',
-                'tanggal' => '05 Jan 2026',
-                'cover' => 'berita.png',
-                'jumlah_foto' => 15,
-                'deskripsi' => 'Aktivitas tim BPR NTB menjangkau pasar-pasar tradisional dengan layanan perbankan mobile.'
-            ],
-            [
-                'id' => 4,
-                'album' => 'Rapat Koordinasi Tahunan',
-                'kategori' => 'Internal',
-                'tanggal' => '02 Jan 2026',
-                'cover' => 'berita.png',
-                'jumlah_foto' => 20,
-                'deskripsi' => 'Kilas balik sinergi jajaran direksi dan staf dalam Rakor tahunan 2026.'
+            'video' => [
+                'label' => 'Video',
+                'type' => 'video',
             ],
         ];
+
+        $selected = $types[$type] ?? $types['foto'];
+
+        $query = Galeri::where('is_published', true)
+            ->where('type', $selected['type'])
+            ->orderBy('published_at', 'desc');
+
+        $albums = $query->paginate(3)->withQueryString();
+
+        $galleryData = $albums->map(function (Galeri $item) {
+            return [
+                'id' => $item->id,
+                'slug' => $item->slug,
+                'title' => $item->title,
+                'description' => $item->description,
+                'cover' => 'storage/' . $item->thumbnail,
+                'date' => $item->published_at?->translatedFormat('d M Y'),
+                'type' => $item->type,
+                'category' => $item->category,
+                'video_url' => $item->video_url,
+            ];
+        });
+
+        return view('user.pages.galeri.index', [
+            'albums' => $galleryData,
+            'paginator' => $albums,
+            'types' => $types,
+            'typeKey' => $type,
+        ]);
     }
 
-    public function index()
+    public function show(string $slug)
     {
-        $albums = $this->getGaleriData();
-        
-        // Ambil kategori unik untuk filter di halaman view
-        $categories = collect($albums)->pluck('kategori')->unique();
+        $galeri = Galeri::where('slug', $slug)
+            ->where('is_published', true)
+            ->firstOrFail();
 
-        return view('user.pages.galeri.index', compact('albums', 'categories'));
-    }
-
-    /**
-     * Opsional: Jika Anda ingin melihat foto di dalam album tertentu
-     */
-    public function show($id)
-    {
-        $album = collect($this->getGaleriData())->firstWhere('id', $id);
-
-        if (!$album) {
-            abort(404);
-        }
-
-        // Dummy list foto di dalam album tersebut
-        $photos = [
-            ['url' => 'berita.png', 'caption' => 'Suasana pembukaan acara'],
-            ['url' => 'berita.png', 'caption' => 'Penyerahan simbolis bantuan'],
-            ['url' => 'berita.png', 'caption' => 'Foto bersama jajaran direksi'],
-        ];
-
-        return view('user.pages.galeri.show', compact('album', 'photos'));
+        return view('user.pages.galeri.show', compact('galeri'));
     }
 }

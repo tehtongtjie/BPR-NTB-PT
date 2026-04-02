@@ -55,7 +55,7 @@
                                 <h4 class="font-bold text-xl mb-2 tracking-tight">Butuh Bantuan?</h4>
                                 <p class="text-blue-100/70 text-[10px] mb-8 uppercase tracking-[0.2em] font-black">Layanan
                                     Informasi Korporasi</p>
-                                <a href="#"
+                                <a href="{{ url('/') }}#kontak"
                                     class="inline-flex h-12 w-12 items-center justify-center bg-bpr-gold text-bpr-blue rounded-xl shadow-lg hover:scale-110 transition-transform">
                                     <i class="bi bi-chat-left-dots-fill text-xl"></i>
                                 </a>
@@ -74,11 +74,25 @@
 
                         <div class="p-8 md:p-16 relative z-10">
 
+                            @php
+                                $headerImageUrl = null;
+                                if (!empty($data['image'])) {
+                                    $image = (string) $data['image'];
+                                    if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
+                                        $headerImageUrl = $image;
+                                    } elseif (str_starts_with($image, 'storage/')) {
+                                        $headerImageUrl = Storage::url($image);
+                                    } else {
+                                        $headerImageUrl = asset($image);
+                                    }
+                                }
+                            @endphp
+
                             {{-- Header Condition --}}
-                            @if (isset($data['image']))
+                            @if ($headerImageUrl)
                                 <div
                                     class="relative rounded-[2.5rem] lg:rounded-[3.5rem] overflow-hidden mb-12 group shadow-2xl border-4 border-white">
-                                    <img src="{{ Storage::url($data['image']) }}"
+                                    <img src="{{ $headerImageUrl }}"
                                         class="w-full h-72 lg:h-[500px] object-cover transition-transform duration-1000 group-hover:scale-105"
                                         alt="Header">
                                     <div
@@ -222,151 +236,83 @@
                                     </div>
 
                                     {{-- 4. TATA KELOLA (GCG) --}}
-                                @elseif ($slug === 'tata-kelola')
-                                    <div class="space-y-12">
-                                        <div
-                                            class="bg-blue-50/50 rounded-[3rem] p-10 border-l-8 border-bpr-blue shadow-inner font-bold text-bpr-blue italic text-2xl leading-relaxed">
-                                            @foreach ($data['intro'] as $paragraph)
-                                                <p>{{ $paragraph }}</p>
-                                            @endforeach
-                                        </div>
-                                        <div class="grid gap-6">
-                                            @php $gcg_icons = ['bi-eye', 'bi-person-check', 'bi-briefcase', 'bi-journal-check', 'bi-balance-scale']; @endphp
-                                            @foreach ($data['principles'] as $index => $item)
-                                                <div
-                                                    class="flex items-center gap-8 p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl transition-all group">
-                                                    <div
-                                                        class="w-20 h-20 bg-slate-50 text-bpr-blue rounded-[1.8rem] flex items-center justify-center text-3xl shadow-inner group-hover:bg-bpr-blue group-hover:text-bpr-gold transition-all">
-                                                        <i class="bi {{ $gcg_icons[$index] ?? 'bi-check2-circle' }}"></i>
-                                                    </div>
-                                                    <div>
-                                                        <span
-                                                            class="text-bpr-blue font-black text-[10px] uppercase tracking-widest block mb-1 opacity-50">Principle
-                                                            {{ sprintf('%02d', $index + 1) }}</span>
-                                                        <h4
-                                                            class="text-2xl font-black text-bpr-blue uppercase tracking-tighter">
-                                                            {{ $item }}</h4>
+                                    {{-- 4. TATA KELOLA (GCG) --}}
+                                    {{-- 4. TATA KELOLA (GCG) --}}
+                                    @elseif ($slug === 'tata-kelola')
+                                        <div class="space-y-16">
+
+                                            {{-- Intro Box --}}
+                                            <div class="relative overflow-hidden bg-blue-50/50 rounded-[3rem] p-10 lg:p-14 border-l-[12px] border-blue-900 shadow-inner group">
+                                                <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-900/5 rounded-full blur-3xl group-hover:bg-blue-900/10 transition-colors duration-700"></div>
+                                                <div class="relative z-10">
+                                                    <i class="bi bi-quote text-5xl text-blue-900/20 block mb-4"></i>
+                                                    <div class="font-bold text-blue-900 italic text-xl lg:text-2xl leading-relaxed">
+                                                        @foreach ($data['intro'] as $paragraph)
+                                                            <p>{{ $paragraph }}</p>
+                                                        @endforeach
                                                     </div>
                                                 </div>
-                                            @endforeach
-                                        </div>
-                                        {{-- Report Download --}}
-                                        <div
-                                            class="bg-bpr-blue rounded-[3rem] p-12 text-white flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden shadow-2xl">
-                                            <div
-                                                class="absolute top-0 right-0 w-64 h-64 bg-bpr-gold/10 rounded-full blur-3xl -mr-32 -mt-32">
                                             </div>
-                                            <div class="flex items-center gap-8 relative z-10">
-                                                <div
-                                                    class="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center text-4xl text-bpr-gold border border-white/10">
-                                                    <i class="bi bi-file-earmark-pdf"></i>
-                                                </div>
-                                                <div>
-                                                    <h5 class="text-2xl font-black mb-1">Laporan GCG Tahunan</h5>
-                                                    <p class="text-blue-200/50 text-xs font-bold uppercase tracking-widest">
-                                                        Public Transparency Document</p>
-                                                </div>
-                                            </div>
-                                            <a href="#"
-                                                class="px-10 py-5 bg-bpr-gold text-bpr-blue rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white transition-all shadow-xl">Download
-                                                PDF</a>
-                                        </div>
-                                    </div>
 
-                                    {{-- 5. KOMISARIS & DIREKSI --}}
-                                    @elseif ($slug === 'komisaris' || $slug === 'direksi')
-                                        <div class="grid grid-cols-1 gap-12">
+                                            {{-- Principles List --}}
+                                            <div class="grid gap-6">
+                                                @php $gcg_icons = ['bi-eye', 'bi-person-check', 'bi-briefcase', 'bi-journal-check', 'bi-balance-scale']; @endphp
+                                                @foreach ($data['principles'] as $index => $item)
+                                                    <div class="group flex flex-col md:flex-row items-center gap-6 md:gap-10 p-6 md:p-8 bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-1 transition-all duration-500">
 
-                                            @forelse ($managements as $member)
-                                                <div
-                                                    class="group bg-white rounded-[3rem] p-6 lg:p-10
-                                                        border border-slate-100 hover:shadow-2xl
-                                                        transition-all duration-500">
+                                                        {{-- Icon Wrapper - Fixed Symmetric Size --}}
+                                                        <div class="flex-shrink-0 w-24 h-24 bg-slate-50 rounded-[2rem] flex items-center justify-center text-4xl shadow-inner
+                                                                    group-hover:bg-blue-900 group-hover:rotate-[10deg] transition-all duration-500">
 
-                                                    <div class="flex flex-col lg:flex-row gap-12 items-center">
+                                                            {{-- PAKSA WARNA DI SINI: Biru saat normal, Kuning saat hover --}}
+                                                            <i class="bi {{ $gcg_icons[$index] ?? 'bi-check2-circle' }}
+                                                                      text-blue-900 group-hover:text-amber-400
+                                                                      transition-colors duration-500"></i>
+                                                        </div>
 
-                                                        {{-- ICON PLACEHOLDER --}}
-                                                        <div
-                                                            class="w-full lg:w-64 flex-shrink-0 relative
-                                                                overflow-hidden rounded-[2.5rem] aspect-square
-                                                                shadow-inner bg-slate-50 flex items-center justify-center
-                                                                border-2 border-dashed border-slate-200
-                                                                group-hover:bg-slate-100 transition-colors">
-
-                                                            <div class="text-center">
-                                                                {{-- Icon --}}
-                                                                <i
-                                                                    class="bi bi-person-badge text-6xl text-slate-300
-                                                                        mb-2 block group-hover:text-bpr-gold transition-colors">
-                                                                </i>
-
-                                                                {{-- Initial --}}
-                                                                <span
-                                                                    class="text-2xl font-black text-slate-200
-                                                                        uppercase tracking-tighter">
-                                                                    {{ collect(explode(' ', $member->name))
-                                                                        ->map(fn($n) => $n[0])
-                                                                        ->take(2)
-                                                                        ->implode('') }}
+                                                        {{-- Text Content --}}
+                                                        <div class="flex-1 text-center md:text-left">
+                                                            <div class="flex flex-col">
+                                                                <span class="text-blue-900 font-black text-[10px] uppercase tracking-[0.3em] mb-2 opacity-40 group-hover:opacity-100 transition-opacity">
+                                                                    GCG Principle {{ sprintf('%02d', $index + 1) }}
                                                                 </span>
-                                                            </div>
-
-                                                            {{-- Decorative Badge --}}
-                                                            <div class="absolute top-4 right-4">
-                                                                <div
-                                                                    class="w-8 h-8 rounded-full bg-white shadow-sm
-                                                                        flex items-center justify-center">
-                                                                    <i class="bi bi-patch-check-fill text-blue-500 text-xs"></i>
-                                                                </div>
+                                                                <h4 class="text-2xl md:text-3xl font-black text-blue-900 uppercase tracking-tighter group-hover:text-blue-700 transition-colors">
+                                                                    {{ $item }}
+                                                                </h4>
                                                             </div>
                                                         </div>
 
-                                                        {{-- INFO --}}
-                                                        <div class="flex-1 text-center lg:text-left">
-                                                            <div class="mb-6">
-                                                                <h3
-                                                                    class="text-3xl lg:text-4xl font-black
-                                                                        text-bpr-blue mb-2 tracking-tighter">
-                                                                    {{ $member->name }}
-                                                                </h3>
+                                                        {{-- Decorative Arrow --}}
+                                                        <div class="hidden md:flex w-12 h-12 items-center justify-center rounded-full bg-slate-50 text-slate-300 group-hover:bg-amber-400 group-hover:text-blue-900 transition-all duration-500">
+                                                            <i class="bi bi-arrow-right"></i>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
 
-                                                                <span
-                                                                    class="inline-block px-5 py-2 rounded-xl
-                                                                        bg-bpr-gold text-bpr-blue
-                                                                        text-[10px] font-black uppercase
-                                                                        tracking-widest shadow-md">
-                                                                    {{ $member->position }}
-                                                                </span>
-                                                            </div>
+                                            {{-- Report Download Section --}}
+                                            <div class="group relative bg-blue-900 rounded-[3rem] p-10 lg:p-14 text-white overflow-hidden shadow-2xl transition-all duration-500">
+                                                <div class="absolute top-0 right-0 w-96 h-96 bg-amber-400/10 rounded-full blur-[100px] -mr-48 -mt-48 transition-transform duration-1000 group-hover:scale-125"></div>
 
-                                                            <p
-                                                                class="text-slate-500 text-lg mb-8
-                                                                    line-clamp-3 italic font-medium leading-relaxed">
-                                                                {{ $member->excerpt }}
+                                                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+                                                    <div class="flex flex-col md:flex-row items-center gap-8">
+                                                        <div class="w-24 h-24 bg-white/10 rounded-[2rem] flex items-center justify-center text-5xl text-amber-400 border border-white/20 shadow-2xl transition-transform duration-500 group-hover:scale-110 group-hover:rotate-6">
+                                                            <i class="bi bi-file-earmark-pdf-fill"></i>
+                                                        </div>
+                                                        <div class="text-center md:text-left">
+                                                            <h5 class="text-3xl font-black mb-2 tracking-tight">Laporan GCG Tahunan</h5>
+                                                            <p class="text-blue-200/60 text-xs font-bold uppercase tracking-[0.3em]">
+                                                                Corporate Transparency & Accountability
                                                             </p>
-
-                                                            <a href="{{ url('/perusahaan/' . $slug . '/' . $member->slug) }}"
-                                                            class="inline-flex items-center gap-3
-                                                                    text-bpr-blue font-black uppercase
-                                                                    text-[11px] tracking-widest
-                                                                    hover:gap-6 transition-all group/link">
-                                                                Detailed Bio
-                                                                <i
-                                                                    class="bi bi-arrow-right text-bpr-gold text-xl
-                                                                        transition-transform
-                                                                        group-hover/link:translate-x-1">
-                                                                </i>
-                                                            </a>
                                                         </div>
-
                                                     </div>
-                                                </div>
-                                            @empty
-                                                <div class="text-center py-20 text-slate-400 font-bold">
-                                                    Data {{ ucfirst($slug) }} belum tersedia
-                                                </div>
-                                            @endforelse
 
+                                                    <a href="#" class="inline-flex items-center gap-3 px-12 py-6 bg-amber-400 text-blue-900 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-white transition-all duration-300 shadow-xl active:scale-95">
+                                                        <span>Download PDF</span>
+                                                        <i class="bi bi-download text-lg"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     @endif
 

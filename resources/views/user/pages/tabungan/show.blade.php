@@ -97,9 +97,9 @@
 
                         {{-- IMAGE --}}
                         <div class="aspect-[21/9] relative group overflow-hidden">
-                            <img src="{{ asset('storage/' .$promo->image) }}"
+                            <img src="{{ public_image_url('storage/' . $promo->image) }}"
                                  alt="{{ $promo->title }}"
-                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                                 class="w- h-130 object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>
 

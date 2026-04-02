@@ -44,11 +44,7 @@
                         </div>
 
                         <div class="relative z-10 space-y-6">
-                            <div
-                                class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center text-[#00326B] text-3xl group-hover:bg-[#00326B] group-hover:text-white transition-all duration-500">
-                                <i class="bi {{ $doc['icon'] }}"></i>
-                            </div>
-
+                          
                             <div>
                                 <span
                                     class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-2 block">{{ $doc['kategori'] }}</span>

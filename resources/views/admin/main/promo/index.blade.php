@@ -59,7 +59,7 @@
                         {{-- GAMBAR --}}
                         <td class="px-6 py-4">
                             <img
-                                src="{{ asset('storage/' .$promo->image) }}"
+                                src="{{ public_image_url('storage/' . $promo->image) }}"
                                 alt="{{ $promo->title }}"
                                 class="h-14 w-24 rounded-lg border border-slate-200 object-cover" />
                         </td>

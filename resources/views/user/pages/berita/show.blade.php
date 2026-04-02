@@ -57,7 +57,7 @@
                     {{-- Image Utama --}}
                     <div
                         class="relative rounded-[3rem] overflow-hidden shadow-2xl shadow-blue-900/10 mb-12 border-8 border-white">
-                        <img src="{{ asset('storage/' .$article->thumbnail) }}" class="w-full h-full object-cover"
+                        <img src="{{ public_image_url('storage/' . $article->thumbnail) }}" class="w-full h-full object-cover"
                             alt="{{ $article->title }}">
                     </div>
 
@@ -117,7 +117,7 @@
                                 @for ($i = 0; $i < 3; $i++)
                                     <a href="#" class="group flex gap-4">
                                         <div class="w-20 h-20 flex-shrink-0 rounded-2xl overflow-hidden">
-                                            <img src="{{ asset('storage/' .$article->thumbnail) }}" 
+                                            <img src="{{ public_image_url('storage/' . $article->thumbnail) }}" 
                                                 class="w-full h-full object-cover transition-transform group-hover:scale-110">
                                         </div>
                                         <div>

@@ -52,12 +52,23 @@
 
         {{-- 2. CATEGORY & STATUS FILTER --}}
         <div class="sticky top-20 lg:top-28 z-30 mb-12 lg:mb-16 px-4">
-            <div
-                class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
+            <div class="max-w-fit mx-auto bg-white/80 backdrop-blur-xl p-1.5 lg:p-2 rounded-2xl lg:rounded-3xl shadow-xl shadow-blue-900/5 border border-slate-100">
                 <div class="flex items-center gap-1.5 lg:gap-2 overflow-x-auto hide-scrollbar px-1">
-                    @foreach (['Semua Lelang', 'Jasa & Konsultan', 'Konstruksi', 'Teknologi', 'Logistik'] as $cat)
-                        <a href="#"
-                            class="whitespace-nowrap px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest transition-all {{ $loop->first ? 'bg-[#00326B] text-white shadow-lg' : 'text-slate-400 hover:text-[#00326B] hover:bg-slate-50' }}">
+                    @php
+                        $filterCategories = collect($categories ?? [])->prepend('Semua Lelang');
+                        $activeCategory = $category ?: 'Semua Lelang';
+                    @endphp
+
+                    @foreach ($filterCategories as $cat)
+                        @php
+                            $isActive = $activeCategory === $cat;
+                            $url = $cat === 'Semua Lelang'
+                                ? route('lelang.index')
+                                : route('lelang.index', ['category' => $cat]);
+                        @endphp
+
+                        <a href="{{ $url }}"
+                            class="whitespace-nowrap px-4 lg:px-6 py-2 lg:py-2.5 rounded-xl lg:rounded-2xl text-[9px] lg:text-[10px] font-black uppercase tracking-widest transition-all {{ $isActive ? 'bg-[#00326B] text-white shadow-lg' : 'text-slate-400 hover:text-[#00326B] hover:bg-slate-50' }}">
                             {{ $cat }}
                         </a>
                     @endforeach
@@ -65,84 +76,7 @@
             </div>
         </div>
 
-        {{-- 3. FEATURED LELANG (LELANG TERBARU) --}}
-        <div class="max-w-7xl mx-auto px-6 lg:px-8 mb-16 lg:mb-20">
-            @if (count($lelangs) > 0)
-                @php $featured = $lelangs->first(); @endphp
-
-                <div class="group relative bg-white rounded-[2.5rem] lg:rounded-[3.5rem]
-                            shadow-2xl shadow-blue-900/5 border border-white overflow-hidden">
-
-                    <div class="flex flex-col lg:flex-row min-h-[400px] lg:min-h-[500px]">
-
-                        {{-- Banner --}}
-                        <div class="lg:w-3/5 relative overflow-hidden">
-                            <img src="{{ $featured->banner
-                                    ? asset('storage/'.$featured->banner)
-                                    : asset('images/lelang-pengadaan.png') }}"
-                                class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105">
-
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-60"></div>
-
-                            <div class="absolute top-6 left-6">
-                                <span class="px-4 py-1.5 rounded-xl text-[9px] font-black uppercase text-white shadow-xl
-                                    {{ $featured->status === 'aktif' ? 'bg-emerald-500' : 'bg-red-500' }}">
-                                    Status: {{ ucfirst($featured->status) }}
-                                </span>
-                            </div>
-                        </div>
-
-                        {{-- Content --}}
-                        <div class="lg:w-2/5 p-8 lg:p-16 flex flex-col justify-center bg-white">
-                            <span
-                                class="text-blue-600 text-[9px] font-black uppercase tracking-[0.3em] mb-4">
-                                {{ $featured->category }}
-                            </span>
-
-                            <h2
-                                class="text-2xl lg:text-4xl font-black text-[#00326B] leading-tight mb-6">
-                                {{ $featured->title }}
-                            </h2>
-
-                            <p
-                                class="text-slate-500 text-sm lg:text-lg italic mb-8 border-l-4 border-[#fbbf24]/50 pl-4">
-                                "{{ $featured->short_desc }}"
-                            </p>
-                            
-                        <div class="flex justify-between items-center border-t pt-6">
-                            <div>
-                                <span class="text-[8px] font-black uppercase text-slate-400">
-                                    Batas Penawaran
-                                </span>
-                                <span class="block text-xs font-black text-red-500">
-                                    {{ $featured->deadline?->translatedFormat('d F Y') }}
-                                </span>
-                            </div>
-
-                            <div class="flex items-center gap-3">
-                                {{-- Lihat Detail --}}
-                                <a href="{{ route('lelang.show', $featured->slug) }}"
-                                class="text-[9px] font-black uppercase tracking-widest text-[#00326B] hover:text-[#fbbf24] transition">
-                                    Lihat Detail
-                                </a>
-
-                                {{-- Download RKS --}}
-                                @if($featured->rks_file)
-                                    <a href="{{ asset('storage/'.$featured->rks_file) }}"
-                                    target="_blank"
-                                    class="w-12 h-12 rounded-2xl bg-[#00326B] text-white flex items-center justify-center">
-                                        <i class="bi bi-file-earmark-pdf"></i>
-                                    </a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endif
-
-        </div>
-
-        {{-- 4. LELANG GRID --}}
+        {{-- 3. LELANG GRID --}}
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="flex items-center gap-4 mb-8 lg:mb-12">
                 <span class="h-[1px] w-10 lg:w-12 bg-[#fbbf24]"></span>
@@ -150,8 +84,8 @@
                     Aktif</span>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-                @forelse($lelangs->skip(1) as $l)
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+                @forelse($lelangs as $l)
                     <div class="group flex flex-col bg-white rounded-[3rem]
                                 shadow-xl border border-slate-50 overflow-hidden
                                 hover:-translate-y-3 transition-all">
@@ -159,7 +93,7 @@
                         {{-- Banner --}}
                         <div class="aspect-[4/3] overflow-hidden relative">
                             <img src="{{ $l->banner
-                                    ? asset('storage/'.$l->banner)
+                                    ? public_image_url('storage/' . $l->banner)
                                     : asset('images/lelang-pengadaan.png') }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
 
@@ -206,6 +140,8 @@
                     </div>
                 @endforelse
             </div>
+
+            @include('components.pagination-nav', ['paginator' => $lelangs])
         </div>
     </main>
 

@@ -13,6 +13,8 @@ return new class extends Migration {
             $table->string('email');
             $table->string('phone')->nullable();
             $table->text('message');
+            $table->string('category')->default('umum');
+            $table->boolean('is_story')->default(false);
             $table->enum('status', ['baru', 'dibaca', 'selesai'])->default('baru');
             $table->timestamps();
         });

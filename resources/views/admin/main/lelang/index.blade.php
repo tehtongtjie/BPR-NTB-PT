@@ -64,7 +64,7 @@
                             <td class="px-6 py-4">
                                 @if($lelang->banner)
                                     <img
-                                        src="{{ asset('storage/'.$lelang->banner) }}"
+                                        src="{{ public_image_url('storage/' . $lelang->banner) }}"
                                         alt="{{ $lelang->title }}"
                                         class="h-14 w-24 rounded-lg border border-slate-200 object-cover"
                                     />

@@ -109,8 +109,11 @@
                 <div class="lg:w-2/3 order-1 lg:order-2 space-y-12">
                     <div class="bg-white rounded-[3rem] shadow-sm border border-gray-100 overflow-hidden">
                         {{-- Image Banner --}}
+                        @php
+                            $pinjamanImage = str_replace('\\', '/', $pinjaman['gambar']);
+                        @endphp
                         <div class="aspect-[21/9] relative group overflow-hidden">
-                            <img src="{{ asset('storage/' . $pinjaman['gambar']) }}" alt="{{ $pinjaman['nama'] }}"
+                            <img src="{{ asset($pinjamanImage) }}" alt="{{ $pinjaman['nama'] }}"
                                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
                         </div>

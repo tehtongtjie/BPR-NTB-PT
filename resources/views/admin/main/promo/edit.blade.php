@@ -30,7 +30,7 @@
         {{-- ================= GAMBAR ================= --}}
         <div class="space-y-3">
             <label class="text-sm font-medium text-slate-600">Gambar Saat Ini</label>
-            <img src="{{ asset('storage/'.$promo->image) }}"
+            <img src="{{ public_image_url('storage/' . $promo->image) }}"
                  class="h-32 rounded-xl border object-cover">
 
             <input type="file" name="image" accept="image/*"
@@ -211,4 +211,3 @@ function addRequirement() {
 }
 </script>
 @endsection
-

@@ -32,7 +32,7 @@
 
                 {{-- KIRI --}}
                 <div class="lg:col-span-7 space-y-6"
-                    x-data="{ activeImage: '{{ $thumbnail ? asset('storage/' . $thumbnail->image_path) : 'https://via.placeholder.com/800x500' }}' }">
+                    x-data="{ activeImage: '{{ $thumbnail ? public_image_url('storage/' . $thumbnail->image_path) : 'https://via.placeholder.com/800x500' }}' }">
 
                     <div class="relative group">
                         <div
@@ -71,9 +71,9 @@
                     @if ($images->count() > 0)
                         <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
                             @foreach ($images as $img)
-                                <button @click="activeImage = '{{ asset('storage/' . $img->image_path) }}'"
+                                <button @click="activeImage = '{{ public_image_url('storage/' . $img->image_path) }}'"
                                     class="relative w-24 h-20 shrink-0 rounded-2xl overflow-hidden border-2 transition-all">
-                                    <img src="{{ asset('storage/' . $img->image_path) }}"
+                                    <img src="{{ public_image_url('storage/' . $img->image_path) }}"
                                         class="w-full h-full object-cover">
                                 </button>
                             @endforeach

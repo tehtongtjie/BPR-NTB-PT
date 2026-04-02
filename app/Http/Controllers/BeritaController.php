@@ -7,13 +7,26 @@ use Illuminate\Http\Request;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $beritas = Article::where('is_published', true)
-            ->orderBy('published_at', 'desc')
-            ->get();
+        $category = (string) $request->query('category', '');
 
-        return view('user.pages.berita.index', compact('beritas'));
+        $query = Article::where('is_published', true);
+
+        if ($category !== '' && strtolower($category) !== 'semua berita') {
+            $query->where('category', $category);
+        }
+
+        $beritas = $query->orderBy('published_at', 'desc')
+            ->paginate(4)
+            ->withQueryString();
+
+        $categories = Article::where('is_published', true)
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
+        return view('user.pages.berita.index', compact('beritas', 'categories', 'category'));
     }
 
     public function show($slug)

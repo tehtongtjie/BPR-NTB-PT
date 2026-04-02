@@ -155,7 +155,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 @foreach($umkm->images as $image)
                     <div class="relative group">
-                        <img src="{{ asset('storage/' . $image->image_path) }}"
+                        <img src="{{ public_image_url('storage/' . $image->image_path) }}"
                              class="rounded-xl border border-slate-200 object-cover h-32 w-full">
 
                         @if($image->is_thumbnail)
@@ -249,4 +249,3 @@
     });
 </script>
 @endpush
-

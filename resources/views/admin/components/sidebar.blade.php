@@ -3,7 +3,7 @@
     {{-- BRAND SECTION --}}
     <div class="flex items-center gap-3 px-6 py-6 border-b border-slate-100 bg-slate-50/30">
         <div class="bg-white p-2 rounded-xl shadow-sm border border-slate-100 flex-shrink-0">
-            <img src="{{ asset('storage/images/logobpr.png') }}" alt="BPR NTB" class="h-7 w-auto">
+            <img src="{{ asset('images/logobpr.png') }}" alt="BPR NTB" class="h-7 w-auto">
         </div>
         <div class="flex flex-col leading-tight overflow-hidden">
             <span class="font-black text-[#00326B] tracking-tight text-sm uppercase truncate">BPR NTB</span>
@@ -88,6 +88,29 @@
             <span class="font-bold">Publikasi</span>
         </a>
         @endcan
+
+        @canany(['admin-sekper', 'admin-it'])
+        <a href="{{ route('admin.galeri.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
+            {{ request()->is('admin/galeri*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/galeri*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M4.5 6h15a1.5 1.5 0 011.5 1.5v9a1.5 1.5 0 01-1.5 1.5h-15A1.5 1.5 0 013 16.5v-9A1.5 1.5 0 014.5 6zm0 0l3 6 3-3l4 5 3-4 1.5 3" />
+            </svg>
+            <span class="font-bold">Galeri</span>
+        </a>
+        <a href="{{ route('admin.jobs.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
+            {{ request()->is('admin/job-recruits*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/job-recruits*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3 10.5V6.75A2.25 2.25 0 015.25 4.5h13.5A2.25 2.25 0 0121 6.75V10.5M3 10.5h18M3 10.5v8.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V10.5" />
+            </svg>
+            <span class="font-bold">Lowongan Kerja</span>
+        </a>
+        @endcanany
 
         {{-- MENU MESSAGE: HANYA IT --}}
         @can('admin-it')

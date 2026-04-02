@@ -140,7 +140,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ asset('storage/' . $item->file) }}"
+                    <a href="{{ public_image_url('storage/' . $item->file) }}"
                        target="_blank"
                        class="w-full md:w-auto px-8 py-4 bg-slate-50
                               text-[#00326B] rounded-2xl font-black

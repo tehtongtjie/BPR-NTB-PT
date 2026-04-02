@@ -109,8 +109,10 @@
                         </div>
 
                         <div class="mt-12 space-y-4">
-                            <a href="{{ url('/simulasi/deposito/permintaan') }}"
-                                class="flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group">
+                            <a href="https://wa.me/62800123456?text=Halo%20BPR%20NTB%2C%20saya%20bersedia%20dihubungi%20lebih%20lanjut%20untuk%20simulasi%20deposito."
+                                class="simulasi-contact-btn flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group"
+                                data-contact-link="https://wa.me/62800123456?text=Halo%20BPR%20NTB%2C%20saya%20bersedia%20dihubungi%20lebih%20lanjut%20untuk%20simulasi%20deposito."
+                                data-contact-question="Apakah Anda bersedia untuk dihubungi lebih lanjut terkait simulasi deposito?">
                                 <i
                                     class="bi bi-send-fill transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
                                 Ajukan Deposito
@@ -142,4 +144,5 @@
             appearance: none;
         }
     </style>
+
 @endsection

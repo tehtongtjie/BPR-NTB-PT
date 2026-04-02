@@ -53,10 +53,11 @@
                     {{-- 3. Kredit Usaha (Menggunakan PinjamanController) --}}
                     {{-- Di rute kamu: Route::prefix('pinjaman')->name('pinjaman.')... Route::get('/{slug}', ...)->name('show') --}}
                     <li>
-                        <a href="{{ route('pinjaman.show', 'kredit-usaha') }}"
-                            class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
-                            <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>Kredit Usaha
-                        </a>
+                    <a href="{{ route('pinjaman.show', 'kredit-modal-kerja') }}"
+                        class="text-blue-100 hover:text-white font-medium text-sm flex items-center gap-2 group">
+                        <div class="h-1 w-0 bg-[#fbbf24] group-hover:w-3 transition-all"></div>
+                        Kredit Modal Kerja
+                    </a>
                     </li>
                 </ul>
             </div>

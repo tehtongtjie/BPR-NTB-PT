@@ -9,6 +9,7 @@ use App\Models\InterestRate;
 use App\Models\Article;
 use App\Models\InterestRatePeriod;
 use App\Models\Lelang;
+use App\Models\Message;
 
 class HomeController extends Controller
 {
@@ -38,14 +39,23 @@ class HomeController extends Controller
         ->limit(8)
         ->get();
 
+        $stories = Message::where('is_story', true)
+            ->where('category', 'nasabah_story')
+            ->latest('updated_at')
+            ->limit(3)
+            ->get();
+
+        $messageCategories = Message::categories();
+
         return view('user.pages.home', compact(
             'banners',
             'featured',
             'others',
             'articles',
             'activePeriod',
-            'lelangs'
+            'lelangs',
+            'stories',
+            'messageCategories'
         ));
     }
 }
-

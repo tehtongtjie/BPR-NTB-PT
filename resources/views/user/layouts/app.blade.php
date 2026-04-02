@@ -108,6 +108,35 @@
     {{-- FOOTER --}}
     @include('user.components.footer')
 
+    @stack('scripts')
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const contactButtons = document.querySelectorAll('.simulasi-contact-btn');
+            contactButtons.forEach(button => {
+                button.addEventListener('click', event => {
+                    event.preventDefault();
+                    const question = button.dataset.contactQuestion || 'Apakah Anda bersedia untuk dihubungi lebih lanjut?';
+                    const link = button.dataset.contactLink || button.getAttribute('href');
+                    Swal.fire({
+                        title: 'Konfirmasi Kontak',
+                        text: question,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#0A1D37',
+                        cancelButtonColor: '#6b7280',
+                        confirmButtonText: 'Ya, hubungi saya',
+                        cancelButtonText: 'Batal'
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            window.open(link, '_blank', 'noopener');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

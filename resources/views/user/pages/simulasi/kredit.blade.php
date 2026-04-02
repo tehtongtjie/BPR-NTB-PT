@@ -133,11 +133,13 @@
                         </div>
 
                         <div class="mt-12 space-y-4">
-                            <a href="{{ url('/simulasi/kredit/permintaan') }}"
-                                class="flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group">
+                            <a href="https://wa.me/6281808882022?text=Halo%20BPR%20NTB%2C%20saya%20bersedia%20dihubungi%20lebih%20lanjut%20untuk%20simulasi%20kredit."
+                                class="simulasi-contact-btn flex items-center justify-center gap-3 w-full bg-[#0A1D37] hover:bg-blue-900 text-white py-5 rounded-[1.5rem] font-bold shadow-xl transition-all active:scale-95 group"
+                                data-contact-link="https://wa.me/6281808882022?text=Halo%20BPR%20NTB%2C%20saya%20bersedia%20dihubungi%20lebih%20lanjut%20untuk%20simulasi%20kredit."
+                                data-contact-question="Apakah Anda bersedia untuk dihubungi lebih lanjut terkait simulasi kredit?">
                                 <i
                                     class="bi bi-send-fill transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-                                Ajukan Deposito
+                                Ajukan Kredit
                             </a>
                             <p
                                 class="text-[10px] text-center text-gray-400 font-bold uppercase tracking-widest leading-relaxed px-4">

@@ -3,18 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use App\Models\Lelang;
 
 class LelangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $lelangs = Lelang::where('is_published', true)
-            ->orderBy('deadline', 'asc')
-            ->get();
+        $category = (string) $request->query('category', '');
 
-        return view('user.pages.lelang.index', compact('lelangs'));
+        $query = Lelang::where('is_published', true);
+
+        if ($category !== '' && strtolower($category) !== 'semua lelang') {
+            $query->where('category', $category);
+        }
+
+        $lelangs = $query->orderBy('deadline', 'asc')->paginate(3)->withQueryString();
+        $categories = Lelang::where('is_published', true)
+            ->distinct()
+            ->orderBy('category')
+            ->pluck('category');
+
+        return view('user.pages.lelang.index', compact('lelangs', 'categories', 'category'));
     }
 
     public function show($slug)

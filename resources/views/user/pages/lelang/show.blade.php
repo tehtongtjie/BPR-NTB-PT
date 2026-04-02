@@ -73,7 +73,7 @@
                     {{-- Banner --}}
                     <div class="aspect-[21/9] overflow-hidden rounded-[3rem]">
                         <img
-                            src="{{ $lelang->banner ? asset('storage/'.$lelang->banner) : asset('images/lelang-pengadaan.png') }}"
+                            src="{{ $lelang->banner ? public_image_url('storage/' . $lelang->banner) : asset('images/lelang-pengadaan.png') }}"
                             class="w-full h-full object-cover">
                     </div>
 
@@ -136,7 +136,7 @@
                         </p>
 
                         @if($lelang->rks_file)
-                            <a href="{{ asset('storage/'.$lelang->rks_file) }}"
+                            <a href="{{ public_image_url('storage/' . $lelang->rks_file) }}"
                                target="_blank"
                                class="flex items-center justify-between bg-[#00326B] text-white p-6 rounded-[2rem] font-black uppercase tracking-widest text-[11px] hover:bg-[#fbbf24] hover:text-[#00326B]">
                                 <span>Unduh RKS</span>

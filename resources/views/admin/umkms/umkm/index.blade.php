@@ -102,7 +102,7 @@
                                 @endphp
 
                                 @if($thumb)
-                                    <img src="{{ asset('storage/' . $thumb->image_path) }}"
+                                    <img src="{{ public_image_url('storage/' . $thumb->image_path) }}"
                                          class="h-12 w-12 rounded-lg object-cover border border-slate-200">
                                 @else
                                     <div class="h-12 w-12 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-slate-400">

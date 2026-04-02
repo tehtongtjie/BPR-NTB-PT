@@ -30,7 +30,7 @@
         {{-- ================= THUMBNAIL ================= --}}
         <div class="space-y-3">
             <label class="text-sm font-medium text-slate-600">Thumbnail Saat Ini</label>
-            <img src="{{ asset('storage/'.$article->thumbnail) }}"
+            <img src="{{ public_image_url('storage/' . $article->thumbnail) }}"
                  class="h-32 rounded-xl border object-cover">
 
             <input type="file" name="thumbnail" accept="image/*"
@@ -178,6 +178,5 @@
     });
 </script>
 @endpush
-
 
 

@@ -26,15 +26,17 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminAuthController;
-use App\Http\Controllers\Admin\MainController;
-use App\Http\Controllers\Admin\PromoController;
-use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\ArticleController;
-use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\AuctionController;
+use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\GaleriController as AdminGaleriController;
+use App\Http\Controllers\Admin\InterestRateController;
 use App\Http\Controllers\Admin\JaringanController;
-use App\Http\Controllers\Admin\PerusahaansController;
 use App\Http\Controllers\Admin\LaporansController;
+use App\Http\Controllers\Admin\MainController;
+use App\Http\Controllers\Admin\PerusahaansController;
+use App\Http\Controllers\Admin\JobRecruitController;
+use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\PublikasiController;
 use App\Http\Controllers\Admin\UmkmsController;
 
@@ -49,6 +51,8 @@ use App\Http\Controllers\Admin\UmkmsController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/test-navbar', fn() => view('users.test-navbar'));
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -126,7 +130,7 @@ Route::prefix('berita')->group(function () {
 // 3. DAFTAR GALERI
 Route::prefix('galeri')->name('galeri.')->group(function () {
     Route::get('/', [GaleriController::class, 'index'])->name('index');
-    Route::get('/{id}', [GaleriController::class, 'show'])->name('show');
+    Route::get('/{slug}', [GaleriController::class, 'show'])->name('show');
 });
 
 // 4. DAFTAR KARIR
@@ -435,17 +439,36 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
                 Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
             });
         });
+
+        Route::prefix('galeri')->name('admin.galeri.')->group(function () {
+            Route::get('/', [AdminGaleriController::class, 'index'])->name('index');
+            Route::get('/create', [AdminGaleriController::class, 'create'])->name('create');
+            Route::post('/', [AdminGaleriController::class, 'store'])->name('store');
+            Route::get('/{galeri}/edit', [AdminGaleriController::class, 'edit'])->name('edit');
+            Route::put('/{galeri}', [AdminGaleriController::class, 'update'])->name('update');
+            Route::delete('/{galeri}', [AdminGaleriController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('job-recruits')->name('admin.jobs.')->group(function () {
+            Route::get('/', [JobRecruitController::class, 'index'])->name('index');
+            Route::get('/create', [JobRecruitController::class, 'create'])->name('create');
+            Route::post('/', [JobRecruitController::class, 'store'])->name('store');
+            Route::get('/{jobRecruit}/edit', [JobRecruitController::class, 'edit'])->name('edit');
+            Route::put('/{jobRecruit}', [JobRecruitController::class, 'update'])->name('update');
+            Route::delete('/{jobRecruit}', [JobRecruitController::class, 'destroy'])->name('destroy');
+        });
     });
 
-    // 2. ===== KHUSUS IT ONLY (TEKNIS) =====
+    // 2. ===== KHUSUS IT ONLY (TEKNIS) =====   
     // Hanya IT yang bisa mengelola pesan masuk, banner utama, dan suku bunga
-    Route::middleware(['can:admin-it'])->group(function () {
-        // MESSAGES
-        Route::prefix('messages')->name('admin.messages.')->group(function () {
-            Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
-            Route::get('/{id}', [MessageController::class, 'show'])->name('show');
-            Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
-        });
+        Route::middleware(['can:admin-it'])->group(function () {
+            // MESSAGES
+            Route::prefix('messages')->name('admin.messages.')->group(function () {
+                Route::post('/bulk-story', [MessageController::class, 'bulkStory'])->name('bulkStory');
+                Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
+                Route::get('/{id}', [MessageController::class, 'show'])->name('show');
+                Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
+            });
         Route::prefix('umkms')->name('umkms.')->group(function () {
             Route::get('/', [UmkmsController::class, 'index'])->name('index');
             Route::get('/create', [UmkmsController::class, 'create'])->name('create');
