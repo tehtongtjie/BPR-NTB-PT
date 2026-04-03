@@ -48,7 +48,7 @@ class JaringanController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tipe'      => 'required|in:pusat,cabang,kas',
+            'tipe'      => 'required|in:pusat,cabang,kas,pokp',
             'nama'      => 'required|string|max:150',
             'alamat'    => 'required|string',
             'telepon'   => 'nullable|string|max:30',
@@ -87,7 +87,7 @@ class JaringanController extends Controller
     public function update(Request $request, Kantor $kantor)
     {
         $request->validate([
-            'tipe'      => 'required|in:pusat,cabang,kas',
+            'tipe'      => 'required|in:pusat,cabang,kas,pokp',
             'nama'      => 'required|string|max:150',
             'alamat'    => 'required|string',
             'telepon'   => 'nullable|string|max:30',
