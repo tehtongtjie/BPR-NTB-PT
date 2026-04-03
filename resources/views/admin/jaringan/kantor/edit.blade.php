@@ -40,6 +40,7 @@
                 <option value="pusat"  {{ old('tipe', $kantor->tipe) === 'pusat' ? 'selected' : '' }}>Kantor Pusat</option>
                 <option value="cabang" {{ old('tipe', $kantor->tipe) === 'cabang' ? 'selected' : '' }}>Kantor Cabang</option>
                 <option value="kas"    {{ old('tipe', $kantor->tipe) === 'kas' ? 'selected' : '' }}>Kantor Kas</option>
+                <option value="pokp"    {{ old('tipe', $kantor->tipe) === 'pokp' ? 'selected' : '' }}>Kantor POKP</option>
             </select>
         </div>
 
