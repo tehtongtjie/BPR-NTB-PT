@@ -39,6 +39,7 @@
                 <option value="pusat">Kantor Pusat</option>
                 <option value="cabang">Kantor Cabang</option>
                 <option value="kas">Kantor Kas</option>
+                <option value="pokp">Kantor POKP</option>
             </select>
         </div>
 

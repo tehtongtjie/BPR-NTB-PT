@@ -1,5 +1,6 @@
 import "../css/app.css";
 import "./bootstrap";
+import "./prevent-double-submit";
 
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";

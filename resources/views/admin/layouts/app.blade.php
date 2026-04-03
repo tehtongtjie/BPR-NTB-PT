@@ -7,6 +7,8 @@
     <title>@yield('title', 'Admin | BPR NTB')</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('images/logobpr.png') }}?v=1">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/logobpr.png') }}?v=1">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
