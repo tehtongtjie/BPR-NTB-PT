@@ -20,10 +20,19 @@
             <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Utama</span>
         </div>
 
+        @php
+            $dashboardActive = request()->is('admin/main*')
+                || request()->is('admin/banner*')
+                || request()->is('admin/promo*')
+                || request()->is('admin/interest-rate*')
+                || request()->is('admin/article*')
+                || request()->is('admin/lelang*');
+        @endphp
+
         <a href="/admin/main"
             class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
-            {{ request()->is('admin/main*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
-            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/main*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+            {{ $dashboardActive ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ $dashboardActive ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
                 fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="M3 9.75L12 4.5l9 5.25V20a1 1 0 01-1 1h-5.25a.75.75 0 01-.75-.75V15a3 3 0 00-6 0v5.25a.75.75 0 01-.75.75H4a1 1 0 01-1-1V9.75z" />
@@ -112,6 +121,19 @@
         </a>
         @endcanany
 
+        @can('admin-sekper')
+        <a href="{{ route('admin.riplay.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group
+            {{ request()->is('admin/riplay*') ? 'bg-[#00326B] text-white shadow-lg shadow-blue-900/20' : 'text-slate-600 hover:bg-blue-50 hover:text-[#00326B]' }}">
+            <svg class="w-5 h-5 transition-colors {{ request()->is('admin/riplay*') ? 'text-white' : 'text-slate-400 group-hover:text-[#00326B]' }}"
+                fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M12 20.25a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5zM4.5 21.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5zm15 0a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5zM3 11.25l9-6 9 6" />
+            </svg>
+            <span class="font-bold">Riplay</span>
+        </a>
+        @endcan
+
         {{-- MENU MESSAGE: HANYA IT --}}
         @can('admin-it')
         <a href="{{ route('admin.messages.index') }}"
@@ -126,9 +148,7 @@
 
             <div class="flex flex-col leading-tight">
                 <span class="font-bold">Message</span>
-                <span class="text-[9px] font-medium text-slate-400">
-                    Pesan Masuk
-                </span>
+                
             </div>
         </a>
         @endcan

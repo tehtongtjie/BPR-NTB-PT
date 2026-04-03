@@ -71,7 +71,7 @@ class ArticleController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.article.index')
             ->with('success', 'Artikel berhasil ditambahkan!');
     }
 
@@ -129,7 +129,7 @@ class ArticleController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.article.index')
             ->with('success', 'Artikel berhasil diperbarui!');
     }
 
@@ -148,7 +148,7 @@ class ArticleController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.article.index')
             ->with('success', 'Artikel berhasil dihapus!');
     }
 }

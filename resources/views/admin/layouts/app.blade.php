@@ -28,7 +28,10 @@
 
         {{-- CONTENT --}}
         <main class="flex-1 p-6 overflow-x-auto">
-            @yield('content')
+            <div class="space-y-4">
+                @include('admin.components.flash-alerts')
+                @yield('content')
+            </div>
         </main>
 
     </div>

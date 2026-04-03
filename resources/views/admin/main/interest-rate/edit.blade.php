@@ -31,6 +31,7 @@
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
         @method('PUT')
+        @include('admin.components.form-errors')
 
         {{-- ================= PERIODE ================= --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -49,6 +50,15 @@
                 placeholder="Tahun"
                 class="rounded-xl bg-slate-50 border px-4 py-2.5">
         </div>
+        @error('title')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
+        @error('month')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
+        @error('year')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= TABUNGAN ================= --}}
         @php
@@ -161,6 +171,9 @@
                 placeholder="URL Verifikasi LPS"
                 class="rounded-xl bg-slate-50 border px-4 py-2.5">
         </div>
+        @error('lps_rate')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
         
         {{-- ================= STATUS AKTIF ================= --}}
         <div class="flex items-center gap-3">
@@ -191,7 +204,7 @@
 
         {{-- ACTION --}}
         <div class="flex justify-end gap-3 pt-4">
-            <a href="{{ route('admin.main.index') }}"
+            <a href="{{ route('admin.main.interest-rate.index') }}"
                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>
@@ -278,5 +291,3 @@ if (activeCheckbox) {
 }
 </script>
 @endsection
-
-

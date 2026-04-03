@@ -22,7 +22,7 @@ class AuctionController extends Controller
             ->paginate(5);
 
         // ditampilkan di dashboard (include admin.main.lelang.index)
-        return view('admin.main.index', compact('lelangs'));
+        return view('admin.main.lelang.index', compact('lelangs'));
     }
 
     /**
@@ -102,7 +102,7 @@ class AuctionController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.lelang.index')
             ->with('success', 'Lelang berhasil ditambahkan!');
     }
 
@@ -192,7 +192,7 @@ class AuctionController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.lelang.index')
             ->with('success', 'Lelang berhasil diperbarui!');
     }
 
@@ -217,7 +217,7 @@ class AuctionController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.lelang.index')
             ->with('success', 'Lelang berhasil dihapus!');
     }
 }

@@ -16,11 +16,19 @@
 <div class="min-h-screen flex flex-col items-center justify-center p-6">
     <div class="w-full max-w-md">
         <div class="text-center mb-8">
+            <div class="flex justify-center mb-4">
+                <img src="{{ asset('images/logobpr.png') }}" alt="Logo BPR NTB" class="h-16 w-auto">
+            </div>
             <h2 class="text-3xl font-bold tracking-tight text-slate-800">Admin Login BPR</h2>
             <p class="text-slate-500 mt-2">Sistem Pengelolaan Asset</p>
         </div>
 
         <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/60 border border-slate-100">
+            @if (session('success'))
+                <div class="mb-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700 text-sm px-4 py-3">
+                    {{ session('success') }}
+                </div>
+            @endif
             @if ($errors->any())
                 <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm">
                     <ul class="list-disc list-inside">
@@ -31,7 +39,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login') }}" class="space-y-5">
+            <form method="POST" action="{{ route('admin.login') }}" class="space-y-5">
                 @csrf
 
                 <div>

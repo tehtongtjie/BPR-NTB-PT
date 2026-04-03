@@ -23,9 +23,9 @@ class KantorSeeder extends Seeder
                     'alamat'    => $kantor['alamat'] ?? '-',
                     'latitude'  => $kantor['latitude'] ?? 0,
                     'longitude' => $kantor['longitude'] ?? 0,
+                    'tipe'      => $kantor['tipe'] ?? 0,
                 ]
             );
         }
-
     }
 }

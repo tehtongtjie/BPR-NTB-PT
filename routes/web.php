@@ -23,7 +23,6 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\PromoPublicController;
 
 use App\Http\Controllers\HomeController;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Admin\AdminAuthController;
 use App\Http\Controllers\Admin\ArticleController;
@@ -38,6 +37,7 @@ use App\Http\Controllers\Admin\PerusahaansController;
 use App\Http\Controllers\Admin\JobRecruitController;
 use App\Http\Controllers\Admin\PromoController;
 use App\Http\Controllers\Admin\PublikasiController;
+use App\Http\Controllers\Admin\RiplayDocumentController;
 use App\Http\Controllers\Admin\UmkmsController;
 
 
@@ -199,141 +199,14 @@ Route::prefix('pengaduan')->name('pengaduan.')->group(function () {
 Route::post('/kirim-pesan', [MessageController::class, 'store'])
     ->name('messages.store');
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN PANEL (DASHBOARD + CRUD)
-|--------------------------------------------------------------------------
-*/
-// Route::prefix('admin')->group(function () {
-
-//     //1. ===== MESSAGE (CONTACT FORM) =====
-//     Route::prefix('messages')->name('admin.messages.')->group(function () {
-//         Route::get('/', [MessageController::class, 'adminIndex'])->name('index');
-//         Route::get('/{id}', [MessageController::class, 'show'])->name('show');
-//         Route::delete('/{id}', [MessageController::class, 'destroy'])->name('destroy');
-//     });
-
-//     // 2. ===== JARINGAN KANTOR =====
-//     Route::prefix('jaringan')->name('jaringan.')->group(function () {
-//         Route::get('/', [JaringanController::class, 'index'])->name('index');
-//         Route::get('/create', [JaringanController::class, 'create'])->name('create');
-//         Route::post('/', [JaringanController::class, 'store'])->name('store');
-//         Route::get('/{kantor}/edit', [JaringanController::class, 'edit'])->name('edit');
-//         Route::put('/{kantor}', [JaringanController::class, 'update'])->name('update');
-//         Route::delete('/{kantor}', [JaringanController::class, 'destroy'])->name('destroy');
-//     });
-
-
-//     // 3. ===== MANAGEMENT (DIREKSI & KOMISARIS) =====
-//     Route::prefix('perusahaan')->name('perusahaan.')->group(function () {
-//         Route::get('/', [PerusahaansController::class, 'index'])->name('index');
-//         Route::get('/create', [PerusahaansController::class, 'create'])->name('create');
-//         Route::post('/', [PerusahaansController::class, 'store'])->name('store');
-//         Route::get('/{management}/edit', [PerusahaansController::class, 'edit'])->name('edit');
-//         Route::put('/{management}', [PerusahaansController::class, 'update'])->name('update');
-//         Route::delete('/{management}', [PerusahaansController::class, 'destroy'])->name('destroy');
-//     });
-
-//     Route::prefix('publikasi')->name('admin.publikasi.')->group(function () {
-
-//         Route::get('/', [PublikasiController::class, 'index'])->name('index');
-
-//         // LAPORAN
-//         Route::prefix('laporan')->name('laporan.')->group(function () {
-//             Route::get('/', [LaporansController::class, 'index'])->name('index');
-//             Route::get('/create', [LaporansController::class, 'create'])->name('create');
-//             Route::post('/', [LaporansController::class, 'store'])->name('store');
-//             Route::get('/{laporan}/edit', [LaporansController::class, 'edit'])->name('edit');
-//             Route::put('/{laporan}', [LaporansController::class, 'update'])->name('update');
-//             Route::delete('/{laporan}', [LaporansController::class, 'destroy'])->name('destroy');
-//         });
-//     });
-
-
-//     // 5. ===== MAIN DASHBOARD & CONTENT =====
-// Route::prefix('main')->name('admin.main.')->group(function () {
-
-//     Route::get('/', [MainController::class, 'index'])->name('index');
-
-//     // PROMO
-//     Route::prefix('promo')->name('promo.')->group(function () {
-//         Route::get('/', [PromoController::class, 'index'])->name('index');
-//         Route::get('/create', [PromoController::class, 'create'])->name('create');
-//         Route::post('/', [PromoController::class, 'store'])->name('store');
-//         Route::get('/{promo}/edit', [PromoController::class, 'edit'])->name('edit');
-//         Route::put('/{promo}', [PromoController::class, 'update'])->name('update');
-//         Route::delete('/{promo}', [PromoController::class, 'destroy'])->name('destroy');
-//     });
-
-//     // BANNER
-//     Route::prefix('banner')->name('banner.')->group(function () {
-//         Route::get('/', [BannerController::class, 'index'])->name('index');
-//         Route::get('/create', [BannerController::class, 'create'])->name('create');
-//         Route::post('/', [BannerController::class, 'store'])->name('store');
-//         Route::get('/{banner}/edit', [BannerController::class, 'edit'])->name('edit');
-//         Route::put('/{banner}', [BannerController::class, 'update'])->name('update');
-//         Route::delete('/{banner}', [BannerController::class, 'destroy'])->name('destroy');
-//     });
-
-//     // ARTICLE
-//     Route::prefix('article')->name('article.')->group(function () {
-//         Route::get('/', [ArticleController::class, 'index'])->name('index');
-//         Route::get('/create', [ArticleController::class, 'create'])->name('create');
-//         Route::post('/', [ArticleController::class, 'store'])->name('store');
-//         Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
-//         Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
-//         Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
-//     });
-
-//     // LELANG
-//     Route::prefix('lelang')->name('lelang.')->group(function () {
-//         Route::get('/', [AuctionController::class, 'index'])->name('index');
-//         Route::get('/create', [AuctionController::class, 'create'])->name('create');
-//         Route::post('/', [AuctionController::class, 'store'])->name('store');
-//         Route::get('/{lelang}/edit', [AuctionController::class, 'edit'])->name('edit');
-//         Route::put('/{lelang}', [AuctionController::class, 'update'])->name('update');
-//         Route::delete('/{lelang}', [AuctionController::class, 'destroy'])->name('destroy');
-//     });
-
-//     // INTEREST RATE
-//     Route::prefix('interest-rate')->name('interest-rate.')->group(function () {
-//         Route::get('/', [InterestRateController::class, 'index'])->name('index');
-//         Route::get('/create', [InterestRateController::class, 'create'])->name('create');
-//         Route::post('/', [InterestRateController::class, 'store'])->name('store');
-//         Route::get('/{period}/edit', [InterestRateController::class, 'edit'])->name('edit');
-//         Route::put('/{period}', [InterestRateController::class, 'update'])->name('update');
-//         Route::delete('/{period}', [InterestRateController::class, 'destroy'])->name('destroy');
-//     });
-// });
-//     // 6. ===== UMKM =====
-
-//     Route::prefix('umkms')->name('umkms.')->group(function () {
-
-//         Route::get('/', [UmkmsController::class, 'index'])->name('index');
-//         Route::get('/create', [UmkmsController::class, 'create'])->name('create');
-//         Route::post('/', [UmkmsController::class, 'store'])->name('store');
-//         Route::get('/{umkm}/edit', [UmkmsController::class, 'edit'])->name('edit');
-//         Route::put('/{umkm}', [UmkmsController::class, 'update'])->name('update');
-//         Route::delete('/{umkm}', [UmkmsController::class, 'destroy'])->name('destroy');
-//     });
-// });
-
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN PANEL (DASHBOARD + CRUD)
-|--------------------------------------------------------------------------
-*/
 
 // Gerbang login admin: hanya token yang valid yang boleh membuka halaman login.
-Route::get('/admin', function (Request $request) {
-    $token = (string) $request->query('token', '');
+// 
+Route::get('/login', [AdminAuthController::class, 'showLoginForm'])
+    ->name('login');
 
-    if (!hash_equals('abcd', $token)) {
-        abort(404);
-    }
-
-    return redirect()->to('/login?token=' . urlencode(Crypt::encryptString('abcd')));
+Route::get('/admin', function () {
+    return redirect()->route('login');
 })->name('admin.gate');
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
@@ -440,6 +313,15 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
             });
         });
 
+        Route::prefix('riplay')->name('admin.riplay.')->group(function () {
+            Route::get('/', [RiplayDocumentController::class, 'index'])->name('index');
+            Route::get('/create', [RiplayDocumentController::class, 'create'])->name('create');
+            Route::post('/', [RiplayDocumentController::class, 'store'])->name('store');
+            Route::get('/{riplay}/edit', [RiplayDocumentController::class, 'edit'])->name('edit');
+            Route::put('/{riplay}', [RiplayDocumentController::class, 'update'])->name('update');
+            Route::delete('/{riplay}', [RiplayDocumentController::class, 'destroy'])->name('destroy');
+        });
+
         Route::prefix('galeri')->name('admin.galeri.')->group(function () {
             Route::get('/', [AdminGaleriController::class, 'index'])->name('index');
             Route::get('/create', [AdminGaleriController::class, 'create'])->name('create');
@@ -503,12 +385,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 });
 
 // login admin (POST)
-Route::post('/admin/{token}', [AdminAuthController::class, 'login'])
-    ->name('admin.auth.login');
+Route::post('/login', [AdminAuthController::class, 'login'])
+    ->middleware('throttle:5,1')
+    ->name('admin.login');
 
 Route::post('/logout', function (Request $request) {
-    Auth::guard('web')->logout(); // Pastikan guardnya sama dengan saat login
-    return redirect()->to('/login?token=' . urlencode(Crypt::encryptString('abcd')));
+    Auth::guard('web')->logout();
+    return redirect()->route('login');
 })->name('logout');
 
 Route::get('/asisten-cerdas', [RecommenderController::class, 'index'])->name('recommender.index');

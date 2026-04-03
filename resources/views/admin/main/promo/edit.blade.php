@@ -26,6 +26,7 @@
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
         @method('PUT')
+        @include('admin.components.form-errors')
 
         {{-- ================= GAMBAR ================= --}}
         <div class="space-y-3">
@@ -49,6 +50,9 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('title')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
         {{-- ================= SUBTITLE ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">
@@ -73,6 +77,9 @@
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('short_desc', $promo->short_desc) }}</textarea>
         </div>
+        @error('short_desc')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= DESKRIPSI ================= --}}
         <div class="space-y-1.5">
@@ -81,6 +88,9 @@
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('description', $promo->description) }}</textarea>
         </div>
+        @error('description')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KEUNTUNGAN ================= --}}
         @php
@@ -157,14 +167,17 @@
             <label class="text-sm font-medium text-slate-600">Status</label>
             <select name="is_active"
                 class="w-full rounded-xl bg-slate-50 border px-4 py-2.5">
-                <option value="1" {{ $promo->is_active ? 'selected' : '' }}>Aktif</option>
-                <option value="0" {{ !$promo->is_active ? 'selected' : '' }}>Nonaktif</option>
+                <option value="1" {{ old('is_active', $promo->is_active) == 1 ? 'selected' : '' }}>Aktif</option>
+                <option value="0" {{ old('is_active', $promo->is_active) == 0 ? 'selected' : '' }}>Nonaktif</option>
             </select>
+            @error('is_active')
+                <p class="text-xs text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- ================= ACTION ================= --}}
         <div class="flex justify-end gap-3 pt-4">
-            <a href="{{ route('admin.main.index') }}" class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
+            <a href="{{ route('admin.main.promo.index') }}" class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>
             <button type="submit"

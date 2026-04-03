@@ -14,7 +14,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.main.index') }}"
+        <a href="{{ route('admin.main.article.index') }}"
            class="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
             ← Kembali
         </a>
@@ -26,6 +26,7 @@
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
         @method('PUT')
+        @include('admin.components.form-errors')
 
         {{-- ================= THUMBNAIL ================= --}}
         <div class="space-y-3">
@@ -40,6 +41,9 @@
                        file:text-sm file:font-medium file:text-[#00326B]
                        hover:file:bg-[#00326B]/20 transition">
         </div>
+        @error('thumbnail')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= JUDUL ================= --}}
         <div class="space-y-1.5">
@@ -49,6 +53,9 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('title')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KATEGORI ================= --}}
         <div class="space-y-1.5">
@@ -79,6 +86,9 @@
                 </option>
             </select>
         </div>
+        @error('category')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
 
         {{-- ================= PENULIS ================= --}}
@@ -89,6 +99,9 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('author')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= RINGKASAN ================= --}}
         <div class="space-y-1.5">
@@ -97,6 +110,9 @@
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('excerpt', $article->excerpt) }}</textarea>
         </div>
+        @error('excerpt')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KONTEN ================= --}}
         <div class="space-y-1.5">
@@ -105,6 +121,9 @@
                 class="w-full rounded-xl bg-slate-50 border px-4 py-3
                        focus:ring-4 focus:ring-[#00326B]/10">{{ old('content', $article->content) }}</textarea>
         </div>
+        @error('content')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= TANGGAL PUBLIKASI ================= --}}
         <div class="space-y-1.5">
@@ -114,16 +133,22 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('published_at')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= STATUS ================= --}}
         <div class="space-y-1.5">
             <label class="text-sm font-medium text-slate-600">Status Artikel</label>
             <select name="is_published"
                 class="w-full rounded-xl bg-slate-50 border px-4 py-2.5">
-                <option value="1" {{ $article->is_published ? 'selected' : '' }}>Publish</option>
-                <option value="0" {{ !$article->is_published ? 'selected' : '' }}>Draft</option>
+                <option value="1" {{ old('is_published', $article->is_published) == 1 ? 'selected' : '' }}>Publish</option>
+                <option value="0" {{ old('is_published', $article->is_published) == 0 ? 'selected' : '' }}>Draft</option>
             </select>
         </div>
+        @error('is_published')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= ACTION ================= --}}
         <div class="flex justify-end gap-3 pt-4">
@@ -178,5 +203,3 @@
     });
 </script>
 @endpush
-
-

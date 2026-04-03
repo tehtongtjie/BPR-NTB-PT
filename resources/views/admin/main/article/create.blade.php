@@ -22,6 +22,7 @@
           enctype="multipart/form-data"
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
+        @include('admin.components.form-errors')
 
         {{-- ================= JUDUL ARTIKEL ================= --}}
         <div class="space-y-1.5">
@@ -42,6 +43,9 @@
                           focus:ring-4 focus:ring-[#00326B]/10
                           transition-all duration-200 ease-out">
         </div>
+        @error('title')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KATEGORI ================= --}}
         <div class="space-y-1.5">
@@ -68,6 +72,9 @@
                 <option value="PENGHARGAAN" {{ old('category') == 'PENGHARGAAN' ? 'selected' : '' }}>PENGHARGAAN</option>
             </select>
         </div>
+        @error('category')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= PENULIS ================= --}}
         <div class="space-y-1.5">
@@ -86,8 +93,11 @@
                         focus:bg-white
                         focus:border-[#00326B]
                         focus:ring-4 focus:ring-[#00326B]/10
-                        transition">
+                       transition">
         </div>
+        @error('author')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= RINGKASAN ================= --}}
         <div class="space-y-1.5">
@@ -107,6 +117,9 @@
                              focus:ring-4 focus:ring-[#00326B]/10
                              transition resize-none">{{ old('excerpt') }}</textarea>
         </div>
+        @error('excerpt')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KONTEN ================= --}}
         <div class="space-y-1.5">
@@ -124,8 +137,11 @@
                              focus:bg-white
                              focus:border-[#00326B]
                              focus:ring-4 focus:ring-[#00326B]/10
-                             transition resize-none">{{ old('content') }}</textarea>
+                            transition resize-none">{{ old('content') }}</textarea>
         </div>
+        @error('content')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= THUMBNAIL ================= --}}
         <div class="space-y-1.5">
@@ -143,9 +159,12 @@
                           file:px-4 file:py-2
                           file:text-sm file:font-medium
                           file:text-[#00326B]
-                          hover:file:bg-[#00326B]/20
-                          transition">
+                         hover:file:bg-[#00326B]/20
+                         transition">
         </div>
+        @error('thumbnail')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= TANGGAL PUBLIKASI ================= --}}
         <div class="space-y-1.5">
@@ -164,6 +183,9 @@
                           focus:ring-4 focus:ring-[#00326B]/10
                           transition">
         </div>
+        @error('published_at')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= STATUS ================= --}}
         <div class="space-y-1.5">
@@ -178,10 +200,13 @@
                            focus:border-[#00326B]
                            focus:ring-4 focus:ring-[#00326B]/10
                            transition">
-                <option value="1" selected>Publish</option>
-                <option value="0">Draft</option>
+                <option value="1" {{ old('is_published', '1') == '1' ? 'selected' : '' }}>Publish</option>
+                <option value="0" {{ old('is_published') === '0' ? 'selected' : '' }}>Draft</option>
             </select>
         </div>
+        @error('is_published')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= ACTION BUTTON ================= --}}
         <div class="flex items-center gap-3 pt-4">
@@ -195,7 +220,7 @@
                 Simpan Artikel
             </button>
 
-            <a href="{{ route('admin.main.index') }}"
+            <a href="{{ route('admin.main.article.index') }}"
                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>
@@ -245,5 +270,3 @@
     });
 </script>
 @endpush
-
-

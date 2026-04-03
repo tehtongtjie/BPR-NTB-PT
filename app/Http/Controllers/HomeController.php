@@ -36,7 +36,7 @@ class HomeController extends Controller
 
         $lelangs = Lelang::where('is_published', true)
         ->orderBy('deadline', 'asc')
-        ->limit(8)
+        ->limit(4)
         ->get();
 
         $stories = Message::where('is_story', true)

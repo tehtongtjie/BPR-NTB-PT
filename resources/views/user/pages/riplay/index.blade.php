@@ -47,14 +47,14 @@
                           
                             <div>
                                 <span
-                                    class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-2 block">{{ $doc['kategori'] }}</span>
-                                <h4 class="text-xl font-black text-[#00326B] leading-tight mb-3">{{ $doc['judul'] }}</h4>
+                                    class="text-[10px] font-black text-blue-500 uppercase tracking-widest mb-2 block">{{ $doc->type }}</span>
+                                <h4 class="text-xl font-black text-[#00326B] leading-tight mb-3">{{ $doc->title }}</h4>
                                 <p class="text-slate-500 text-sm leading-relaxed italic line-clamp-2">
-                                    "{{ $doc['deskripsi'] }}"</p>
+                                    "{{ $doc->description }}"</p>
                             </div>
 
                             <div class="pt-6 border-t border-slate-50">
-                                <a href="{{ asset($doc['file_path']) }}" target="_blank"
+                                <a href="{{ Storage::url($doc->file_path) }}" target="_blank"
                                     class="inline-flex items-center gap-3 px-6 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[#fbbf24] hover:text-[#00326B] transition-all">
                                     <i class="bi bi-download text-sm"></i> Unduh Dokumen
                                 </a>

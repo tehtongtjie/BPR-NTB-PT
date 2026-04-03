@@ -16,7 +16,7 @@
             </p>
         </div>
 
-        <a href="{{ route('admin.main.index') }}"
+        <a href="{{ route('admin.main.banner.index') }}"
            class="inline-flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
             ← Kembali
         </a>
@@ -30,6 +30,7 @@
                  p-6 space-y-6">
         @csrf
         @method('PUT')
+        @include('admin.components.form-errors')
 
         {{-- PREVIEW BANNER --}}
         <div class="space-y-2">
@@ -91,7 +92,7 @@
                 Update Banner
             </button>
 
-            <a href="{{ route('admin.main.index') }}"
+            <a href="{{ route('admin.main.banner.index') }}"
                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>
@@ -100,4 +101,3 @@
     </form>
 </div>
 @endsection
-

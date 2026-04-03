@@ -21,6 +21,7 @@
           enctype="multipart/form-data"
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
+        @include('admin.components.form-errors')
 
         {{-- ================= JUDUL PROMO ================= --}}
         <div class="space-y-1.5">
@@ -40,6 +41,9 @@
                           focus:border-[#00326B]
                           focus:ring-4 focus:ring-[#00326B]/10
                           transition-all duration-200 ease-out">
+            @error('title')
+                <p class="text-xs text-red-600">{{ $message }}</p>
+            @enderror
         </div>
         {{-- ================= SUBTITLE PROMO ================= --}}
         <div class="space-y-1.5">
@@ -77,6 +81,9 @@
                              focus:border-[#00326B]
                              focus:ring-4 focus:ring-[#00326B]/10
                              transition-all duration-200 resize-none">{{ old('short_desc') }}</textarea>
+            @error('short_desc')
+                <p class="text-xs text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- ================= INFORMASI PRODUK ================= --}}
@@ -85,9 +92,9 @@
                 Informasi Produk
             </label>
             <textarea name="description"
-                      rows="5"
-                      placeholder="Penjelasan detail mengenai produk promo"
-                      class="w-full rounded-xl
+                     rows="5"
+                     placeholder="Penjelasan detail mengenai produk promo"
+                     class="w-full rounded-xl
                              bg-slate-50 border border-slate-200
                              px-4 py-3 text-slate-700
                              placeholder:text-slate-400
@@ -95,6 +102,9 @@
                              focus:border-[#00326B]
                              focus:ring-4 focus:ring-[#00326B]/10
                              transition-all duration-200 resize-none">{{ old('description') }}</textarea>
+            @error('description')
+                <p class="text-xs text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- ================= KEUNTUNGAN & FASILITAS ================= --}}
@@ -218,9 +228,12 @@
                            focus:border-[#00326B]
                            focus:ring-4 focus:ring-[#00326B]/10
                            transition-all duration-200">
-                <option value="1" selected>Aktif</option>
-                <option value="0">Nonaktif</option>
+                <option value="1" {{ old('is_active', '1') === '1' ? 'selected' : '' }}>Aktif</option>
+                <option value="0" {{ old('is_active') === '0' ? 'selected' : '' }}>Nonaktif</option>
             </select>
+            @error('is_active')
+                <p class="text-xs text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         {{-- ================= ACTION BUTTON ================= --}}
@@ -235,7 +248,7 @@
                 Simpan Promo
             </button>
 
-            <a href="{{ route('admin.main.index') }}"
+            <a href="{{ route('admin.main.promo.index') }}"
                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>

@@ -22,7 +22,7 @@ class PromoController extends Controller
             ->orderBy('created_at', 'asc')
             ->paginate(5);
 
-        return view('admin.main.index', compact('promos'));
+        return view('admin.main.promo.index', compact('promos'));
     }
 
     /**
@@ -100,7 +100,7 @@ class PromoController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.promo.index')
             ->with('success', 'Promo berhasil ditambahkan!');
     }
 
@@ -187,7 +187,7 @@ class PromoController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.promo.index')
             ->with('success', 'Promo berhasil diperbarui!');
     }
 
@@ -209,7 +209,7 @@ class PromoController extends Controller
         });
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.promo.index')
             ->with('success', 'Promo berhasil dihapus');
     }
 }

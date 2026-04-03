@@ -22,7 +22,7 @@ class InterestRateController extends Controller
             ->orderBy('month', 'desc')
             ->paginate(5);
 
-        return view('admin.main.index', compact('periods'));
+        return view('admin.main.interest-rate.index', compact('periods'));
     }
 
     /**
@@ -119,7 +119,7 @@ class InterestRateController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.main.index')
+        return redirect()->route('admin.main.interest-rate.index')
             ->with('success', 'Suku bunga berhasil ditambahkan!');
     }
 
@@ -221,7 +221,7 @@ class InterestRateController extends Controller
             );
         });
 
-        return redirect()->route('admin.main.index')
+        return redirect()->route('admin.main.interest-rate.index')
             ->with('success', 'Suku bunga berhasil diperbarui!');
     }
 
@@ -252,8 +252,8 @@ public function destroy(InterestRatePeriod $period)
         }
     });
 
-    return redirect()->route('admin.main.index')
-        ->with('success', 'Suku bunga berhasil dihapus.');
+        return redirect()->route('admin.main.interest-rate.index')
+            ->with('success', 'Suku bunga berhasil dihapus.');
 }
 
 

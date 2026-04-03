@@ -4,6 +4,11 @@
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+@php
+    use Illuminate\Support\Facades\Storage;
+    use Illuminate\Support\Str;
+@endphp
+
 @section('content')
     <style>
         :root {
@@ -135,6 +140,64 @@
                                         <span class="w-2 h-2 bg-bpr-blue/20 rounded-full"></span>
                                     </div>
                                 </div>
+                            @endif
+
+                            {{-- DAFTAR DIREKSI / KOMISARIS --}}
+                            @if($managements->isNotEmpty())
+                                @php
+                                    $boardLabel = $slug === 'komisaris' ? 'Dewan Komisaris' : 'Dewan Direksi';
+                                @endphp
+                                <section class="mb-12">
+                                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border border-slate-100 rounded-[2rem] bg-white/80 p-6 shadow-lg">
+                                        <div>
+                                            <p class="text-[11px] tracking-[0.3em] uppercase text-slate-400 font-black mb-2">Leadership</p>
+                                            <h2 class="text-2xl lg:text-3xl font-black text-[#00326B]">{{ $boardLabel }}</h2>
+                                        </div>
+                                        <p class="text-sm text-slate-500 max-w-xl">
+                                            Informasi resmi dan profil singkat para pemegang posisi strategis BPR NTB.
+                                        </p>
+                                    </div>
+                                    <div class="mt-6 grid gap-4 md:grid-cols-2">
+                                        @foreach($managements as $management)
+                                            @php
+                                                $avatarUrl = null;
+                                                if (!empty($management->image)) {
+                                                    if (str_starts_with($management->image, 'http://') || str_starts_with($management->image, 'https://')) {
+                                                        $avatarUrl = $management->image;
+                                                    } elseif (str_starts_with($management->image, 'storage/')) {
+                                                        $avatarUrl = Storage::url($management->image);
+                                                    } else {
+                                                        $avatarUrl = asset($management->image);
+                                                    }
+                                                }
+                                            @endphp
+                                            <a href="{{ route('perusahaan.detail', ['slug' => $slug, 'management' => $management->slug]) }}"
+                                               class="group block rounded-[2rem] border border-slate-100 bg-white p-5 shadow-sm transition hover:shadow-2xl">
+                                                <div class="flex gap-4 items-center">
+                                                    <div class="h-16 w-16 flex-shrink-0 rounded-2xl border border-slate-100 bg-slate-50 flex items-center justify-center">
+                                                        @if($avatarUrl)
+                                                            <img src="{{ $avatarUrl }}"
+                                                                 alt="{{ $management->name }}"
+                                                                 class="h-16 w-16 rounded-xl object-cover">
+                                                        @else
+                                                            <span class="text-lg font-black tracking-[0.3em] text-[#00326B]">
+                                                                {{ collect(explode(' ', $management->name))->map(fn($n) => $n[0])->take(2)->implode('') }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-1 space-y-1">
+                                                        <h3 class="text-lg font-bold text-[#00326B]">{{ $management->name }}</h3>
+                                                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-[0.2em]">{{ $management->position }}</p>
+                                                        <p class="text-sm text-slate-600 line-clamp-3">{{ Str::limit($management->excerpt ?? $management->profile, 120) }}</p>
+                                                    </div>
+                                                    <div class="text-slate-400 group-hover:text-[#00326B] transition-colors">
+                                                        <i class="bi bi-arrow-right-circle text-2xl"></i>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </section>
                             @endif
 
                             {{-- CONTENT LOGIC --}}

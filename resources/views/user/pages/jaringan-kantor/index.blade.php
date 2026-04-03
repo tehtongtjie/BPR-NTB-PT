@@ -112,6 +112,11 @@
                             px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
                         Kas
                     </a>
+                    <a href="{{ url()->current() }}?tipe=pokp{{ request('q') ? '&q='.request('q') : '' }}"
+                    class="filter-btn {{ request('tipe') === 'pokp' ? 'active' : '' }}
+                            px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                        POKP
+                    </a>
                 </div>
             </div>
 

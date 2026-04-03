@@ -22,6 +22,7 @@
           class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 space-y-6">
         @csrf
         @method('PUT')
+        @include('admin.components.form-errors')
 
         {{-- ================= JUDUL LELANG ================= --}}
         <div class="space-y-1.5">
@@ -34,8 +35,11 @@
                    placeholder="Contoh: Renovasi Gedung Kantor Cabang Utama Mataram"
                    required
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
-                          focus:ring-4 focus:ring-[#00326B]/10">
+                         focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('title')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KATEGORI ================= --}}
         <div class="space-y-1.5">
@@ -72,6 +76,9 @@
                 </option>
             </select>
         </div>
+        @error('category')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
 
         {{-- ================= DESKRIPSI SINGKAT ================= --}}
@@ -83,8 +90,11 @@
                       rows="3"
                       placeholder="Ringkasan singkat lelang"
                       class="w-full rounded-xl bg-slate-50 border px-4 py-3
-                             focus:ring-4 focus:ring-[#00326B]/10">{{ old('short_desc', $lelang->short_desc) }}</textarea>
+                            focus:ring-4 focus:ring-[#00326B]/10">{{ old('short_desc', $lelang->short_desc) }}</textarea>
         </div>
+        @error('short_desc')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= SPESIFIKASI PEKERJAAN ================= --}}
         <div class="space-y-1.5">
@@ -95,8 +105,11 @@
                       rows="5"
                       placeholder="Detail pekerjaan lelang"
                       class="w-full rounded-xl bg-slate-50 border px-4 py-3
-                             focus:ring-4 focus:ring-[#00326B]/10">{{ old('description', $lelang->description) }}</textarea>
+                            focus:ring-4 focus:ring-[#00326B]/10">{{ old('description', $lelang->description) }}</textarea>
         </div>
+        @error('description')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= KUALIFIKASI PESERTA ================= --}}
         @php
@@ -185,6 +198,9 @@
                    accept="image/*"
                    class="block w-full text-sm text-slate-600">
         </div>
+        @error('banner')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= BATAS AKHIR ================= --}}
         <div class="space-y-1.5">
@@ -198,6 +214,9 @@
                    class="w-full rounded-xl bg-slate-50 border px-4 py-2.5
                           focus:ring-4 focus:ring-[#00326B]/10">
         </div>
+        @error('deadline')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= STATUS ================= --}}
         <div class="space-y-1.5">
@@ -206,11 +225,14 @@
             </label>
             <select name="status"
                 class="w-full rounded-xl bg-slate-50 border px-4 py-2.5">
-                <option value="aktif" {{ $lelang->status === 'aktif' ? 'selected' : '' }}>Aktif</option>
-                <option value="ditutup" {{ $lelang->status === 'ditutup' ? 'selected' : '' }}>Ditutup</option>
-                <option value="selesai" {{ $lelang->status === 'selesai' ? 'selected' : '' }}>Selesai</option>
+                <option value="aktif" {{ old('status', $lelang->status) === 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="ditutup" {{ old('status', $lelang->status) === 'ditutup' ? 'selected' : '' }}>Ditutup</option>
+                <option value="selesai" {{ old('status', $lelang->status) === 'selesai' ? 'selected' : '' }}>Selesai</option>
             </select>
         </div>
+        @error('status')
+            <p class="text-xs text-red-600">{{ $message }}</p>
+        @enderror
 
         {{-- ================= ACTION ================= --}}
         <div class="flex items-center gap-3 pt-4">
@@ -221,7 +243,7 @@
                 Update Lelang
             </button>
 
-            <a href="{{ route('admin.main.index') }}"
+            <a href="{{ route('admin.main.lelang.index') }}"
                class="inline-flex items-center justify-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 focus:ring-offset-2">
                 Batal
             </a>

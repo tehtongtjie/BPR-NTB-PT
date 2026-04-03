@@ -9,13 +9,13 @@ use Illuminate\Support\Facades\Storage;
 
 class BannerController extends Controller
 {
+   
     public function index()
     {
-        $banner = Banner::orderBy('id', 'asc')->paginate(5);
-
-        return view('admin.main.index', compact('banner'));
+        $banners = Banner::orderBy('id', 'asc')->paginate(5);
+        return view('admin.main.banner.index', compact('banners')); // ✅
     }
-
+    
     public function create()
     {
         return view('admin.main.banner.create');
@@ -33,7 +33,7 @@ class BannerController extends Controller
         Banner::create($validated);
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.banner.index')
             ->with('success', 'Banner berhasil ditambahkan');
     }
 
@@ -62,7 +62,7 @@ class BannerController extends Controller
         $banner->update($validated);
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.banner.index')
             ->with('success', 'Banner berhasil diperbarui');
     }
 
@@ -75,7 +75,7 @@ class BannerController extends Controller
         $banner->delete();
 
         return redirect()
-            ->route('admin.main.index')
+            ->route('admin.main.banner.index')
             ->with('success', 'Banner berhasil dihapus');
     }
 }
